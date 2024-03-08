@@ -1,6 +1,24 @@
 # ShiftHub
 A Business Scheduler Application
+
+## Introduction:
 When working in the service industry, it is often difficult to create an effective schedule to manage a team, especially when considering the schedules of each employee. Inspired by the challenges faced with scheduling and managing a team, ShiftMate will create a dependable, reliable, and easy to use application that aims to streamline the schedule making process.
+
+## Objective:
+Create a dependable, reliable, and easy to use application to streamline operations, and help manage a team.
+
+## Technical Details
+## Tools:
+NetBeans
+
+## Resources:
+JavaFX, MySQL
+
+## Programming Languages and Packages
+Java, JavaFX, MySQL
+
+### Target Audience
+Grocery Stores, Retailers, and Resturants. Any buisness trying to find a solution for scheduling needs!
 
 ### Main Functions
 1. Secure SQL Server Connection
