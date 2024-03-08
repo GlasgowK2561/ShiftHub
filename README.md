@@ -15,5 +15,5 @@ The general manager of the business will be the main user for this application. 
 ### Adding an Employee
 When an employee is hired, the manager can add their information, and then hire them for a specific department. This allows for the employee to be added to the weekly schedule for that department. Once the employee has been fully hired on, they are now able to be scheduled on their departments schedule.
 
-## Distributing the schedule
+### Distributing the schedule
 Whenever a manager creates or edits a schedule, the application will either email or text the schedule to the employees. This allows for the employee to have their schedule available at all times.
