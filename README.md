@@ -42,7 +42,7 @@ This section will discuss how to run the program. It will require the following 
 2. VS Code
 3. GitHub Desktop
 
-First, clone the repo into GitHub Desktop, and open in the project in Visual Studio Code. Upon opening the files, the user will need to download the appropriate extensions for visual studio code to run the application. To do so, the user must
+First, clone the repo into GitHub Desktop, and open in the project (open the entire folder named "Shifthub-Sprint1") in Visual Studio Code. Upon opening the files, the user will need to download the appropriate extensions for visual studio code to run the application. To do so, the user must
 1. Go to Extensions on Visual Studio
 2. Download the Java Extension
 3. Download the JavaFX Extension
