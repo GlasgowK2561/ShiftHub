@@ -19,39 +19,21 @@ import java.io.IOException;
 
 public class LoginController
 {
-
     @FXML
     private Button loginButton;
-
-
     @FXML
     private Button closeButton;
-
-
     @FXML
     private Label loginMessageLabel;
-
-
     @FXML
     private TextField usernameTextfield;
-
-
     @FXML
     private PasswordField passwordPasswordField;
-
-
-
-
     public void loginButtonOnAction(ActionEvent e) throws IOException
     {
-
-
         if (!usernameTextfield.getText().isBlank() && !passwordPasswordField.getText().isBlank())
-
-
         {
             if (usernameTextfield.getText().equals("ea") && passwordPasswordField.getText().equals("sp"))
-
             {
                 loginMessageLabel.setText("Login Successful");
                 openMainPage();
@@ -66,18 +48,11 @@ public class LoginController
             loginMessageLabel.setText("Input Username/Password");
         }
     }
-
-
-
-
     public void closeButtonOnAction(ActionEvent e)
     {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
-
-
-
 
     public void openMainPage() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
@@ -86,9 +61,5 @@ public class LoginController
         stage.setScene(new Scene(root, 1250, 900));
         stage.initStyle(StageStyle.DECORATED);
         stage.show();
-
-
     }
-
-
 }
