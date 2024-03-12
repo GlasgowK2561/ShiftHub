@@ -1,6 +1,6 @@
 package shiftmate.proj;
 
-
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -12,10 +12,10 @@ import javafx.scene.control.PasswordField;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.stage.StageStyle;
-
-
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.io.IOException;
-
 
 public class LoginController
 {
@@ -33,6 +33,7 @@ public class LoginController
     {
         if (!usernameTextfield.getText().isBlank() && !passwordPasswordField.getText().isBlank())
         {
+            Login_Back.connect();
             if (usernameTextfield.getText().equals("ea") && passwordPasswordField.getText().equals("sp"))
             {
                 loginMessageLabel.setText("Login Successful");
