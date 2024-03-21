@@ -33,3 +33,12 @@ INSERT INTO Availability (availID, employeeID, weekDayDate, StartTime, EndTime, 
 (4, 104, '2024-02-14', '08:00:00', '17:00:00', 'Available'),
 (5, 105, '2024-02-14', '09:00:00', '18:00:00', 'Unavailable'),
 (6, 106, '2024-02-14', '08:00:00', '17:00:00', 'Available');
+
+ALTER TABLE Login MODIFY COLUMN userID INT AUTO_INCREMENT;
+INSERT INTO Login (username, pass, employeeID) VALUES
+('alice_login', 'password123', 101),
+('bob_login', 'securepass', 102),
+('charlie_login', 'abc123', 103),
+('david_login', 'mypassword', 104),
+('emma_login', 'pass1234', 105),
+('frank_login', 'password', 106);
