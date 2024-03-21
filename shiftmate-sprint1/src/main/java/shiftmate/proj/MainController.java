@@ -1,80 +1,120 @@
 package shiftmate.proj;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.TranslateTransition;
+
+
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.util.Duration;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.stage.Stage;
+import java.io.IOException;
 
-import java.net.URL;
-import java.util.ResourceBundle;
 
-public class MainController implements Initializable {
+
+
+public class MainController {
 
 
     @FXML
-    private ImageView exit;
+    private Button homeButton;
+
 
     @FXML
-    private Label menu;
+    private Button createScheduleButton;
+
 
     @FXML
-    private AnchorPane panel1, panel2;
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        exit.setOnMouseClicked(mouseEvent -> {
-            System.exit(0);
-        });
+    private Button editInformationButton;
 
 
-        panel1.setVisible(false);
+    @FXML
+    private Button staffButton;
 
-        // Set initial translation for panel2
-        panel2.setTranslateX(-600);
 
-        menu.setOnMouseClicked(event -> {
-            if (panel1.isVisible()) {
-               
-                slideOutMenu();
-            } else {
+    @FXML
+    private Button DepartmentsButton;  
 
-                slideInMenu();
-            }
-        });
 
-        panel1.setOnMouseClicked(event -> {
-        
-            slideOutMenu();
-        });
+    @FXML  
+    private Button logoutButton;
+
+
+
+
+    @FXML
+    private void homeButtonOnAction(ActionEvent e) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("main.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) homeButton.getScene().getWindow();
+       
+        stage.setScene(new Scene(root, 1250, 800));
+        stage.show();
     }
 
-    private void slideInMenu() {
-        panel1.setVisible(true);
 
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), panel1);
-        fadeTransition.setFromValue(0);
-        fadeTransition.setToValue(1);
-        fadeTransition.play();
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), panel2);
-        translateTransition.setToX(0);
-        translateTransition.play();
+    @FXML
+    private void createScheduleButtonOnAction(ActionEvent e) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("createschedules.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) staffButton.getScene().getWindow();
+       
+        stage.setScene(new Scene(root, 1250, 800));
+        stage.show();
     }
 
-    private void slideOutMenu() {
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.5), panel1);
-        fadeTransition.setFromValue(1);
-        fadeTransition.setToValue(0);
-        fadeTransition.play();
 
-        fadeTransition.setOnFinished(event -> panel1.setVisible(false));
-
-        TranslateTransition translateTransition = new TranslateTransition(Duration.seconds(0.5), panel2);
-        translateTransition.setToX(-600);
-        translateTransition.play();
+    @FXML
+    private void editInformationButtonOnAction(ActionEvent e) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("editinformation.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) editInformationButton.getScene().getWindow();
+       
+        stage.setScene(new Scene(root, 1250, 800));
+        stage.show();
     }
+
+
+    @FXML
+    private void staffButtonOnAction(ActionEvent e) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("staff.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) staffButton.getScene().getWindow();
+       
+        stage.setScene(new Scene(root, 1250, 800));
+        stage.show();
+    }
+
+
+    @FXML
+    private void departmentsButtonOnAction(ActionEvent e) throws IOException
+    {
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("departments.fxml"));
+        Parent root = fxmlLoader.load();
+        Stage stage = (Stage) DepartmentsButton.getScene().getWindow();
+       
+        stage.setScene(new Scene(root, 1250, 800));
+        stage.show();
+    }
+
+
+    @FXML
+    private void logoutButtonOnAction(ActionEvent e) throws IOException
+    {
+       
+    }
+
+
+
+
+
+
+
+
 }

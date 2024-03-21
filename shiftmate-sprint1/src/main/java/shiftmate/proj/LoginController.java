@@ -114,9 +114,9 @@ public class LoginController
    
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("createaccount.fxml"));
         Parent root = fxmlLoader.load();
-        Stage stage = new Stage();
+        Stage stage = (Stage)CreateanAccountButton.getScene().getWindow();
+       
         stage.setScene(new Scene(root, 520, 400));
-        stage.initStyle(StageStyle.DECORATED);
         stage.show();
     }
    
@@ -147,5 +147,3 @@ public class LoginController
 
 
 }
-
-

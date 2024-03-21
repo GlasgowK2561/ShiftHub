@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,7 +14,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.MainController">
    <left>
       <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +30,7 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" text="Home">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" text="Home">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -38,7 +39,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Create Schedule">
+            <Button fx:id="createScheduleButton" mnemonicParsing="false" onAction="#createScheduleButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Create Schedule">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -47,7 +48,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Edit Information">
+            <Button fx:id="editInformationButton" mnemonicParsing="false" onAction="#editInformationButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Edit Information">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -56,7 +57,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Staff">
+            <Button fx:id="staffButton" mnemonicParsing="false" onAction="#staffButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Staff">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -65,7 +66,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Departments">
+            <Button fx:id="DepartmentsButton" mnemonicParsing="false" onAction="#departmentsButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Departments">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -74,7 +75,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button mnemonicParsing="false" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Log Out">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Log Out">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -89,7 +90,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TableView editable="true" layoutX="7.0" layoutY="259.0" prefHeight="395.0" prefWidth="1015.0">
+            <TableView editable="true" layoutX="7.0" layoutY="105.0" prefHeight="462.0" prefWidth="1015.0">
               <columns>
                 <TableColumn prefWidth="81.0" text="EmployeeID" />
                 <TableColumn prefWidth="96.0" text="DepartmentID" />
@@ -102,14 +103,32 @@
                   <TableColumn minWidth="0.0" prefWidth="181.0" text="Contact Phone" />
               </columns>
             </TableView>
-            <Button layoutX="780.0" layoutY="698.0" mnemonicParsing="false" text="Add" />
-            <Button layoutX="850.0" layoutY="698.0" mnemonicParsing="false" text="Edit" />
-            <Button layoutX="920.0" layoutY="698.0" mnemonicParsing="false" text="Delete" />
-            <Label layoutX="52.0" layoutY="54.0" prefHeight="17.0" prefWidth="172.0" text="Edit Information">
+            <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />
+            <Button layoutX="910.0" layoutY="590.0" mnemonicParsing="false" text="Edit" />
+            <Button layoutX="960.0" layoutY="590.0" mnemonicParsing="false" text="Delete" />
+            <Label layoutX="44.0" layoutY="41.0" prefHeight="17.0" prefWidth="172.0" text="Edit Information">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
+            <Label layoutX="20.0" layoutY="590.0" text="EmployeeID" />
+            <Label layoutX="20.0" layoutY="640.0" text="DepartmentID" />
+            <Label layoutX="20.0" layoutY="690.0" text="First Name" />
+            <Label layoutX="280.0" layoutY="590.0" text="Last Name" />
+            <Label layoutX="280.0" layoutY="640.0" text="Email" />
+            <Label layoutX="280.0" layoutY="690.0" text="Phone" />
+            <Label layoutX="540.0" layoutY="590.0" text="Start Date" />
+            <Label layoutX="540.0" layoutY="640.0" text="Contact" />
+            <Label layoutX="540.0" layoutY="690.0" text="Contact Phone" />
+            <TextField layoutX="110.0" layoutY="590.0" />
+            <TextField layoutX="110.0" layoutY="640.0" />
+            <TextField layoutX="110.0" layoutY="690.0" />
+            <TextField layoutX="630.0" layoutY="640.0" />
+            <TextField layoutX="370.0" layoutY="640.0" />
+            <TextField layoutX="370.0" layoutY="590.0" />
+            <TextField layoutX="630.0" layoutY="590.0" />
+            <TextField layoutX="370.0" layoutY="690.0" />
+            <TextField layoutX="630.0" layoutY="690.0" />
          </children></AnchorPane>
    </center>
 </BorderPane>
