@@ -15,11 +15,11 @@ public class Login_Back
             // Establishing a connection to the database
             Connection connection = DriverManager.getConnection(url, username, password);
             // If the connection is successful
-            System.out.println("Connected to the database.");
+            System.out.println("Connected to the database.\n\n");
             // Do whatever you need with the connection 
             // Close the connection when done
             connection.close();
-        } catch (SQLException e) {
+        } catch (SQLException e) {   
             // Handle any SQL exceptions
             e.printStackTrace();
         }
