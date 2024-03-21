@@ -54,11 +54,8 @@ public class LoginController
     public void loginButtonOnAction(ActionEvent e) throws IOException
     {
 
-
+        Login_Back.connect(); //To establish connection to the database
         if (!usernameTextfield.getText().isBlank() && !passwordPasswordField.getText().isBlank())
-
-
-
 
         {
             if (usernameTextfield.getText().equals("ea") && passwordPasswordField.getText().equals("sp"))
