@@ -33,7 +33,7 @@ public class LoginController
     {
         if (!usernameTextfield.getText().isBlank() && !passwordPasswordField.getText().isBlank())
         {
-            Login_Back.connect();
+            Login_Back.connect(); //To establish connection to the database
             if (usernameTextfield.getText().equals("ea") && passwordPasswordField.getText().equals("sp"))
             {
                 loginMessageLabel.setText("Login Successful");
