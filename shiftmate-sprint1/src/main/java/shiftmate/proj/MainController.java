@@ -1,8 +1,5 @@
 package shiftmate.proj;
 
-
-
-
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -13,10 +10,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 
-
-
 public class MainController {
-
 
     @FXML
     private Button homeButton;
@@ -42,8 +36,6 @@ public class MainController {
     private Button logoutButton;
 
 
-
-
     @FXML
     private void homeButtonOnAction(ActionEvent e) throws IOException
     {
@@ -55,7 +47,6 @@ public class MainController {
         stage.show();
     }
 
-
     @FXML
     private void createScheduleButtonOnAction(ActionEvent e) throws IOException
     {
@@ -66,7 +57,6 @@ public class MainController {
         stage.setScene(new Scene(root, 1250, 800));
         stage.show();
     }
-
 
     @FXML
     private void editInformationButtonOnAction(ActionEvent e) throws IOException
@@ -109,12 +99,6 @@ public class MainController {
     {
        
     }
-
-
-
-
-
-
 
 
 }
