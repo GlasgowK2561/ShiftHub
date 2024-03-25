@@ -14,9 +14,9 @@ returning queried data to a hashtable is next
      // Database connection parameters
          
          static Connection connection;
-         static String url = "jdbc:mysql://localhost:3306/seniorproject_test";
-         static String username = "shiftmate";
-         static String password = "shift_testpass1";
+         static String url = "jdbc:mysql://dcm.uhcl.edu/sens24g2";
+         static String username = "sens24g2";
+         static String password = "Sce9902292!!";
  
      public static void test(){
              
