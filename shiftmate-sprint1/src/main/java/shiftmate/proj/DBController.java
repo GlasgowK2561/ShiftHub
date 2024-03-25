@@ -17,6 +17,7 @@ returning queried data to a hashtable is next
     static String username = "sens24g2";
     static String password = "Sce9902292!!";
  
+    //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
     public static LinkedList<Hashtable<String,String>> test(String query){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
         
@@ -42,17 +43,17 @@ returning queried data to a hashtable is next
                         while(rs.next()){
                             Hashtable<String, String> currentRowMap = new Hashtable<>();
                         
-                            ResultSetMetaData rsmd = rs.getMetaData();
+                            ResultSetMetaData rsmd = rs.getMetaData(); //gets column name
                             int columnCount = rsmd.getColumnCount();
                             for (int i = 1; i <= columnCount; i++) {
                                 // retrieves column name and value.
-                                String key = rsmd.getColumnLabel(i);
-                                String value = rs.getString(rsmd.getColumnName(i));
+                                String key = rsmd.getColumnLabel(i); //key is column name
+                                String value = rs.getString(rsmd.getColumnName(i)); //value is column value
                                 if (value == null) {
                                     value = "null";
                                 }
                                 // builds map.
-                                currentRowMap .put(key, value);
+                                currentRowMap.put(key, value);
                             }
                             list.add(currentRowMap);
                         }
@@ -87,7 +88,15 @@ returning queried data to a hashtable is next
     public static void main (String[] args){
         LinkedList<Hashtable<String,String>> resultlist = test("SHOW TABLES");
         System.out.println(resultlist);
-         
+
+        resultlist = test("SELECT * FROM employeeinfo");//valid query
+        System.out.println(resultlist);
+
+        resultlist = test("SELECT * FROM employeeinf");//invalid query
+        System.out.println(resultlist);
+        
+        resultlist = test("SELECT 1 WHERE false"); //empty result set test
+        System.out.println(resultlist);
     }
  }
  
