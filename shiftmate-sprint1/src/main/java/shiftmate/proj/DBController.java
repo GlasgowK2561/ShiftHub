@@ -89,22 +89,21 @@ returning queried data to a hashtable is next
         return getQuery("SELECT * FROM employeeinfo");
     }
 
+    public static LinkedList<Hashtable<String,String>> getDepartmentNamesandIDs(){
+        return getQuery("SELECT depName, depID FROM departments");
+    } 
+
+    public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int deptID){
+        return getQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE deptID = " + deptID);
+    } 
 
     public static void main (String[] args){
         LinkedList<Hashtable<String,String>> resultlist = getQuery("SHOW TABLES");
         System.out.println(resultlist);
 
-        resultlist = getQuery("SELECT * FROM employeeinfo");//valid query
-        System.out.println(resultlist);
-
-        resultlist = getQuery("SELECT * FROM employeeinf");//invalid query
-        System.out.println(resultlist);
-        
-        resultlist = getQuery("SELECT 1 WHERE false"); //empty result set test
-        System.out.println(resultlist);
-
-        resultlist = getEmployeeInfo();
-        System.out.println(resultlist);
+        System.out.println(getEmployeeInfo());
+        System.out.println(getDepartmentNamesandIDs());
+        System.out.println(getDepartmentEmployees(2));
     }
  }
  
