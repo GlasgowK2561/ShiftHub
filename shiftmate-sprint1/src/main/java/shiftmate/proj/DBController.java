@@ -18,7 +18,7 @@ returning queried data to a hashtable is next
     static String password = "Sce9902292!!";
  
     //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
-    public static LinkedList<Hashtable<String,String>> getQuery(String query){
+    static LinkedList<Hashtable<String,String>> getQuery(String query){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
         
         try {
@@ -84,7 +84,12 @@ returning queried data to a hashtable is next
         }
         return list;
     } //end of class
-     
+    
+    public static LinkedList<Hashtable<String,String>> getEmployeeInfo(){
+        return getQuery("SELECT * FROM employeeinfo");
+    }
+
+
     public static void main (String[] args){
         LinkedList<Hashtable<String,String>> resultlist = getQuery("SHOW TABLES");
         System.out.println(resultlist);
@@ -96,6 +101,9 @@ returning queried data to a hashtable is next
         System.out.println(resultlist);
         
         resultlist = getQuery("SELECT 1 WHERE false"); //empty result set test
+        System.out.println(resultlist);
+
+        resultlist = getEmployeeInfo();
         System.out.println(resultlist);
     }
  }
