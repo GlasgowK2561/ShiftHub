@@ -1,6 +1,6 @@
 package shiftmate.proj;
 
-public class Department 
+public class Departments 
 {
 
     private int depID;
@@ -8,7 +8,7 @@ public class Department
     private String depManager;
 
     
-public Department(int depID, String depName, String depManager)
+public Departments(int depID, String depName, String depManager)
 {
     this.depID = depID;
     this.depName = depName;

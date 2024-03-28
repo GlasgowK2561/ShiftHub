@@ -87,8 +87,7 @@ returning queried data to a hashtable is next
 
     static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, String param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
-        
-        
+
         try {
             // Establishing a connection to the database
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -96,11 +95,8 @@ returning queried data to a hashtable is next
             //connection.setAutoCommit(false);
             System.out.println("Connected to the database.\n\n");
             try {
-                Statement stmt = connection.createStatement() ;
-                try {
-                    PreparedStatement prepstmt = connection.prepareStatement(query);
-                    //String query = "SHOW TABLES" ; //replace with query
-                    
+                PreparedStatement prepstmt = connection.prepareStatement(query);
+                try {                   
                     prepstmt.setString(1, param);
                     ResultSet rs = prepstmt.executeQuery() ;
                     try {
@@ -131,7 +127,7 @@ returning queried data to a hashtable is next
                     
 
                 } finally {
-                    try { stmt.close(); } 
+                    try { prepstmt.close(); } 
                     catch (Throwable ignore) { 
                         // Propagate the original exception instead of this one that you may want just logged  
                     }
