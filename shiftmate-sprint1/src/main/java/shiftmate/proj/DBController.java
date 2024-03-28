@@ -87,8 +87,7 @@ returning queried data to a hashtable is next
 
     static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, String param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
-        
-        
+
         try {
             // Establishing a connection to the database
             Connection connection = DriverManager.getConnection(url, username, password);
