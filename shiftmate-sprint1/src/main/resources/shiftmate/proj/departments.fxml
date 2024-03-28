@@ -104,9 +104,9 @@
             </Label>
             <TableView layoutX="18.0" layoutY="163.0" prefHeight="320.0" prefWidth="993.0">
               <columns>
-                <TableColumn prefWidth="333.59998512268066" text="depID" />
-                <TableColumn prefWidth="320.0000305175781" text="depName" />
-                  <TableColumn prefWidth="340.800048828125" text="depManager" />
+                <TableColumn fx:id="depIDcolumn" prefWidth="333.59998512268066" text="depID" />
+                <TableColumn fx:id="depNamecolumn" prefWidth="320.0000305175781" text="depName" />
+                  <TableColumn fx:id="depManagercolumn" prefWidth="340.800048828125" text="depManager" />
               </columns>
             </TableView>
             <Label layoutX="18.0" layoutY="530.0" text="depID" />

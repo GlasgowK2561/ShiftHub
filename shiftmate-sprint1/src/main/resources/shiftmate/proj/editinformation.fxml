@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditInformationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditInformationController">
    <left>
       <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
@@ -101,9 +101,9 @@
                   <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="154.39990234375" text="Contact Phone" />
               </columns>
             </TableView>
-            <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />
-            <Button layoutX="910.0" layoutY="590.0" mnemonicParsing="false" text="Edit" />
-            <Button layoutX="960.0" layoutY="590.0" mnemonicParsing="false" text="Delete" />
+            <Button fx:id="addEmployeeOnAction" layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />
+            <Button fx:id="editEmployeeOnAction" layoutX="910.0" layoutY="590.0" mnemonicParsing="false" text="Edit" />
+            <Button fx:id="deleteEmployeeOnAction" layoutX="960.0" layoutY="590.0" mnemonicParsing="false" text="Delete" />
             <Label layoutX="44.0" layoutY="41.0" prefHeight="17.0" prefWidth="172.0" text="Edit Information">
                <font>
                   <Font size="24.0" />
@@ -127,6 +127,7 @@
             <TextField layoutX="630.0" layoutY="590.0" />
             <TextField layoutX="370.0" layoutY="690.0" />
             <TextField layoutX="630.0" layoutY="690.0" />
+            <Button fx:id="saveEmployeeOnAction" layoutX="810.0" layoutY="590.0" mnemonicParsing="false" text="Save" />
          </children></AnchorPane>
    </center>
 </BorderPane>
