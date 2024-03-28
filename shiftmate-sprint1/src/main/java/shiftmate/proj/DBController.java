@@ -150,7 +150,7 @@ returning queried data to a hashtable is next
         return list;
     } //end of class
  
-    public static LinkedList<Hashtable<String,String>> getEmployeeInfo(){
+    public static LinkedList<Hashtable<String,String>> getEmployees(){
         return getQuery("SELECT * FROM employeeinfo");
     }
 
@@ -166,7 +166,7 @@ returning queried data to a hashtable is next
         LinkedList<Hashtable<String,String>> resultlist = getQuery("SHOW TABLES");
         System.out.println(resultlist);
 
-        System.out.println(getEmployeeInfo());
+        System.out.println(getEmployees());
         System.out.println(getDepartmentNamesandIDs());
         System.out.println(getDepartmentEmployees(2));
 
