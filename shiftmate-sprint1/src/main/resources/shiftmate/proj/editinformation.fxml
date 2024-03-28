@@ -90,15 +90,15 @@
          <children>
             <TableView fx:id="employeeTableView" editable="true" layoutX="7.0" layoutY="105.0" prefHeight="462.0" prefWidth="1015.0">
               <columns>
-                <TableColumn fx:id="employeeIDcolumn" prefWidth="81.0" text="Employee ID" />
-                <TableColumn fx:id="deptIDcolumn" prefWidth="96.0" text="DepartmentID" />
-                  <TableColumn fx:id="fNamecolumn" prefWidth="99.0" text="First Name" />
+                <TableColumn fx:id="employeeIDcolumn" prefWidth="76.80001974105835" text="Employee ID" />
+                <TableColumn fx:id="deptIDcolumn" prefWidth="95.99999237060547" text="Department ID" />
+                  <TableColumn fx:id="fNamecolumn" prefWidth="104.79998779296875" text="First Name" />
                   <TableColumn fx:id="lNamecolumn" prefWidth="99.0" text="Last Name" />
-                  <TableColumn fx:id="emailcolumn" minWidth="4.0" prefWidth="103.0" text="Email" />
-                  <TableColumn fx:id="phonecolumn" prefWidth="90.0" text="Phone" />
-                  <TableColumn fx:id="startDatecolumn" minWidth="0.0" prefWidth="119.0" text="Start Date" />
-                  <TableColumn fx:id="contactcolumn" prefWidth="146.0" text="Contact" />
-                  <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="181.0" text="Contact Phone" />
+                  <TableColumn fx:id="emailcolumn" minWidth="4.0" prefWidth="128.79998779296875" text="Email" />
+                  <TableColumn fx:id="phonecolumn" prefWidth="104.80007934570312" text="Phone" />
+                  <TableColumn fx:id="startDatecolumn" minWidth="0.0" prefWidth="105.5999755859375" text="Start Date" />
+                  <TableColumn fx:id="contactcolumn" prefWidth="148.80010986328125" text="Contact" />
+                  <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="154.39990234375" text="Contact Phone" />
               </columns>
             </TableView>
             <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />
