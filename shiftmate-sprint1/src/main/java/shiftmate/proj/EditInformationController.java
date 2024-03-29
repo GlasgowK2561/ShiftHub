@@ -52,7 +52,7 @@ public class EditInformationController implements Initializable
 
     public void EmployeeInfoTable() 
     {
-        LinkedList<Hashtable<String,String>> employeeInformation = DBController.getEmployeeInfo();  //gets employee data from DBController
+        LinkedList<Hashtable<String,String>> employeeInformation = DBController.getEmployees();  //gets employee data from DBController
 
         ObservableList<EmployeeInfo> employeeList = FXCollections.observableArrayList();    //list to hold employee objects
 
