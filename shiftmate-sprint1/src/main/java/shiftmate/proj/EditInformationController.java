@@ -61,7 +61,7 @@ public class EditInformationController implements Initializable
             Hashtable<String,String> data = employeeInformation.get(i);
 
             int employeeID = Integer.parseInt(data.get("employeeID"));      
-            int deptID = Integer.parseInt(data.get("deptID"));
+            int depID = Integer.parseInt(data.get("depID"));
             String fName = data.get("fName");
             String lName = data.get("lName");                                  //extracts attributes of the employees
             String email = data.get("email");
@@ -71,7 +71,7 @@ public class EditInformationController implements Initializable
             String contactPhone = data.get("contactPhone");                                         
             
             //creates empinfo object to add to list
-            employeeList.add(new EmployeeInfo(employeeID, deptID, fName, lName, email,
+            employeeList.add(new EmployeeInfo(employeeID, depID, fName, lName, email,
              phone, startDate, contact, contactPhone)); 
 
         }
@@ -80,7 +80,7 @@ public class EditInformationController implements Initializable
     employeeTableView.setItems(employeeList);
 
     employeeIDcolumn.setCellValueFactory(new PropertyValueFactory<>("employeeID"));
-    deptIDcolumn.setCellValueFactory(new PropertyValueFactory<>("deptID"));
+    deptIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
     fNamecolumn.setCellValueFactory(new PropertyValueFactory<>("fName"));
     lNamecolumn.setCellValueFactory(new PropertyValueFactory<>("lName"));
     emailcolumn.setCellValueFactory(new PropertyValueFactory<>("email"));
