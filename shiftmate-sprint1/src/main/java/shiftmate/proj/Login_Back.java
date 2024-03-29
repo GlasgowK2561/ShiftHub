@@ -9,9 +9,9 @@ import java.sql.SQLException;
 public class Login_Back{
     public static boolean login(String username, String password) {
         // Database connection parameters
-        String url = "jdbc:mysql://localhost:3306/seniorproject_test";
-        String dbUsername = "shiftmate";
-        String dbPassword = "shift_testpass1";
+        String url = "jdbc:mysql://dcm.uhcl.edu/sens24g2";
+        String dbUsername = "sens24g2";
+        String dbPassword = "Sce9902292!!";
 
         // SQL query to check if the provided username and password match
         String query = "SELECT * FROM login WHERE username = ? AND pass = ?";
