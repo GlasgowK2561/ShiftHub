@@ -85,19 +85,22 @@ returning queried data to a hashtable is next
         return list;
     } //end of class
 
-    static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, String param){
+    static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
 
         try {
             // Establishing a connection to the database
             Connection connection = DriverManager.getConnection(url, username, password);
             // If the connection is successful
-            //connection.setAutoCommit(false);
             System.out.println("Connected to the database.\n\n");
             try {
                 PreparedStatement prepstmt = connection.prepareStatement(query);
-                try {                   
-                    prepstmt.setString(1, param);
+                try {
+                    //fill in each parameter
+                    for(int i = 1; i<= numParams; i++){
+                        prepstmt.setString(numParams, param[i-1]);
+                    }                   
+                    
                     ResultSet rs = prepstmt.executeQuery() ;
                     try {
                         
@@ -165,8 +168,8 @@ returning queried data to a hashtable is next
         System.out.println(getEmployeeInfo());
         System.out.println(getDepartmentNamesandIDs());
         System.out.println(getDepartmentEmployees(2));
-
-        System.out.println(getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE deptID = ?", "2"));
+        String paramtest[] = new String[] {"2"};
+        System.out.println(getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE deptID = ?",1, paramtest));
     }
  }
  
