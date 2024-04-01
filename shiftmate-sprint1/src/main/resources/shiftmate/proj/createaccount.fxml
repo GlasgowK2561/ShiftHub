@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -11,8 +10,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.LoginController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.LoginController">
     <left>
         <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #00FFEF;" BorderPane.alignment="CENTER">
             <children>
@@ -82,8 +80,8 @@
             <TextField layoutX="112.0" layoutY="160.0" />
             <TextField layoutX="112.0" layoutY="210.0" />
             <TextField layoutX="112.0" layoutY="260.0" />
-            <Button layoutX="138.0" layoutY="349.0" mnemonicParsing="false" style="-fx-background-color: #00FFEF;" text="Create Account" />
             <PasswordField layoutX="112.0" layoutY="310.0" />
+            <Button layoutX="92.0" layoutY="355.0" mnemonicParsing="false" style="-fx-background-color: #00FFEF;" text="Create Account" />
             </children>
         </AnchorPane>
     </center>
