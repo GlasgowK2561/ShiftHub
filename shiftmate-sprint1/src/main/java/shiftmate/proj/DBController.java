@@ -149,9 +149,64 @@ returning queried data to a hashtable is next
         return list;
     } //end of class
  
+    /* 
+    public static LinkedList<Hashtable<String,String>> addEmployee(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> getEmployeeInformation(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> editEmployeeInformation(){
+        return getParameterizedQuery();
+    }
+    */
+    
+
     public static LinkedList<Hashtable<String,String>> getEmployees(){
         return getQuery("SELECT * FROM employeeinfo");
     }
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> deleteEmployee(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> addDepartment(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> getDepartmentInformation(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> editDepartmentInformation(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> getDepartments(){
+        return getParameterizedQuery();
+    }
+    */
+
+    /* 
+    public static LinkedList<Hashtable<String,String>> deleteDepartments(){
+        return getParameterizedQuery();
+    }
+    */
 
     public static LinkedList<Hashtable<String,String>> getDepartmentNamesandIDs(){
         return getQuery("SELECT depName, depID FROM departments");
