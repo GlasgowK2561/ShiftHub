@@ -5,7 +5,7 @@ returning queried data to a hashtable is next
 
  package shiftmate.proj;
 
- import java.sql.Connection;
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
