@@ -3,7 +3,7 @@ package shiftmate.proj;
 public class EmployeeInfo 
 {
     private int employeeID;
-    private int deptID;
+    private int depID;
     private String fName;
     private String lName;
     private String email;
@@ -13,13 +13,13 @@ public class EmployeeInfo
     private String contactPhone;
 
 
-public EmployeeInfo(int employeeID , int deptID, String fname, String lName, String email, 
+public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
 String phone, String startDate, String contact, String contactPhone)
 {
 
     this.employeeID = employeeID;
      
-    this.deptID = deptID;
+    this.depID = depID;
     this.fName = fname;
     this.lName = lName;
     this.email = email;
@@ -47,14 +47,14 @@ public void setEmployeeID(int employeeID)
 
 
 
-public int getDeptID()    
+public int getDepID()    
 {
-    return deptID;
+    return depID;
 }
 
-public void setDeptID(int deptID)     
+public void setDepID(int depID)     
 {
-    this.deptID = deptID;
+    this.depID = depID;
 }
 
 
