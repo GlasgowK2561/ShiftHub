@@ -7,7 +7,6 @@ returning queried data to a hashtable is next
 
  import java.sql.*;
  import java.util.*;
- import java.util.Hashtable;
  
  public class DBController {
     // Database connection parameters
@@ -150,37 +149,37 @@ returning queried data to a hashtable is next
     } //end of class
  
     /* 
-    public static LinkedList<Hashtable<String,String>> addEmployee(){
-        return getParameterizedQuery();
+    public static Boolean addEmployee(){
+        
     }
     */
 
-    /* 
-    public static LinkedList<Hashtable<String,String>> getEmployeeInformation(){
-        return getParameterizedQuery();
+    public static LinkedList<Hashtable<String,String>> getEmployeeInformation(int employeeID){
+        String params[] = {Integer.toString(employeeID)};
+        return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
     }
-    */
-
+   
     /* 
-    public static LinkedList<Hashtable<String,String>> editEmployeeInformation(){
-        return getParameterizedQuery();
+    public static Boolean editEmployeeInformation(){
+        
     }
     */
     
 
     public static LinkedList<Hashtable<String,String>> getEmployees(){
-        return getQuery("SELECT * FROM employeeinfo");
+        String params[] = {};
+        return getParameterizedQuery("SELECT e.*, d.depName FROM employeeinfo e INNER JOIN departments d ON e.deptid = d.depid", 0, params);
     }
 
     /* 
-    public static LinkedList<Hashtable<String,String>> deleteEmployee(){
-        return getParameterizedQuery();
+    public static Boolean deleteEmployee(){
+        
     }
     */
 
     /* 
-    public static LinkedList<Hashtable<String,String>> addDepartment(){
-        return getParameterizedQuery();
+    public static Boolean addDepartment(){
+        
     }
     */
 
@@ -191,8 +190,8 @@ returning queried data to a hashtable is next
     */
 
     /* 
-    public static LinkedList<Hashtable<String,String>> editDepartmentInformation(){
-        return getParameterizedQuery();
+    public static Boolean editDepartmentInformation(){
+        
     }
     */
 
@@ -203,8 +202,8 @@ returning queried data to a hashtable is next
     */
 
     /* 
-    public static LinkedList<Hashtable<String,String>> deleteDepartments(){
-        return getParameterizedQuery();
+    public static Boolean deleteDepartments(){
+        
     }
     */
 
