@@ -128,8 +128,6 @@ import java.util.LinkedList;
                         // Propagate the original exception instead of this one that you may want just logged  
                         }
                     }
-                    
-
                 } finally {
                     try { prepstmt.close(); } 
                     catch (Throwable ignore) { 
@@ -149,62 +147,199 @@ import java.util.LinkedList;
         }
     } //end of class
 
-    /* 
-    public static Boolean addEmployee(){
-        
+    public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int deptID, String contact, String contactPhone) {
+        String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, deptID, contact, contactPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setString(1, fname);
+                prepstmt.setString(2, lname);
+                prepstmt.setString(3, phone);
+                prepstmt.setString(4, email);
+                prepstmt.setString(5, startDate);
+                prepstmt.setInt(6, deptID);
+                prepstmt.setString(7, contact);
+                prepstmt.setString(8, contactPhone);
+    
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Employee added successfully.");
+                    return true;
+                } else {
+                    System.out.println("Failed to add employee.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-    */
-
+    
     public static LinkedList<Hashtable<String,String>> getEmployeeInformation(int employeeID){
         String params[] = {Integer.toString(employeeID)};
         return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
     }
    
-    /* 
-    public static Boolean editEmployeeInformation(){
-        
-    }
-    */
+    public static boolean editEmployeeInformation(int employeeID, String fname, String lname, int deptID, String phone, String email, String contact, String contactPhone) {
+        String query = "UPDATE employeeinfo SET fname = ?, lname = ?, deptID = ?, phone = ?, email = ?, contact = ?, contactPhone = ? WHERE employee_id = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setString(1, fname);
+                prepstmt.setString(2, lname);
+                prepstmt.setInt(3, deptID);
+                prepstmt.setString(4, phone);
+                prepstmt.setString(5, email);
+                prepstmt.setString(6, contact);
+                prepstmt.setString(7, contactPhone);
+                prepstmt.setInt(8, employeeID);
     
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Employee information updated successfully.");
+                    return true;
+                } else {
+                    System.out.println("Employee with ID " + employeeID + " not found.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }    
 
     public static LinkedList<Hashtable<String,String>> getEmployees(){
         String params[] = {};
         return getParameterizedQuery("SELECT e.*, d.depName FROM employeeinfo e INNER JOIN departments d ON e.deptid = d.depid", 0, params);
     }
 
-    /* 
-    public static Boolean deleteEmployee(){
-        
+    public static boolean deleteEmployee(int employeeID) {
+        String query = "DELETE FROM employeeinfo WHERE employeeID = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setInt(1, employeeID);
+    
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Employee deleted successfully.");
+                    return true;
+                } else {
+                    System.out.println("Employee with ID " + employeeID + " not found.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-    */
+    
 
-    /* 
-    public static Boolean addDepartment(){
-        
+    public static boolean addDepartment(String depName, String depManager) {
+        String query = "INSERT INTO departments (depName, depManager) VALUES (?, ?)";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setString(1, depName);
+                prepstmt.setString(2, depManager);
+    
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Department added successfully.");
+                    // Should we call createDefaultDepartmentShifts?
+                    return true;
+                } else {
+                    System.out.println("Failed to add department.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
-    */
+
+    public static boolean createDefaultDepartmentShifts(String depName) {
+        String tableName = "DefaultShifts_" + depName.replace(" ", "_"); // Replace spaces with underscores
+        String query = "CREATE TABLE " + tableName + " ( " +
+                        "ShiftID INT PRIMARY KEY, " +
+                        "DepID INT, " +
+                        "DayOfWeek VARCHAR(255), " +
+                        "StartTime TIME, " +
+                        "EndTime TIME, " +
+                        "FOREIGN KEY (DepID) REFERENCES Departments(depID) " +
+                        ")";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (Statement stmt = connection.createStatement()) {
+                stmt.executeUpdate(query);
+                System.out.println("Table " + tableName + " created successfully.");
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+        
 
     public static LinkedList<Hashtable<String,String>> getDepartmentInformation(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT d.* FROM departments as d WHERE depid = ?;", 1, params);
     }
 
-    /* 
-    public static Boolean editDepartmentInformation(){
-        
-    }
-    */
+    public static boolean editDepartmentInformation(int depID, String depName, String depManager) {
+        String query = "UPDATE departments SET depName = ?, depManager = ? WHERE depid = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setString(1, depName);
+                prepstmt.setString(2, depManager);
+                prepstmt.setInt(3, depID);
+    
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Department information updated successfully.");
+                    return true;
+                } else {
+                    System.out.println("Department with ID " + depID + " not found.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }    
 
     public static LinkedList<Hashtable<String,String>> getDepartments(){
         String params[] = {};
         return getParameterizedQuery("SELECT d.* FROM departments d;", 0, params);
     }
 
-    /* 
-    public static Boolean deleteDepartments(){
-        
-    }
-    */
+    public static boolean deleteDepartment(int depID) {
+        String query = "DELETE FROM departments WHERE depID = ?";
+        try {
+            Connection connection = DriverManager.getConnection(url, username, password);
+            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                prepstmt.setInt(1, depID);
+                int rowsAffected = prepstmt.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Department deleted successfully.");
+                    return true;
+                } else {
+                    System.out.println("Department with ID " + depID + " not found.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }    
 
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
         String params[] = {Integer.toString(depID)};
@@ -213,8 +348,5 @@ import java.util.LinkedList;
 
     public static void main (String[] args){
         System.out.println(getDepartmentEmployees(1));
-
-        
     }
  }
- 
