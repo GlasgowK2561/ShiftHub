@@ -87,71 +87,13 @@ import java.util.LinkedList;
         }
         return list;
     } //end of class
- 
-    static Boolean setParameterizedQuery(String query){     
-        try {
-            // Establishing a connection to the database
-            Connection connection = DriverManager.getConnection(url, username, password);
-            // If the connection is successful
-            System.out.println("Connected to the database.\n\n");
-            try {
-                PreparedStatement prepstmt = connection.prepareStatement(query);
-                try {
-                    //fill in each parameter
-                    for(int i = 1; i<= numParams; i++){
-                        prepstmt.setString(numParams, param[i-1]);
-                    }                   
-                    
-                    ResultSet rs = prepstmt.executeQuery() ;
-                    try {
-                        
-                        while(rs.next()){
-                            Hashtable<String, String> currentRowMap = new Hashtable<>();
-                        
-                            ResultSetMetaData rsmd = rs.getMetaData(); //gets column name
-                            int columnCount = rsmd.getColumnCount();
-                            for (int i = 1; i <= columnCount; i++) {
-                                // retrieves column name and value.
-                                String key = rsmd.getColumnLabel(i); //key is column name
-                                String value = rs.getString(rsmd.getColumnName(i)); //value is column value
-                                if (value == null) {
-                                    value = "null";
-                                }
-                                // builds map.
-                                currentRowMap.put(key, value);
-                            }
-                            list.add(currentRowMap);
-                        }
-                    } finally {
-                        try { rs.close(); } 
-                        catch (Throwable ignore) { 
-                        // Propagate the original exception instead of this one that you may want just logged  
-                        }
-                    }
-                } finally {
-                    try { prepstmt.close(); } 
-                    catch (Throwable ignore) { 
-                        // Propagate the original exception instead of this one that you may want just logged  
-                    }
-                }
-            } finally {
-                //It's important to close the connection when you are done with it
-                try { connection.close(); } 
-                catch (Throwable ignore) { 
-                    // Propagate the original exception instead of this one that you may want just logged  
-                }
-            }
-        } catch (SQLException e) {   
-            // Handle any SQL exceptions
-            e.printStackTrace();
-        }
-    } //end of class
 
     public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int deptID, String contact, String contactPhone) {
         String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, deptID, contact, contactPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setString(1, fname);
                 prepstmt.setString(2, lname);
                 prepstmt.setString(3, phone);
@@ -162,6 +104,7 @@ import java.util.LinkedList;
                 prepstmt.setString(8, contactPhone);
     
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Employee added successfully.");
                     return true;
@@ -171,6 +114,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -186,6 +133,7 @@ import java.util.LinkedList;
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setString(1, fname);
                 prepstmt.setString(2, lname);
                 prepstmt.setInt(3, deptID);
@@ -196,6 +144,7 @@ import java.util.LinkedList;
                 prepstmt.setInt(8, employeeID);
     
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Employee information updated successfully.");
                     return true;
@@ -205,6 +154,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -220,9 +173,11 @@ import java.util.LinkedList;
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setInt(1, employeeID);
     
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Employee deleted successfully.");
                     return true;
@@ -232,6 +187,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -243,10 +202,12 @@ import java.util.LinkedList;
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setString(1, depName);
                 prepstmt.setString(2, depManager);
     
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Department added successfully.");
                     // Should we call createDefaultDepartmentShifts?
@@ -257,6 +218,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -280,6 +245,10 @@ import java.util.LinkedList;
                 return true;
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -296,11 +265,13 @@ import java.util.LinkedList;
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setString(1, depName);
                 prepstmt.setString(2, depManager);
                 prepstmt.setInt(3, depID);
     
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Department information updated successfully.");
                     return true;
@@ -310,6 +281,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -325,8 +300,11 @@ import java.util.LinkedList;
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
+                connection.setAutoCommit(false);
                 prepstmt.setInt(1, depID);
+
                 int rowsAffected = prepstmt.executeUpdate();
+                connection.commit();
                 if (rowsAffected > 0) {
                     System.out.println("Department deleted successfully.");
                     return true;
@@ -336,6 +314,10 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
+            try{
+                System.err.println("Transaction is being rolled back");
+                connection.rollback();
+            } catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
