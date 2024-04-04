@@ -1,10 +1,4 @@
-/*
-use test function as template to copy paste
-returning queried data to a hashtable is next
- */
-
- package shiftmate.proj;
-
+package shiftmate.proj;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -87,7 +81,7 @@ import java.util.LinkedList;
         }
         return list;
     } //end of class
-
+    
     public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int deptID, String contact, String contactPhone) {
         String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, deptID, contact, contactPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try {
@@ -195,7 +189,6 @@ import java.util.LinkedList;
             return false;
         }
     }
-    
 
     public static boolean addDepartment(String depName, String depManager) {
         String query = "INSERT INTO departments (depName, depManager) VALUES (?, ?)";
