@@ -5,8 +5,15 @@ returning queried data to a hashtable is next
 
  package shiftmate.proj;
 
- import java.sql.*;
- import java.util.*;
+ import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Hashtable;
+import java.util.LinkedList;
  
  public class DBController {
     // Database connection parameters
@@ -17,73 +24,6 @@ returning queried data to a hashtable is next
     static String password = "Sce9902292!!";
  
     //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
-    static LinkedList<Hashtable<String,String>> getQuery(String query){
-        LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
-        
-        try {
-            // Establishing a connection to the database
-            Connection connection = DriverManager.getConnection(url, username, password);
-            // If the connection is successful
-            System.out.println("Connected to the database.\n\n");
-            try {
-                Statement stmt = connection.createStatement() ;
-                try {
-                    //String query = "SHOW TABLES" ; //replace with query
-                    ResultSet rs = stmt.executeQuery(query) ;
-                    try {
-                        /*while(rs.next()){ //iterates through returned data
-                            int numColumns = rs.getMetaData().getColumnCount();
-                            for(int i = 1; i <= numColumns; i++){
-                                System.out.println(rs.getObject(i));
-                             
-                            }
-                        } 
-                        */
-                        while(rs.next()){
-                            Hashtable<String, String> currentRowMap = new Hashtable<>();
-                        
-                            ResultSetMetaData rsmd = rs.getMetaData(); //gets column name
-                            int columnCount = rsmd.getColumnCount();
-                            for (int i = 1; i <= columnCount; i++) {
-                                // retrieves column name and value.
-                                String key = rsmd.getColumnLabel(i); //key is column name
-                                String value = rs.getString(rsmd.getColumnName(i)); //value is column value
-                                if (value == null) {
-                                    value = "null";
-                                }
-                                // builds map.
-                                currentRowMap.put(key, value);
-                            }
-                            list.add(currentRowMap);
-                        }
-                    } finally {
-                        try { rs.close(); } 
-                        catch (Throwable ignore) { 
-                        // Propagate the original exception instead of this one that you may want just logged  
-                        }
-                    }
-                    
-
-                } finally {
-                    try { stmt.close(); } 
-                    catch (Throwable ignore) { 
-                        // Propagate the original exception instead of this one that you may want just logged  
-                    }
-                }
-            } finally {
-                //It's important to close the connection when you are done with it
-                try { connection.close(); } 
-                catch (Throwable ignore) { 
-                    // Propagate the original exception instead of this one that you may want just logged  
-                }
-            }
-        } catch (SQLException e) {   
-            // Handle any SQL exceptions
-            e.printStackTrace();
-        }
-        return list;
-    } //end of class
-
     static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
 
@@ -183,11 +123,10 @@ returning queried data to a hashtable is next
     }
     */
 
-    /* 
-    public static LinkedList<Hashtable<String,String>> getDepartmentInformation(){
-        return getParameterizedQuery();
+    public static LinkedList<Hashtable<String,String>> getDepartmentInformation(int depID){
+        String params[] = {Integer.toString(depID)};
+        return getParameterizedQuery("SELECT d.* FROM departments as d WHERE depid = ?;", 1, params);
     }
-    */
 
     /* 
     public static Boolean editDepartmentInformation(){
@@ -195,21 +134,16 @@ returning queried data to a hashtable is next
     }
     */
 
-    /* 
     public static LinkedList<Hashtable<String,String>> getDepartments(){
-        return getParameterizedQuery();
+        String params[] = {};
+        return getParameterizedQuery("SELECT d.* FROM departments d;", 0, params);
     }
-    */
 
     /* 
     public static Boolean deleteDepartments(){
         
     }
     */
-
-    public static LinkedList<Hashtable<String,String>> getDepartmentNamesandIDs(){
-        return getQuery("SELECT depName, depID FROM departments");
-    } 
 
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
         String params[] = {Integer.toString(depID)};
