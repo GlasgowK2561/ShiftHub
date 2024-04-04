@@ -157,19 +157,15 @@ returning queried data to a hashtable is next
         return getQuery("SELECT depName, depID FROM departments");
     } 
 
-    public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int deptID){
-        return getQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE deptID = " + deptID);
+    public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
+        String params[] = {Integer.toString(depID)};
+        return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
     } 
 
     public static void main (String[] args){
-        LinkedList<Hashtable<String,String>> resultlist = getQuery("SHOW TABLES");
-        System.out.println(resultlist);
+        System.out.println(getDepartmentEmployees(1));
 
-        System.out.println(getEmployees());
-        System.out.println(getDepartmentNamesandIDs());
-        System.out.println(getDepartmentEmployees(2));
-        String paramtest[] = new String[] {"2"};
-        System.out.println(getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE deptID = ?",1, paramtest));
+        
     }
  }
  
