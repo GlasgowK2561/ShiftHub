@@ -82,8 +82,8 @@ import java.util.LinkedList;
         return list;
     } //end of class
     
-    public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int deptID, String contact, String contactPhone) {
-        String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, deptID, contact, contactPhone) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+    public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int depID, String contact, String contactPhone,int employeeID) {
+        String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, depID, contact, contactPhone,employeeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
@@ -93,14 +93,16 @@ import java.util.LinkedList;
                 prepstmt.setString(3, phone);
                 prepstmt.setString(4, email);
                 prepstmt.setString(5, startDate);
-                prepstmt.setInt(6, deptID);
+                prepstmt.setInt(6, depID);
                 prepstmt.setString(7, contact);
                 prepstmt.setString(8, contactPhone);
+                prepstmt.setInt(9, employeeID);
     
                 int rowsAffected = prepstmt.executeUpdate();
-                connection.commit();
+                
                 if (rowsAffected > 0) {
                     System.out.println("Employee added successfully.");
+                    connection.commit();
                     return true;
                 } else {
                     System.out.println("Failed to add employee.");
@@ -109,9 +111,10 @@ import java.util.LinkedList;
             }
         } catch (SQLException e) {
             try{
+                
                 System.err.println("Transaction is being rolled back");
                 connection.rollback();
-            } catch (SQLException excep) {}
+             }catch (SQLException excep) {}
             e.printStackTrace();
             return false;
         }
@@ -122,25 +125,27 @@ import java.util.LinkedList;
         return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
     }
    
-    public static boolean editEmployeeInformation(int employeeID, String fname, String lname, int deptID, String phone, String email, String contact, String contactPhone) {
-        String query = "UPDATE employeeinfo SET fname = ?, lname = ?, deptID = ?, phone = ?, email = ?, contact = ?, contactPhone = ? WHERE employee_id = ?";
+    public static boolean editEmployeeInformation(int employeeID, String fname, String lname, int depID, String phone, String email, String contact, String contactPhone,String startDate) {
+        String query = "UPDATE employeeinfo SET fname = ?, lname = ?, depID = ?, phone = ?, email = ?, contact = ?, contactPhone = ?, startDate = ? WHERE employeeid = ?";
         try {
             Connection connection = DriverManager.getConnection(url, username, password);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
                 prepstmt.setString(1, fname);
                 prepstmt.setString(2, lname);
-                prepstmt.setInt(3, deptID);
+                prepstmt.setInt(3, depID);
                 prepstmt.setString(4, phone);
                 prepstmt.setString(5, email);
                 prepstmt.setString(6, contact);
                 prepstmt.setString(7, contactPhone);
-                prepstmt.setInt(8, employeeID);
+                prepstmt.setString(8, startDate);
+                prepstmt.setInt(9, employeeID);
     
                 int rowsAffected = prepstmt.executeUpdate();
-                connection.commit();
+                
                 if (rowsAffected > 0) {
                     System.out.println("Employee information updated successfully.");
+                    connection.commit();
                     return true;
                 } else {
                     System.out.println("Employee with ID " + employeeID + " not found.");
@@ -149,6 +154,7 @@ import java.util.LinkedList;
             }
         } catch (SQLException e) {
             try{
+                
                 System.err.println("Transaction is being rolled back");
                 connection.rollback();
             } catch (SQLException excep) {}
@@ -171,9 +177,10 @@ import java.util.LinkedList;
                 prepstmt.setInt(1, employeeID);
     
                 int rowsAffected = prepstmt.executeUpdate();
-                connection.commit();
+                
                 if (rowsAffected > 0) {
                     System.out.println("Employee deleted successfully.");
+                    connection.commit();
                     return true;
                 } else {
                     System.out.println("Employee with ID " + employeeID + " not found.");

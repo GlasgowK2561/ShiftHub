@@ -53,7 +53,7 @@ public int getDepID()
     return depID;
 }
 
-public void setDeptID(int depID)     
+public void setDepID(int depID)     
 {
     this.depID = depID;
 }

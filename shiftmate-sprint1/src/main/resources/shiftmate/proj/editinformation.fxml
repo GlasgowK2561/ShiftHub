@@ -91,7 +91,7 @@
             <TableView fx:id="employeeTableView" editable="true" layoutX="7.0" layoutY="105.0" prefHeight="462.0" prefWidth="1015.0">
               <columns>
                 <TableColumn fx:id="employeeIDcolumn" prefWidth="75.0" text="Employee ID" />
-                <TableColumn fx:id="deptIDcolumn" prefWidth="56.0" text="DeptID" />
+                <TableColumn fx:id="depIDcolumn" prefWidth="56.0" text="DeptID" />
                   <TableColumn fx:id="depNamecolumn" prefWidth="117.0" text="Department Name" />
                   <TableColumn fx:id="fNamecolumn" prefWidth="88.0" text="First Name" />
                   <TableColumn fx:id="lNamecolumn" prefWidth="96.0" text="Last Name" />
@@ -102,9 +102,9 @@
                   <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="96.0" text="Contact Phone" />
               </columns>
             </TableView>
-            <Button fx:id="addEmployeeOnAction" layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />
-            <Button fx:id="editEmployeeOnAction" layoutX="910.0" layoutY="590.0" mnemonicParsing="false" text="Edit" />
-            <Button fx:id="deleteEmployeeOnAction" layoutX="960.0" layoutY="590.0" mnemonicParsing="false" text="Delete" />
+            <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" onAction="#addEmployeeOnAction" text="Add" />
+            <Button layoutX="910.0" layoutY="590.0" mnemonicParsing="false" onAction="#editEmployeeOnAction" text="Edit" />
+            <Button layoutX="960.0" layoutY="590.0" mnemonicParsing="false" onAction="#deleteEmployeeOnAction" text="Delete" />
             <Label layoutX="44.0" layoutY="41.0" prefHeight="17.0" prefWidth="172.0" text="Edit Information">
                <font>
                   <Font size="24.0" />
@@ -128,7 +128,7 @@
             <TextField fx:id="startDateTextField" layoutX="630.0" layoutY="590.0" />
             <TextField fx:id="phoneTextField" layoutX="370.0" layoutY="690.0" />
             <TextField fx:id="contactPhoneTextField" layoutX="630.0" layoutY="690.0" />
-            <Button fx:id="saveEmployeeOnAction" layoutX="810.0" layoutY="590.0" mnemonicParsing="false" text="Save" />
+            <Button layoutX="810.0" layoutY="590.0" mnemonicParsing="false" onAction="#saveEmployeeOnAction" text="Save" />
             <Label layoutX="20.0" layoutY="690.0" text="Dep Name" />
             <TextField fx:id="depNameTextField" layoutX="110.0" layoutY="690.0" />
          </children></AnchorPane>
