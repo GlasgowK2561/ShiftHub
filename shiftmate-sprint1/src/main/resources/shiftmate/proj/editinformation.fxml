@@ -112,23 +112,25 @@
             </Label>
             <Label layoutX="20.0" layoutY="590.0" text="EmployeeID" />
             <Label layoutX="20.0" layoutY="640.0" text="DepartmentID" />
-            <Label layoutX="20.0" layoutY="690.0" text="First Name" />
+            <Label layoutX="20.0" layoutY="740.0" text="First Name" />
             <Label layoutX="280.0" layoutY="590.0" text="Last Name" />
             <Label layoutX="280.0" layoutY="640.0" text="Email" />
             <Label layoutX="280.0" layoutY="690.0" text="Phone" />
             <Label layoutX="540.0" layoutY="590.0" text="Start Date" />
             <Label layoutX="540.0" layoutY="640.0" text="Contact" />
             <Label layoutX="540.0" layoutY="690.0" text="Contact Phone" />
-            <TextField layoutX="110.0" layoutY="590.0" />
-            <TextField layoutX="110.0" layoutY="640.0" />
-            <TextField layoutX="110.0" layoutY="690.0" />
-            <TextField layoutX="630.0" layoutY="640.0" />
-            <TextField layoutX="370.0" layoutY="640.0" />
-            <TextField layoutX="370.0" layoutY="590.0" />
-            <TextField layoutX="630.0" layoutY="590.0" />
-            <TextField layoutX="370.0" layoutY="690.0" />
-            <TextField layoutX="630.0" layoutY="690.0" />
+            <TextField fx:id="employeeIDTextField" layoutX="110.0" layoutY="590.0" />
+            <TextField fx:id="depIDTextField" layoutX="110.0" layoutY="640.0" />
+            <TextField fx:id="fNameTextField" layoutX="110.0" layoutY="740.0" />
+            <TextField fx:id="contactTextField" layoutX="630.0" layoutY="640.0" />
+            <TextField fx:id="emailTextField" layoutX="370.0" layoutY="640.0" />
+            <TextField fx:id="lNameTextField" layoutX="370.0" layoutY="590.0" />
+            <TextField fx:id="startDateTextField" layoutX="630.0" layoutY="590.0" />
+            <TextField fx:id="phoneTextField" layoutX="370.0" layoutY="690.0" />
+            <TextField fx:id="contactPhoneTextField" layoutX="630.0" layoutY="690.0" />
             <Button fx:id="saveEmployeeOnAction" layoutX="810.0" layoutY="590.0" mnemonicParsing="false" text="Save" />
+            <Label layoutX="20.0" layoutY="690.0" text="Dep Name" />
+            <TextField fx:id="depNameTextField" layoutX="110.0" layoutY="690.0" />
          </children></AnchorPane>
    </center>
 </BorderPane>

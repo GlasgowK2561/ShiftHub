@@ -39,7 +39,6 @@ public class StaffController implements Initializable
     private TableColumn<EmployeeInfo, String> departmentcolumn;
 
 
-
     public void StaffTable()
     {
         LinkedList<Hashtable<String,String>> staffInformation = DBController.getEmployees();
@@ -56,7 +55,12 @@ public class StaffController implements Initializable
             String lName = data.get("lName");
             String depName = data.get("depName");
 
-            staffList.add(new EmployeeInfo(0,0,fName,lName,null,null,null,null,null, depName));
+            EmployeeInfo staffInfo = new EmployeeInfo(0, 0, fName, lName, null,
+            null, null, null, null);
+            
+            staffInfo.setDepName(depName);
+            staffList.add(staffInfo);
+
         }
 
             staffTableView.setItems(staffList);
@@ -66,6 +70,8 @@ public class StaffController implements Initializable
             departmentcolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
 
     }
+
+    
     
 
 
@@ -128,7 +134,6 @@ public class StaffController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     { 
         StaffTable();
-
     }
 }    
 

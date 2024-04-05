@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
@@ -51,6 +52,28 @@ public class EditInformationController implements Initializable
     @FXML
     private TableColumn<EmployeeInfo,String> depNamecolumn;
 
+    @FXML
+    private TextField employeeIDTextField;
+    @FXML
+    private TextField deptIDTextField;
+    @FXML
+    private TextField fNameTextField;
+    @FXML
+    private TextField lNameTextField;
+    @FXML
+    private TextField emailTextField;
+    @FXML
+    private TextField phoneTextField;
+    @FXML
+    private TextField startDateTextField;
+    @FXML
+    private TextField contactTextField;
+    @FXML
+    private TextField contactPhoneTextField;
+    @FXML
+    private TextField depNameTextField;
+
+
 
     public void EmployeeInfoTable() 
     {
@@ -71,11 +94,13 @@ public class EditInformationController implements Initializable
             String startDate = data.get("startDate");
             String contact = data.get("contact");
             String contactPhone = data.get("contactPhone");
-            String depName = data.get("depName");                                         
+            String depName = data.get("depName");
+
+            EmployeeInfo employeeInfo = new EmployeeInfo(employeeID, depID, fName, lName, email,
+            phone, startDate, contact, contactPhone);
             
-            //creates empinfo object to add to list
-            employeeList.add(new EmployeeInfo(employeeID, depID, fName, lName, email,
-             phone, startDate, contact, contactPhone,depName)); 
+            employeeInfo.setDepName(depName);
+            employeeList.add(employeeInfo);
 
         }
     
@@ -95,6 +120,7 @@ public class EditInformationController implements Initializable
 
 
     }
+
 
 
     @FXML

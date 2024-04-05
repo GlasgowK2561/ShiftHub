@@ -11,11 +11,11 @@ public class EmployeeInfo
     private String startDate;
     private String contact;
     private String contactPhone;
-    private String depName;
+ 
 
 
 public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
-String phone, String startDate, String contact, String contactPhone, String depName)
+String phone, String startDate, String contact, String contactPhone)
 {
 
     this.employeeID = employeeID;
@@ -28,7 +28,6 @@ String phone, String startDate, String contact, String contactPhone, String depN
     this.startDate = startDate;
     this.contact = contact;
     this.contactPhone = contactPhone;
-    this.depName = depName;
     
 
 }
@@ -180,6 +179,8 @@ public void setContactPhone(String contactPhone)
     this.contactPhone = contactPhone;
 }
 
+
+private String depName;
 
 public String getDepName()
 {
