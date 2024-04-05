@@ -48,6 +48,8 @@ public class EditInformationController implements Initializable
     private TableColumn<EmployeeInfo, String> contactcolumn;
     @FXML
     private TableColumn<EmployeeInfo, String> contactPhonecolumn;
+    @FXML
+    private TableColumn<EmployeeInfo,String> depNamecolumn;
 
 
     public void EmployeeInfoTable() 
@@ -68,11 +70,12 @@ public class EditInformationController implements Initializable
             String phone = data.get("phone");
             String startDate = data.get("startDate");
             String contact = data.get("contact");
-            String contactPhone = data.get("contactPhone");                                         
+            String contactPhone = data.get("contactPhone");
+            String depName = data.get("depName");                                         
             
             //creates empinfo object to add to list
             employeeList.add(new EmployeeInfo(employeeID, depID, fName, lName, email,
-             phone, startDate, contact, contactPhone)); 
+             phone, startDate, contact, contactPhone,depName)); 
 
         }
     
@@ -88,6 +91,7 @@ public class EditInformationController implements Initializable
     startDatecolumn.setCellValueFactory(new PropertyValueFactory<>("startDate"));
     contactcolumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
     contactPhonecolumn.setCellValueFactory(new PropertyValueFactory<>("contactPhone"));
+    depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
 
 
     }

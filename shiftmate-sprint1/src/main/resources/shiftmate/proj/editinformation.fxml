@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditInformationController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditInformationController">
    <left>
       <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
@@ -90,15 +90,16 @@
          <children>
             <TableView fx:id="employeeTableView" editable="true" layoutX="7.0" layoutY="105.0" prefHeight="462.0" prefWidth="1015.0">
               <columns>
-                <TableColumn fx:id="employeeIDcolumn" prefWidth="76.80001974105835" text="Employee ID" />
-                <TableColumn fx:id="deptIDcolumn" prefWidth="95.99999237060547" text="Department ID" />
-                  <TableColumn fx:id="fNamecolumn" prefWidth="104.79998779296875" text="First Name" />
-                  <TableColumn fx:id="lNamecolumn" prefWidth="99.0" text="Last Name" />
-                  <TableColumn fx:id="emailcolumn" minWidth="4.0" prefWidth="128.79998779296875" text="Email" />
+                <TableColumn fx:id="employeeIDcolumn" prefWidth="75.0" text="Employee ID" />
+                <TableColumn fx:id="deptIDcolumn" prefWidth="56.0" text="DeptID" />
+                  <TableColumn fx:id="depNamecolumn" prefWidth="117.0" text="Department Name" />
+                  <TableColumn fx:id="fNamecolumn" prefWidth="88.0" text="First Name" />
+                  <TableColumn fx:id="lNamecolumn" prefWidth="96.0" text="Last Name" />
+                  <TableColumn fx:id="emailcolumn" minWidth="4.0" prefWidth="149.0" text="Email" />
                   <TableColumn fx:id="phonecolumn" prefWidth="104.80007934570312" text="Phone" />
                   <TableColumn fx:id="startDatecolumn" minWidth="0.0" prefWidth="105.5999755859375" text="Start Date" />
-                  <TableColumn fx:id="contactcolumn" prefWidth="148.80010986328125" text="Contact" />
-                  <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="154.39990234375" text="Contact Phone" />
+                  <TableColumn fx:id="contactcolumn" prefWidth="132.0" text="Contact" />
+                  <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="96.0" text="Contact Phone" />
               </columns>
             </TableView>
             <Button fx:id="addEmployeeOnAction" layoutX="860.0" layoutY="590.0" mnemonicParsing="false" text="Add" />

@@ -159,7 +159,7 @@ import java.util.LinkedList;
 
     public static LinkedList<Hashtable<String,String>> getEmployees(){
         String params[] = {};
-        return getParameterizedQuery("SELECT e.*, d.depName FROM employeeinfo e INNER JOIN departments d ON e.deptid = d.depid", 0, params);
+        return getParameterizedQuery("SELECT e.*, d.depName FROM employeeinfo e INNER JOIN departments d ON e.depid = d.depid", 0, params);
     }
 
     public static boolean deleteEmployee(int employeeID) {

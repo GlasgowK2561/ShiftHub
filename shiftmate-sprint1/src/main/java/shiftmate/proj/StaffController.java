@@ -1,10 +1,12 @@
 package shiftmate.proj;
 
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
+
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,54 +22,54 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
-public class DepartmentController implements Initializable
+
+public class StaffController implements Initializable
 {
     Stage stage;
-
     Parent scene;
 
     @FXML
-    private TableView <Departments> departmentTableView;
+    private TableView <EmployeeInfo> staffTableView;
 
     @FXML
-    private TableColumn<Departments, Integer> depIDcolumn;
+    private TableColumn<EmployeeInfo, String> fNamecolumn;
     @FXML
-    private TableColumn<Departments, String> depNamecolumn;
+    private TableColumn<EmployeeInfo,String> lNamecolumn;
     @FXML
-    private TableColumn<Departments, String> depManagercolumn;
+    private TableColumn<EmployeeInfo, String> departmentcolumn;
 
 
-    public void DepartmentTable() 
+
+    public void StaffTable()
     {
-        LinkedList<Hashtable<String,String>> departmentInformation = DBController.getDepartments();
+        LinkedList<Hashtable<String,String>> staffInformation = DBController.getEmployees();
 
-        ObservableList<Departments> departmentList = FXCollections.observableArrayList();
 
-        for (int i = 0; i < departmentInformation.size(); i++)                
+        ObservableList<EmployeeInfo> staffList = FXCollections.observableArrayList();
+   
+       
+        for (int i = 0; i < staffInformation.size(); i++)                
         {
-            Hashtable<String,String> data = departmentInformation.get(i);
+            Hashtable<String,String> data = staffInformation.get(i);
 
-            int depID = Integer.parseInt(data.get("depID"));
+            String fName = data.get("fName");
+            String lName = data.get("lName");
             String depName = data.get("depName");
-            String depManager = data.get("depManager");
 
-
-            departmentList.add(new Departments(depID, depName, depManager));
-
-
-            departmentTableView.setItems(departmentList);
-
-            depIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
-            depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
-            depManagercolumn.setCellValueFactory(new PropertyValueFactory<>("depManager"));
-
-
-
+            staffList.add(new EmployeeInfo(0,0,fName,lName,null,null,null,null,null, depName));
         }
+
+            staffTableView.setItems(staffList);
+
+            fNamecolumn.setCellValueFactory(new PropertyValueFactory<>("fName"));
+            lNamecolumn.setCellValueFactory(new PropertyValueFactory<>("lName"));
+            departmentcolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
+
     }
+    
 
 
-    @FXML
+     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
@@ -75,6 +77,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
 
     @FXML
     void createScheduleButtonOnAction(ActionEvent event) throws IOException
@@ -84,7 +87,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+   
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException
     {
@@ -93,7 +96,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+   
     @FXML
     void staffButtonOnAction (ActionEvent event) throws IOException
     {
@@ -102,6 +105,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
 
     @FXML
     void departmentsButtonOnAction(ActionEvent event) throws IOException
@@ -113,14 +117,19 @@ public class DepartmentController implements Initializable
     }
 
 
+
+
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
     {
        
     }
-    
+   
     public void initialize(URL url, ResourceBundle rb)
-    {
-        DepartmentTable();
+    { 
+        StaffTable();
+
     }
 }    
+
+

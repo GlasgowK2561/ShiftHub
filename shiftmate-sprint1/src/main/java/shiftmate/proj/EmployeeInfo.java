@@ -11,10 +11,11 @@ public class EmployeeInfo
     private String startDate;
     private String contact;
     private String contactPhone;
+    private String depName;
 
 
 public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
-String phone, String startDate, String contact, String contactPhone)
+String phone, String startDate, String contact, String contactPhone, String depName)
 {
 
     this.employeeID = employeeID;
@@ -27,6 +28,7 @@ String phone, String startDate, String contact, String contactPhone)
     this.startDate = startDate;
     this.contact = contact;
     this.contactPhone = contactPhone;
+    this.depName = depName;
     
 
 }
@@ -52,7 +54,7 @@ public int getDepID()
     return depID;
 }
 
-public void setDepID(int depID)     
+public void setDeptID(int depID)     
 {
     this.depID = depID;
 }
@@ -176,6 +178,17 @@ public String getContactPhone()
 public void setContactPhone(String contactPhone)      
 {
     this.contactPhone = contactPhone;
+}
+
+
+public String getDepName()
+{
+    return depName;
+}
+
+public void setDepName(String depName) 
+{
+    this.depName = depName;
 }
 
 
