@@ -199,10 +199,11 @@ import java.util.LinkedList;
 
     public static boolean addDepartment(String depName, String depManager) {
         String query = "INSERT INTO departments (depName, depManager) VALUES (?, ?)";
+        Connection connection = null; // Declare connection outside try block
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
+            connection = DriverManager.getConnection(url, username, password);
+            connection.setAutoCommit(false);
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
-                connection.setAutoCommit(false);
                 prepstmt.setString(1, depName);
                 prepstmt.setString(2, depManager);
     
@@ -218,15 +219,41 @@ import java.util.LinkedList;
                 }
             }
         } catch (SQLException e) {
-            try{
-                System.err.println("Transaction is being rolled back");
-                connection.rollback();
-            } catch (SQLException excep) {}
+            try {
+                if (connection != null) { // Check if connection is not null before rollback
+                    System.err.println("Transaction is being rolled back");
+                    connection.rollback();
+                }
+            } catch (SQLException excep) {
+                excep.printStackTrace();
+            }
             e.printStackTrace();
             return false;
+        } finally {
+            try {
+                if (connection != null) {
+                    connection.close(); // Close connection in finally block
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
         }
     }
-
+    public static boolean renameDefaultShiftTable(String oldDepName, String newDepName) {
+        String oldTableName = oldDepName + "DefaultSchedule";
+        String newTableName = newDepName + "DefaultSchedule";
+        String renameQuery = "RENAME TABLE " + oldTableName + " TO " + newTableName;
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             Statement statement = connection.createStatement()) {
+            statement.executeUpdate(renameQuery);
+            System.out.println("Default shift table renamed successfully.");
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Failed to rename default shift table.");
+            return false;
+        }
+    }    
     public static boolean createDefaultDepartmentShifts(String depName) {
         String tableName = "DefaultShifts_" + depName.replace(" ", "_"); // Replace spaces with underscores
         String query = "CREATE TABLE " + tableName + " ( " +
@@ -327,8 +354,4 @@ import java.util.LinkedList;
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
     } 
-
-    public static void main (String[] args){
-        System.out.println(getDepartmentEmployees(1));
-    }
  }

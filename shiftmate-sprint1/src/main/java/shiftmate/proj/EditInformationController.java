@@ -31,7 +31,6 @@ public class EditInformationController implements Initializable
 
     @FXML
     private TableView <EmployeeInfo> employeeTableView;
-
     @FXML
     private TableColumn<EmployeeInfo, Integer> employeeIDcolumn;
     @FXML
@@ -73,8 +72,6 @@ public class EditInformationController implements Initializable
     private TextField contactPhoneTextField;
     @FXML
     private TextField depNameTextField;
-
-
 
     public void EmployeeInfoTable() 
     {
@@ -334,7 +331,6 @@ public class EditInformationController implements Initializable
             missingField.append("  Contact Phone  ");
         }
     
-    
         AlertWindow("Missing Information", missingField.toString(), " ", AlertType.NONE);
     }
     else
@@ -355,7 +351,6 @@ public class EditInformationController implements Initializable
             slctdEmp.setContact(contactTextField.getText());
             slctdEmp.setContactPhone(contactPhoneTextField.getText());
 
-
             boolean update = DBController.editEmployeeInformation(employeeID, slctdEmp.getFName(), slctdEmp.getLName(), depID,
              slctdEmp.getPhone(), slctdEmp.getEmail(), 
              slctdEmp.getContact(), slctdEmp.getContactPhone(),slctdEmp.getStartDate());
@@ -364,7 +359,6 @@ public class EditInformationController implements Initializable
              {
                 AlertWindow("Success", "You successfully edited the Employee's Information");
                 EmployeeInfoTable();
-
 
                 fNameTextField.clear();
                 lNameTextField.clear();
@@ -386,8 +380,6 @@ public class EditInformationController implements Initializable
         } 
     }
     }
-
-
 
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
@@ -434,14 +426,11 @@ public class EditInformationController implements Initializable
         stage.show();
     }
 
-
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
      {
         
      }
-    
-    
 
     void AlertWindow(String title, String message)
     {
@@ -461,14 +450,8 @@ public class EditInformationController implements Initializable
         alert.showAndWait();
     }
 
-    
     public void initialize(URL url, ResourceBundle rb)
     {
         EmployeeInfoTable();
     }
-    
-
-
-
 }
-

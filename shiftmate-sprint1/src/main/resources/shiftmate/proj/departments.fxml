@@ -109,16 +109,14 @@
                   <TableColumn fx:id="depManagercolumn" prefWidth="211.0" text="Department Manager" />
               </columns>
             </TableView>
-            <Label layoutX="174.0" layoutY="530.0" text="Department ID" />
-            <TextField layoutX="299.0" layoutY="530.0" />
             <Label layoutX="174.0" layoutY="590.0" text="Department Name" />
-            <TextField layoutX="299.0" layoutY="590.0" />
-            <TextField layoutX="299.0" layoutY="650.0" />
+            <TextField fx:id="depNameTextField" layoutX="299.0" layoutY="590.0" />
+            <TextField fx:id="depManagerTextField" layoutX="299.0" layoutY="650.0" />
             <Label layoutX="174.0" layoutY="650.0" text="Department Manager" />
-            <Button fx:id="addDepartmentOnAction" layoutX="707.0" layoutY="530.0" mnemonicParsing="false" text="add" />
-            <Button fx:id="editDepartmentOnAction" layoutX="757.0" layoutY="530.0" mnemonicParsing="false" text="edit" />
-            <Button fx:id="deleteDepartmentOnAction" layoutX="807.0" layoutY="530.0" mnemonicParsing="false" text="delete" />
-            <Button fx:id="saveDepartmentOnAction" layoutX="657.0" layoutY="530.0" mnemonicParsing="false" text="save" />
+            <Button fx:id="addDepartmentOnAction" layoutX="707.0" layoutY="530.0" mnemonicParsing="false" onAction="#addDepartmentOnAction" text="Add" />
+            <Button fx:id="editDepartmentOnAction" layoutX="757.0" layoutY="530.0" mnemonicParsing="false" onAction="#editDepartmentOnAction" text="Edit" />
+            <Button fx:id="deleteDepartmentOnAction" layoutX="807.0" layoutY="530.0" mnemonicParsing="false" onAction="#deleteDepartmentOnAction" text="Delete" />
+            <Button fx:id="saveDepartmentOnAction" layoutX="657.0" layoutY="530.0" mnemonicParsing="false" onAction="#saveDepartmentOnAction" text="Save" />
          </children></AnchorPane>
    </center>
 </BorderPane>

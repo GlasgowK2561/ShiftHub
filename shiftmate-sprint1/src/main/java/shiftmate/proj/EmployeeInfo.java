@@ -11,8 +11,6 @@ public class EmployeeInfo
     private String startDate;
     private String contact;
     private String contactPhone;
- 
-
 
 public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
 String phone, String startDate, String contact, String contactPhone)
@@ -28,10 +26,8 @@ String phone, String startDate, String contact, String contactPhone)
     this.startDate = startDate;
     this.contact = contact;
     this.contactPhone = contactPhone;
-    
 
 }
-
 
 public int getEmployeeID()
 {
@@ -43,11 +39,6 @@ public void setEmployeeID(int employeeID)
     this.employeeID = employeeID;
 }
 
-
-
-
-
-
 public int getDepID()    
 {
     return depID;
@@ -57,12 +48,6 @@ public void setDepID(int depID)
 {
     this.depID = depID;
 }
-
-
-
-
-
-
 
 public String getFName()   
 {
@@ -74,13 +59,6 @@ public void setFName(String fName)
     this.fName = fName;
 }
 
-
-
-
-
-
-
-
 public String getLName()   
 {
     return lName;
@@ -90,13 +68,6 @@ public void setLName(String lName)
 {
     this.lName = lName;
 }
-
-
-
-
-
-
-
 
 public String getEmail()       
 {
@@ -108,13 +79,6 @@ public void setEmail(String email)
     this.email = email;
 }
 
-
-
-
-
-
-
-
 public String getPhone()       
 {
     return phone;
@@ -124,15 +88,6 @@ public void setPhone(String phone)
 {
     this.phone = phone;
 }
-
-
-
-
-
-
-
-
-
 
 public String getStartDate()   
 {
@@ -144,13 +99,6 @@ public void setStartDate(String startDate)
     this.startDate = startDate;
 }
 
-
-
-
-
-
-
-
 public String getContact()     
 {
     return contact;
@@ -161,14 +109,6 @@ public void setContact(String contact)
     this.contact = contact;
 }
 
-
-
-
-
-
-
-
-
 public String getContactPhone()        
 {
     return contactPhone;
@@ -178,7 +118,6 @@ public void setContactPhone(String contactPhone)
 {
     this.contactPhone = contactPhone;
 }
-
 
 private String depName;
 
@@ -191,7 +130,5 @@ public void setDepName(String depName)
 {
     this.depName = depName;
 }
-
-
 
 }
