@@ -102,9 +102,6 @@
                   <TableColumn fx:id="contactPhonecolumn" minWidth="0.0" prefWidth="96.0" text="Contact Phone" />
               </columns>
             </TableView>
-            <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" onAction="#addEmployeeOnAction" text="Add" />
-            <Button layoutX="910.0" layoutY="590.0" mnemonicParsing="false" onAction="#editEmployeeOnAction" text="Edit" />
-            <Button layoutX="960.0" layoutY="590.0" mnemonicParsing="false" onAction="#deleteEmployeeOnAction" text="Delete" />
             <Label layoutX="44.0" layoutY="41.0" prefHeight="17.0" prefWidth="172.0" text="Edit Information">
                <font>
                   <Font size="24.0" />
@@ -112,6 +109,7 @@
             </Label>
             <Label layoutX="20.0" layoutY="590.0" text="EmployeeID" />
             <Label layoutX="20.0" layoutY="640.0" text="DepartmentID" />
+            <Label layoutX="20.0" layoutY="690.0" text="Dep Name" />
             <Label layoutX="20.0" layoutY="740.0" text="First Name" />
             <Label layoutX="280.0" layoutY="590.0" text="Last Name" />
             <Label layoutX="280.0" layoutY="640.0" text="Email" />
@@ -121,16 +119,18 @@
             <Label layoutX="540.0" layoutY="690.0" text="Contact Phone" />
             <TextField fx:id="employeeIDTextField" layoutX="110.0" layoutY="590.0" />
             <TextField fx:id="depIDTextField" layoutX="110.0" layoutY="640.0" />
+            <TextField fx:id="depNameTextField" layoutX="110.0" layoutY="690.0" />
             <TextField fx:id="fNameTextField" layoutX="110.0" layoutY="740.0" />
-            <TextField fx:id="contactTextField" layoutX="630.0" layoutY="640.0" />
-            <TextField fx:id="emailTextField" layoutX="370.0" layoutY="640.0" />
             <TextField fx:id="lNameTextField" layoutX="370.0" layoutY="590.0" />
-            <TextField fx:id="startDateTextField" layoutX="630.0" layoutY="590.0" />
+            <TextField fx:id="emailTextField" layoutX="370.0" layoutY="640.0" />
             <TextField fx:id="phoneTextField" layoutX="370.0" layoutY="690.0" />
+            <TextField fx:id="startDateTextField" layoutX="630.0" layoutY="590.0" />
+            <TextField fx:id="contactTextField" layoutX="630.0" layoutY="640.0" />
             <TextField fx:id="contactPhoneTextField" layoutX="630.0" layoutY="690.0" />
             <Button layoutX="810.0" layoutY="590.0" mnemonicParsing="false" onAction="#saveEmployeeOnAction" text="Save" />
-            <Label layoutX="20.0" layoutY="690.0" text="Dep Name" />
-            <TextField fx:id="depNameTextField" layoutX="110.0" layoutY="690.0" />
+            <Button layoutX="860.0" layoutY="590.0" mnemonicParsing="false" onAction="#addEmployeeOnAction" text="Add" />
+            <Button layoutX="910.0" layoutY="590.0" mnemonicParsing="false" onAction="#editEmployeeOnAction" text="Edit" />
+            <Button layoutX="960.0" layoutY="590.0" mnemonicParsing="false" onAction="#deleteEmployeeOnAction" text="Delete" />
          </children></AnchorPane>
    </center>
 </BorderPane>
