@@ -174,6 +174,7 @@ public class DepartmentController implements Initializable
         } else {
             if (selectedDepartment != null) {
                 int depID = Integer.parseInt(depIDText);
+    
                 // Call method to update department information in the database
                 boolean updated = DBController.editDepartmentInformation(depID, depName, depManager);
                 if (updated) {
@@ -199,6 +200,7 @@ public class DepartmentController implements Initializable
         }
     }
     
+
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {

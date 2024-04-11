@@ -109,6 +109,8 @@
                   <TableColumn fx:id="depManagercolumn" prefWidth="211.0" text="Department Manager" />
               </columns>
             </TableView>
+            <Label layoutX="174.0" layoutY="530.0" text="Department ID" />
+            <TextField fx:id="depIDTextField" layoutX="299.0" layoutY="530.0" />
             <Label layoutX="174.0" layoutY="590.0" text="Department Name" />
             <TextField fx:id="depNameTextField" layoutX="299.0" layoutY="590.0" />
             <TextField fx:id="depManagerTextField" layoutX="299.0" layoutY="650.0" />
