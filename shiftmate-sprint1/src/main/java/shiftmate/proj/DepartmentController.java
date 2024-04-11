@@ -32,8 +32,8 @@ public class DepartmentController implements Initializable
 
     @FXML
     private TableView <Departments> departmentTableView;
-    @FXML
-    private TableColumn<Departments, Integer> depIDcolumn;
+    //@FXML
+    //private TableColumn<Departments, Integer> depIDcolumn;
     @FXML
     private TableColumn<Departments, String> depNamecolumn;
     @FXML
@@ -60,7 +60,7 @@ public class DepartmentController implements Initializable
             String depManager = data.get("depManager");
             departmentList.add(new Departments(depID, depName, depManager));
             departmentTableView.setItems(departmentList);
-            depIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
+            // depIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
             depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
             depManagercolumn.setCellValueFactory(new PropertyValueFactory<>("depManager"));
 
