@@ -17,7 +17,6 @@ String phone, String startDate, String contact, String contactPhone)
 {
 
     this.employeeID = employeeID;
-     
     this.depID = depID;
     this.fName = fname;
     this.lName = lName;
@@ -26,7 +25,6 @@ String phone, String startDate, String contact, String contactPhone)
     this.startDate = startDate;
     this.contact = contact;
     this.contactPhone = contactPhone;
-
 }
 
 public int getEmployeeID()

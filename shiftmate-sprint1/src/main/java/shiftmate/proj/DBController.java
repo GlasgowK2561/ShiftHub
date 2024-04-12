@@ -8,7 +8,56 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.LinkedList;
- 
+/* PUBLIC CLASSES WITHIN THE DATABASE CONTROLLER
+addEmployee
+    Function:
+    Parameters:
+    Returns:
+getEmployeeInformation
+    Function:
+    Parameters:
+    Returns:
+editEmployeeInformation
+    Function:
+    Parameters:
+    Returns:
+deleteEmployee
+    Function:
+    Parameters:
+    Returns:
+addDepartment
+    Function:
+    Parameters:
+    Returns:
+renameDefaultShiftTable
+    Function:
+    Parameters:
+    Returns:
+getDepartmentInformation
+    Function:
+    Parameters:
+    Returns:
+editDepartmentInformation
+    Function:
+    Parameters:
+    Returns:
+getDepartments
+    Function:
+    Parameters:
+    Returns:
+deleteDepartment
+    Function:
+    Parameters:
+    Returns:
+getDefaultSchedule
+    Function:
+    Parameters:
+    Returns:
+getDepartmentEmployees
+    Function:
+    Parameters:
+    Returns:
+ */
  public class DBController {
     // Database connection parameters
          
@@ -18,7 +67,7 @@ import java.util.LinkedList;
     static String password = "Sce9902292!!";
  
     //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
-    static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
+    private static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
 
         try {
@@ -210,12 +259,14 @@ import java.util.LinkedList;
                 int rowsAffected = prepstmt.executeUpdate();
                 connection.commit();
                 if (rowsAffected > 0) {
-                    System.out.println("Department added successfully.");
-                    // Should we call createDefaultDepartmentShifts?
-                    return true;
-                } else {
-                    System.out.println("Failed to add department.");
-                    return false;
+                    boolean accept = createDefaultDepartmentTable(depName);
+                    if (accept) {
+                        System.out.println("Department added successfully");
+                        return true;
+                    } else {
+                        System.out.println("Failed to add department.");
+                        return false;
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -238,7 +289,8 @@ import java.util.LinkedList;
                 ex.printStackTrace();
             }
         }
-    }
+        return false; // Return false in case of any unexpected error
+    }    
     public static boolean renameDefaultShiftTable(String oldDepName, String newDepName) {
         String oldTableName = oldDepName + "DefaultSchedule";
         String newTableName = newDepName + "DefaultSchedule";
@@ -254,7 +306,7 @@ import java.util.LinkedList;
             return false;
         }
     }    
-    public static boolean createDefaultDepartmentShifts(String depName) {
+    private static boolean createDefaultDepartmentTable(String depName) {
         String tableName = "DefaultShifts_" + depName.replace(" ", "_"); // Replace spaces with underscores
         String query = "CREATE TABLE " + tableName + " ( " +
                         "ShiftID INT PRIMARY KEY, " +
@@ -349,7 +401,22 @@ import java.util.LinkedList;
             return false;
         }
     }    
-
+    // Get shifts from default department schedule
+    public static LinkedList<Hashtable<String,String>> getDefaultSchedule(int employeeID){
+        String params[] = {Integer.toString(employeeID)};
+        // WRITE QUERY HERE
+        return getParameterizedQuery("IDK YET PHAM", 0 , params);
+        /* REFERENCE CODE
+        return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
+        */
+    }
+    // Add shift to default department schedule
+    // Edit shift in default department schedule
+    // Delete shift from default department schedule
+    // Create weekly schedule
+    // Get weekly schedule
+    // Edit weekly schedule
+    // Delete weekly schedule
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);

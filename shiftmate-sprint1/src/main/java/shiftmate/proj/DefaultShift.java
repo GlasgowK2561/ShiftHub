@@ -22,7 +22,6 @@ public DefaultShift (int shiftID, int depID, String dayofWeek, Time startTime, T
 
 }
 
-
 public int getShiftID() 
 {
     return shiftID;
@@ -33,10 +32,6 @@ public void setShiftID(int shiftID)
     this.shiftID = shiftID;
 }
 
-
-
-
-
 public int getDepID()     
 {
     return depID;
@@ -46,10 +41,6 @@ public void setDepID(int depID)
 {
     this.depID = depID;
 }
-
-
-
-
 
 public String getDayofWeek()      
 {

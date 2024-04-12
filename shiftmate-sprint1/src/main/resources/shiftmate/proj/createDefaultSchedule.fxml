@@ -2,36 +2,41 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="TOP_CENTER">
-    <Label text="Weekly Schedule" />
-    
-    <!-- GridPane to display days and buttons -->
-    <GridPane alignment="CENTER" hgap="10" vgap="5">
-        <!-- Labels for days of the week -->
-        <Label text="Monday" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-        <Label text="Tuesday" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-        <Label text="Wednesday" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-        <Label text="Thursday" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-        <Label text="Friday" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-        <Label text="Saturday" GridPane.columnIndex="0" GridPane.rowIndex="5" />
-        <Label text="Sunday" GridPane.columnIndex="0" GridPane.rowIndex="6" />
-        
-        <!-- Buttons to add shifts for each day -->
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#addShiftMonday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#addShiftTuesday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#addShiftWednesday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#addShiftThursday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#addShiftFriday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="5" onAction="#addShiftSaturday" />
-        <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#addShiftSunday" />
-    </GridPane>
-    
-    <!-- Button to save the schedule -->
-    <HBox spacing="10" alignment="CENTER">
-        <Button text="Save Schedule" onAction="#saveSchedule" />
-    </HBox>
-</VBox>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
+    <center>
+        <VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="TOP_CENTER">
+            <Label text="Weekly Schedule" />
+            
+            <!-- GridPane to display days and buttons -->
+            <GridPane alignment="CENTER" hgap="10" vgap="5">
+                <!-- Labels for days of the week -->
+                <Label text="Monday" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                <Label text="Tuesday" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                <Label text="Wednesday" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                <Label text="Thursday" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                <Label text="Friday" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label text="Saturday" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                <Label text="Sunday" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                
+                <!-- Buttons to add shifts for each day -->
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="0" onAction="#addShiftMonday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="1" onAction="#addShiftTuesday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="2" onAction="#addShiftWednesday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="3" onAction="#addShiftThursday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="4" onAction="#addShiftFriday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="5" onAction="#addShiftSaturday" />
+                <Button text="Add Shift" GridPane.columnIndex="1" GridPane.rowIndex="6" onAction="#addShiftSunday" />
+            </GridPane>
+            
+            <!-- Button to save the schedule -->
+            <HBox spacing="10" alignment="CENTER">
+                <Button text="Save Schedule" onAction="#saveSchedule" />
+            </HBox>
+        </VBox>
+    </center>
+</BorderPane>

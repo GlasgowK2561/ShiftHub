@@ -60,7 +60,6 @@ public class DepartmentController implements Initializable
             String depManager = data.get("depManager");
             departmentList.add(new Departments(depID, depName, depManager));
             departmentTableView.setItems(departmentList);
-            // depIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
             depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
             depManagercolumn.setCellValueFactory(new PropertyValueFactory<>("depManager"));
 
@@ -71,25 +70,32 @@ public class DepartmentController implements Initializable
         // Get text from TextField
         String depName = depNameTextField.getText();
         String depManager = depManagerTextField.getText();
-    
+
         if (depName.isEmpty() || depManager.isEmpty()) {
             StringBuffer missingField = new StringBuffer("Missing: ");
-    
+
             if (depName.isEmpty()) {
                 missingField.append("  Department Name  ");
             }
             if (depManager.isEmpty()) {
                 missingField.append("  Department Manager ");
             }
-    
+
             AlertWindow("Missing Information", missingField.toString(), " ", AlertType.NONE);
         } else {
             // Call method to add department to the database
             boolean valid = DBController.addDepartment(depName, depManager);
-    
+
             if (valid) {
                 AlertWindow("Success", "You have successfully added a department");
-                DepartmentTable();
+
+                // Load the new JavaFX page
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("createDefaultSchedule.fxml"));
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
             } else {
                 AlertWindow("Fail", "Failed to add department");
             }
