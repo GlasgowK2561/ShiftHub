@@ -103,23 +103,10 @@
                </font>
             </Label>
             <TableView fx:id="departmentTableView" layoutX="175.0" layoutY="163.0" prefHeight="320.0" prefWidth="681.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="173.0">
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-              <columns>
-                <TableColumn fx:id="depNamecolumn" prefWidth="379.20004880428314" text="Department Name" />
-                  <TableColumn fx:id="depManagercolumn" prefWidth="302.3999938964844" text="Department Manager" />
-              </columns>
-=======
->>>>>>> Stashed changes
                <columns>
                   <TableColumn fx:id="depNamecolumn" prefWidth="288.0" text="Department Name" />
                   <TableColumn fx:id="depManagercolumn" prefWidth="211.0" text="Department Manager" />
                </columns>
-<<<<<<< Updated upstream
-=======
->>>>>>> 04aa912014f79e59bb928099b3c83c4ab8604d8e
->>>>>>> Stashed changes
             </TableView>
             <Label layoutX="174.0" layoutY="530.0" text="Department ID" />
             <TextField fx:id="depIDTextField" layoutX="299.0" layoutY="530.0" />
