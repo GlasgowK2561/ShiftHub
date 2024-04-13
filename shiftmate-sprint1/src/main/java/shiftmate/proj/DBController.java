@@ -59,8 +59,8 @@ getDepartmentEmployees
     Returns:
  */
  public class DBController {
+
     // Database connection parameters
-         
     static Connection connection;
     static String url = "jdbc:mysql://dcm.uhcl.edu/sens24g2";
     static String username = "sens24g2";
@@ -309,8 +309,9 @@ getDepartmentEmployees
     }    
     private static boolean createDefaultDepartmentTable(String depName) {
         String tableName = depName.concat("DefaultSchedule");
-        String query = "CREATE TABLE " + tableName + " ( " +
-                        "ShiftID INT PRIMARY KEY, " +
+        String shiftIDName = depName + "shiftID";
+        String query = "CREATE TABLE " + tableName + " ( " + shiftIDName +
+                        " INT AUTO_INCREMENT PRIMARY KEY, " +
                         "DepID INT, " +
                         "DayOfWeek VARCHAR(255), " +
                         "StartTime TIME, " +
@@ -369,49 +370,56 @@ getDepartmentEmployees
             return false;
         }
     }    
-
+    public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
+        String params[] = {Integer.toString(depID)};
+        return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
+    } 
     public static LinkedList<Hashtable<String,String>> getDepartments(){
         String params[] = {};
         return getParameterizedQuery("SELECT d.* FROM departments d;", 0, params);
     }
 
-    public static boolean deleteDepartment(int depID) {
-        String querySelect = "SELECT depName FROM departments WHERE depID = ?";
-        String queryDelete = "DELETE FROM departments WHERE depID = ?";
+    public static boolean deleteDepartment(int depID, String depName) {
+        String queryDeleteDepartment = "DELETE FROM departments WHERE depID = ?";
+        String table = depName.concat("defaultschedule");
+        String queryDeleteShifts = "DELETE FROM " + table + " WHERE depID = ?";
+        String queryDropTable = "DROP TABLE IF EXISTS " + table; // Ensure the table exists before dropping
+        
         Connection connection = null;
+        
         try {
             connection = DriverManager.getConnection(url, username, password);
             connection.setAutoCommit(false);
     
-            // Retrieve department name associated with the department ID
-            String depName = null;
-            try (PreparedStatement selectStmt = connection.prepareStatement(querySelect)) {
-                selectStmt.setInt(1, depID);
-                ResultSet resultSet = selectStmt.executeQuery();
-                if (resultSet.next()) {
-                    depName = resultSet.getString("depName");
-                }
-            }
-    
-            // If department name is retrieved, proceed with deletion
+            // If department name is passed as parameter, proceed with deletion
             if (depName != null) {
-                try (PreparedStatement deleteStmt = connection.prepareStatement(queryDelete)) {
-                    deleteStmt.setInt(1, depID);
-                    int rowsAffected = deleteStmt.executeUpdate();
+                // Delete associated records from table
+                try (PreparedStatement deleteHelpShiftsStmt = connection.prepareStatement(queryDeleteShifts)) {
+                    deleteHelpShiftsStmt.setInt(1, depID);
+                    deleteHelpShiftsStmt.executeUpdate();
+                }
+                
+                // Delete the department
+                try (PreparedStatement deleteDeptStmt = connection.prepareStatement(queryDeleteDepartment)) {
+                    deleteDeptStmt.setInt(1, depID);
+                    int rowsAffected = deleteDeptStmt.executeUpdate();
+                    
                     if (rowsAffected > 0) {
                         System.out.println("Department '" + depName + "' deleted successfully.");
-                        // Call deleteDefaultScheduleTable function using department name
-                        boolean affirm = deleteDefaultScheduleTable(connection, depName);
+                        
+                        // Drop the default schedule table
+                        try (PreparedStatement dropTableStmt = connection.prepareStatement(queryDropTable)) {
+                            dropTableStmt.executeUpdate();
+                        }
+                        
                         connection.commit();
                         return true;
                     } else {
                         System.out.println("Department with ID " + depID + " not found.");
-                        return false;
                     }
                 }
             } else {
-                System.out.println("Department with ID " + depID + " not found.");
-                return false;
+                System.out.println("Department name cannot be null.");
             }
         } catch (SQLException e) {
             try {
@@ -423,7 +431,6 @@ getDepartmentEmployees
                 excep.printStackTrace();
             }
             e.printStackTrace();
-            return false;
         } finally {
             if (connection != null) {
                 try {
@@ -434,45 +441,127 @@ getDepartmentEmployees
                 }
             }
         }
-    }
-    private static boolean deleteDefaultScheduleTable(Connection connection, String depName) {
-        String table = "defaultschedule";
-        String defaultScheduleTableName = depName + table;
-        String queryDelete = "DROP TABLE " + defaultScheduleTableName;
         
-        try (Statement statement = connection.createStatement()) {
-            int rowsAffected = statement.executeUpdate(queryDelete);
-            if (rowsAffected > 0) {
-                System.out.println("Department schedule table '" + defaultScheduleTableName + "' deleted successfully.");
-                return true;
+        return false; // Return false outside the try-catch-finally block
+    }
+
+    public static LinkedList<Hashtable<String,String>> getDefaultSchedule(String depName){
+        System.out.println(depName);
+        String table = depName.concat("defaultschedule");
+        String query = "SELECT * FROM " + table;
+    
+        // Assuming `getParameterizedQuery` expects a plain SQL query string
+        return getParameterizedQuery(query, 0, null);
+    }
+    
+    public static int addShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime) {
+        String table = depName.concat("defaultschedule");
+        String addShiftQuery = "INSERT INTO " + table + " (depID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?)";
+    
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            // Get department ID
+            int depID = getDepartmentID(depName);
+            if (depID != -1) {
+                // Department exists, proceed to add shift
+                try (PreparedStatement preparedStatement = connection.prepareStatement(addShiftQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    preparedStatement.setInt(1, depID);
+                    preparedStatement.setString(2, dayOfWeek);
+                    preparedStatement.setString(3, startTime);
+                    preparedStatement.setString(4, endTime);
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                        if (generatedKeys.next()) {
+                            int scheduleID = generatedKeys.getInt(1);
+                            System.out.println("Shift added successfully with scheduleID: " + scheduleID);
+                            return scheduleID;
+                        } else {
+                            System.out.println("Failed to retrieve scheduleID.");
+                            return -1;
+                        }
+                    } else {
+                        System.out.println("Failed to add shift.");
+                        return -1;
+                    }
+                }
             } else {
-                System.out.println("Department schedule table with name '" + defaultScheduleTableName + "' not found.");
-                return false;
+                System.out.println("Department does not exist.");
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }    
+
+    public static int getDepartmentID(String depName) {
+        String params[] = {depName};
+        LinkedList<Hashtable<String, String>> result = getParameterizedQuery("SELECT depID FROM departments WHERE depName = ?;", 1, params);
+        
+        // Check if the result is not empty and contains the "depID" key
+        if (!result.isEmpty() && result.getFirst().containsKey("depID")) {
+            String depIDString = result.getFirst().get("depID");
+            try {
+                return Integer.parseInt(depIDString);
+            } catch (NumberFormatException e) {
+                // Handle the case where the depID cannot be parsed to an integer
+                e.printStackTrace();
+                return -1; // Return -1 to indicate failure
+            }
+        } else {
+            // Handle the case where the result is empty or depID is not found
+            System.err.println("Department ID not found for department: " + depName);
+            return -1; // Return -1 to indicate failure
+        }
+    }    
+    // Edit shift in default department schedule
+    public static boolean editShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime){
+        String table = depName.concat("defaultschedule");
+        String updateShiftQuery = "UPDATE " + table + " SET startTime = ?, endTime = ? WHERE dayOfWeek = ? AND startTime = ? AND endTime = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateShiftQuery)) {
+                preparedStatement.setString(1, dayOfWeek);
+                preparedStatement.setString(2, startTime);
+                preparedStatement.setString(3, endTime);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Shift updated successfully.");
+                    return true;
+                } else {
+                    System.out.println("Failed to update shift.");
+                    return false;
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
-    }    
-
-    // Get shifts from default department schedule
-    public static LinkedList<Hashtable<String,String>> getDefaultSchedule(String depName){
-        System.out.println("GETTING DEFAULT SCHEDULE");
-        System.out.println("Value in DBController.java");
-        System.out.println(depName);
-        String table = "defaultschedule";
-        String params[] = {depName.concat(table)};
-        return getParameterizedQuery("SELECT d.* FROM ? as d;", 1, params);       
     }
-    // Add shift to default department schedule
-    // Edit shift in default department schedule
     // Delete shift from default department schedule
+    public static boolean deleteShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime){
+        String table = depName.concat("defaultschedule");
+        String deleteShiftQuery = "DELETE FROM " + table + " WHERE dayOfWeek = ? AND startTime = ? AND endTime = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(deleteShiftQuery)) {
+                preparedStatement.setString(1, dayOfWeek);
+                preparedStatement.setString(2, startTime);
+                preparedStatement.setString(3, endTime);
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Shift deleted successfully.");
+                    return true;
+                } else {
+                    System.out.println("Failed to delete shift.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     // Create weekly schedule
     // Get weekly schedule
     // Edit weekly schedule
     // Delete weekly schedule
-    public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
-        String params[] = {Integer.toString(depID)};
-        return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
-    } 
- }
+}

@@ -85,7 +85,9 @@ public class DepartmentController implements Initializable
         } else {
             // Call method to add department to the database
             boolean valid = DBController.addDepartment(depName, depManager);
-
+            System.out.println("GETTING DEPID");
+            int depID = DBController.getDepartmentID(depName);
+            System.out.println(depID);
             if (valid) {
                 AlertWindow("Success", "You have successfully added a department");
                 // Load the new JavaFX page
@@ -93,13 +95,12 @@ public class DepartmentController implements Initializable
                 Parent root = loader.load();
                 CreateDefaultScheduleController controller = loader.getController();
                 controller.setDepName(depName); // Set the department name
-                System.out.println("Value in DepartmentController.java");
-                System.out.println(depName);
+                controller.setDepID(depID);
+                controller.initController(); // Initialize the controller manually
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
-
             } else {
                 AlertWindow("Fail", "Failed to add department");
             }
@@ -126,7 +127,7 @@ public class DepartmentController implements Initializable
         {
             if (response == ButtonType.OK)
             {
-                boolean delete = DBController.deleteDepartment(slctdDep.getDepID());
+                boolean delete = DBController.deleteDepartment(slctdDep.getDepID(), slctdDep.getDepName());
                 if (delete)
                 {
                     AlertWindow("Success", "Department has been deleted successfully");

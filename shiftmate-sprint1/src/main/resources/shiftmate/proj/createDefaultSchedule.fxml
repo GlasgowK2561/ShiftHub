@@ -14,19 +14,20 @@
             <Label text="Weekly Schedule" />
             
             <!-- TableView to display shifts for each day -->
-            <TableView fx:id="scheduleTableView">
-                <!-- Columns for schedule information -->
+            <TableView fx:id="scheduleTableView" prefHeight="400.0" prefWidth="600.0">
                 <columns>
-                    <TableColumn text="Monday" />
-                    <TableColumn text="Tuesday" />
-                    <TableColumn text="Wednesday" />
-                    <TableColumn text="Thursday" />
-                    <TableColumn text="Friday" />
-                    <TableColumn text="Saturday" />
-                    <TableColumn text="Sunday" />
+                    <!-- Other columns -->
+                    <TableColumn fx:id="shiftColumn" text="Shifts" />
+                    <TableColumn fx:id="mondayColumn" text="Monday" />
+                    <TableColumn fx:id="tuesdayColumn" text="Tuesday" />
+                    <TableColumn fx:id="wednesdayColumn" text="Wednesday" />
+                    <TableColumn fx:id="thursdayColumn" text="Thursday" />
+                    <TableColumn fx:id="fridayColumn" text="Friday" />
+                    <TableColumn fx:id="saturdayColumn" text="Saturday" />
+                    <TableColumn fx:id="sundayColumn" text="Sunday" />
                 </columns>
             </TableView>
-            
+
             <!-- Button to add a shift for each day -->
             <HBox spacing="10" alignment="CENTER">
                 <Button text="Add Shift (Monday)" onAction="#addShiftMonday" />
