@@ -68,7 +68,8 @@ public class MainController implements Initializable
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
     {
-       
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.close();
     }
     
     @Override

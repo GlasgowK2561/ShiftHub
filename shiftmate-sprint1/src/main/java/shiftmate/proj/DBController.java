@@ -292,6 +292,7 @@ getDepartmentEmployees
         }
         return false; // Return false in case of any unexpected error
     }    
+
     public static boolean renameDefaultShiftTable(String oldDepName, String newDepName) {
         String oldTableName = oldDepName + "DefaultSchedule";
         String newTableName = newDepName + "DefaultSchedule";
@@ -307,6 +308,7 @@ getDepartmentEmployees
             return false;
         }
     }    
+    
     private static boolean createDefaultDepartmentTable(String depName) {
         String tableName = depName.concat("DefaultSchedule");
         String query = "CREATE TABLE " + tableName + " ( " +
@@ -334,7 +336,6 @@ getDepartmentEmployees
         }
     }
         
-
     public static LinkedList<Hashtable<String,String>> getDepartmentInformation(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT d.* FROM departments as d WHERE depid = ?;", 1, params);
@@ -435,6 +436,7 @@ getDepartmentEmployees
             }
         }
     }
+    
     private static boolean deleteDefaultScheduleTable(Connection connection, String depName) {
         String table = "defaultschedule";
         String defaultScheduleTableName = depName + table;

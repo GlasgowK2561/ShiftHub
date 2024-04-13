@@ -38,6 +38,8 @@ public class LoginController
                     if (valid_Login){
                         loginMessageLabel.setText("Login Successful");
                         openMainPage();
+                        Stage stage = (Stage) loginButton.getScene().getWindow();
+                        stage.close();
                     }
                     else {
                         loginMessageLabel.setText("Invalid Username/Password");
