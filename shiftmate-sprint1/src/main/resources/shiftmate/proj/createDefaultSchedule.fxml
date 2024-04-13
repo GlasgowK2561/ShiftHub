@@ -17,7 +17,6 @@
             <TableView fx:id="scheduleTableView" prefHeight="400.0" prefWidth="600.0">
                 <columns>
                     <!-- Other columns -->
-                    <TableColumn fx:id="shiftColumn" text="Shifts" />
                     <TableColumn fx:id="mondayColumn" text="Monday" />
                     <TableColumn fx:id="tuesdayColumn" text="Tuesday" />
                     <TableColumn fx:id="wednesdayColumn" text="Wednesday" />

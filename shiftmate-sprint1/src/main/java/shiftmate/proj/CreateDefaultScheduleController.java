@@ -6,11 +6,10 @@ import java.net.URL;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,7 +22,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -43,9 +41,6 @@ public class CreateDefaultScheduleController implements Initializable {
 
     @FXML
     TableView<scheduleRow> scheduleTableView = new TableView<>();
-
-    @FXML
-    private TableColumn<scheduleRow, String> shiftColumn;
     
     @FXML
     private TableColumn<scheduleRow, String> mondayColumn;
@@ -79,18 +74,42 @@ public class CreateDefaultScheduleController implements Initializable {
     public void setDepID(int depID) {
         this.depID = depID;
     }
+    public ObservableList<scheduleRow> sortRows(ObservableList<scheduleRow> scheduleRows) {
+        // Sort the rows based on their emptiness (non-empty rows first)
+        scheduleRows.sort(Comparator.comparingInt(row -> {
+            // Count the number of empty shifts in the row
+            int emptyShifts = 0;
+            if (row.getMondayShift().isEmpty()) emptyShifts++;
+            if (row.getTuesdayShift().isEmpty()) emptyShifts++;
+            if (row.getWednesdayShift().isEmpty()) emptyShifts++;
+            if (row.getThursdayShift().isEmpty()) emptyShifts++;
+            if (row.getFridayShift().isEmpty()) emptyShifts++;
+            if (row.getSaturdayShift().isEmpty()) emptyShifts++;
+            if (row.getSundayShift().isEmpty()) emptyShifts++;
+            // Return count to sort rows in descending order of empty shifts
+            return emptyShifts;
+        }));
+    
+        return scheduleRows;
+    }    
     public ObservableList<scheduleRow> reorganizeScheduleRows(ObservableList<scheduleRow> scheduleRows) {
         ObservableList<scheduleRow> updatedScheduleRows = FXCollections.observableArrayList();
         int i = 0;
         while (i < scheduleRows.size() - 1) {
             scheduleRow currentRow = scheduleRows.get(i);
             scheduleRow nextRow = scheduleRows.get(i + 1);
+            
             // Check if the next row has any non-empty shifts
             if (!isRowEmpty(nextRow)) {
-                // Merge non-empty shifts from the next row into the current row
-                mergeShifts(updatedScheduleRows,currentRow, nextRow);
-                // Remove the next row
-                scheduleRows.remove(nextRow);
+                // Merge non-empty shifts from the next row into the current row if they are consecutive days
+                if (areConsecutiveDays(currentRow, nextRow)) {
+                    mergeShifts(updatedScheduleRows, currentRow, nextRow);
+                    // Remove the next row
+                    scheduleRows.remove(nextRow);
+                } else {
+                    // Move to the next row if it's not consecutive
+                    i++;
+                }
             } else {
                 // Move to the next row if it's empty
                 i++;
@@ -99,151 +118,75 @@ public class CreateDefaultScheduleController implements Initializable {
         updatedScheduleRows.addAll(scheduleRows);
         return updatedScheduleRows;
     }
+    private boolean areConsecutiveDays(scheduleRow row1, scheduleRow row2) {
+        // Check if the days of the week for row2 follow row1 consecutively
+        if (row2.getMondayShift().isEmpty() && !row1.getTuesdayShift().isEmpty()) {
+            return true;
+        } else if (row2.getTuesdayShift().isEmpty() && !row1.getWednesdayShift().isEmpty()) {
+            return true;
+        } else if (row2.getWednesdayShift().isEmpty() && !row1.getThursdayShift().isEmpty()) {
+            return true;
+        } else if (row2.getThursdayShift().isEmpty() && !row1.getFridayShift().isEmpty()) {
+            return true;
+        } else if (row2.getFridayShift().isEmpty() && !row1.getSaturdayShift().isEmpty()) {
+            return true;
+        } else if (row2.getSaturdayShift().isEmpty() && !row1.getSundayShift().isEmpty()) {
+            return true;
+        }
+        return false;
+    }    
     private void mergeShifts(ObservableList<scheduleRow> scheduleRows, scheduleRow targetRow, scheduleRow sourceRow) {
-        // Merge non-empty shifts from source row to target row
-        if (!sourceRow.getMondayShift().isEmpty()) {
-            if (targetRow.getMondayShift().isEmpty()) {
-                targetRow.setMondayShift(sourceRow.getMondayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setMondayShift(sourceRow.getMondayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }
-        if (!sourceRow.getTuesdayShift().isEmpty()) {
-            if (targetRow.getTuesdayShift().isEmpty()) {
-                targetRow.setTuesdayShift(sourceRow.getTuesdayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setTuesdayShift(sourceRow.getTuesdayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }
-        if (!sourceRow.getWednesdayShift().isEmpty()) {
-            if (targetRow.getWednesdayShift().isEmpty()) {
-                targetRow.setWednesdayShift(sourceRow.getWednesdayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setWednesdayShift(sourceRow.getWednesdayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }
-        if (!sourceRow.getThursdayShift().isEmpty()) {
-            if (targetRow.getThursdayShift().isEmpty()) {
-                targetRow.setThursdayShift(sourceRow.getThursdayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setThursdayShift(sourceRow.getThursdayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }
-        if (!sourceRow.getFridayShift().isEmpty()) {
-            if (targetRow.getFridayShift().isEmpty()) {
-                targetRow.setFridayShift(sourceRow.getFridayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setFridayShift(sourceRow.getFridayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }
-        if (!sourceRow.getSaturdayShift().isEmpty()) {
-            if (targetRow.getSaturdayShift().isEmpty()) {
-                targetRow.setSaturdayShift(sourceRow.getSaturdayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setSaturdayShift(sourceRow.getSaturdayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }      
-        if (!sourceRow.getSundayShift().isEmpty()) {
-            if (targetRow.getSundayShift().isEmpty()) {
-                targetRow.setSundayShift(sourceRow.getSundayShift());
-            } else {
-                // Create a new row with the same shifts as the current row
-                scheduleRow newRow = new scheduleRow(
-                    targetRow.getMondayShift(),
-                    targetRow.getTuesdayShift(),
-                    targetRow.getWednesdayShift(),
-                    targetRow.getThursdayShift(),
-                    targetRow.getFridayShift(),
-                    targetRow.getSaturdayShift(),
-                    targetRow.getSundayShift()
-                );
-                // Set the Monday shift of the new row to the shift of the source row
-                newRow.setSundayShift(sourceRow.getSundayShift());
-                // Add the new row after the current row
-                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
-            }
-        }  
+        mergeShiftsForDay(scheduleRows, targetRow, sourceRow, 0);
     }
+    private String getShiftForDay(scheduleRow row, int dayIndex) {
+        switch (dayIndex) {
+            case 0: return row.getMondayShift();
+            case 1: return row.getTuesdayShift();
+            case 2: return row.getWednesdayShift();
+            case 3: return row.getThursdayShift();
+            case 4: return row.getFridayShift();
+            case 5: return row.getSaturdayShift();
+            case 6: return row.getSundayShift();
+            default: return "";
+        }
+    }
+    private void mergeShiftsForDay(ObservableList<scheduleRow> scheduleRows, scheduleRow targetRow, scheduleRow sourceRow, int dayIndex) {
+        if (dayIndex == 7) {
+            // Base case: we've processed all days
+            return;
+        }
+    
+        // Get the shift for the current day from both rows
+        String targetShift = getShiftForDay(targetRow, dayIndex);
+        String sourceShift = getShiftForDay(sourceRow, dayIndex);
+    
+        // Merge the shifts if source shift is non-empty
+        if (!sourceShift.isEmpty()) {
+            if (!targetShift.isEmpty()) {
+                // If target shift is not empty, create a new row for the source shift
+                scheduleRow newRow = new scheduleRow("", "", "", "", "", "", "");
+                setShiftForDay(newRow, sourceShift, dayIndex);
+                scheduleRows.add(scheduleRows.indexOf(targetRow) + 1, newRow);
+            } else {
+                // If target shift is empty, simply set it to source shift
+                setShiftForDay(targetRow, sourceShift, dayIndex);
+            }
+        }
 
-    // Method to check if a scheduleRow is empty
+        // Recursively process the next day
+        mergeShiftsForDay(scheduleRows, targetRow, sourceRow, dayIndex + 1);
+    }     
+    private void setShiftForDay(scheduleRow row, String shift, int dayIndex) {
+        switch (dayIndex) {
+            case 0: row.setMondayShift(shift); break;
+            case 1: row.setTuesdayShift(shift); break;
+            case 2: row.setWednesdayShift(shift); break;
+            case 3: row.setThursdayShift(shift); break;
+            case 4: row.setFridayShift(shift); break;
+            case 5: row.setSaturdayShift(shift); break;
+            case 6: row.setSundayShift(String.join("\n", shift)); break; // Concatenate shifts into a single string
+        }
+    }
     public boolean isRowEmpty(scheduleRow row) {
         return row.getMondayShift().isEmpty() &&
                row.getTuesdayShift().isEmpty() &&
@@ -253,7 +196,6 @@ public class CreateDefaultScheduleController implements Initializable {
                row.getSaturdayShift().isEmpty() &&
                row.getSundayShift().isEmpty();
     }
-    
     public void DefaultScheduleTable() {
         System.out.println("POPULATING TABLE");
         scheduleTableView.getItems().clear();
@@ -318,7 +260,19 @@ public class CreateDefaultScheduleController implements Initializable {
             System.out.println("Sunday Shift: " + row.getSundayShift());
             System.out.println("---------------------");
         }
-        scheduleTableView.setItems(newScheduleRows);
+        ObservableList<scheduleRow> sortedScheduleRows = sortRows(newScheduleRows);
+        System.out.println("AFTER REORGANIZING");
+        for (scheduleRow row : sortedScheduleRows) {
+            System.out.println("Monday Shift: " + row.getMondayShift());
+            System.out.println("Tuesday Shift: " + row.getTuesdayShift());
+            System.out.println("Wednesday Shift: " + row.getWednesdayShift());
+            System.out.println("Thursday Shift: " + row.getThursdayShift());
+            System.out.println("Friday Shift: " + row.getFridayShift());
+            System.out.println("Saturday Shift: " + row.getSaturdayShift());
+            System.out.println("Sunday Shift: " + row.getSundayShift());
+            System.out.println("---------------------");
+        }
+        scheduleTableView.setItems(sortedScheduleRows);
         mondayColumn.setCellValueFactory(new PropertyValueFactory<>("mondayShift"));
         tuesdayColumn.setCellValueFactory(new PropertyValueFactory<>("tuesdayShift"));
         wednesdayColumn.setCellValueFactory(new PropertyValueFactory<>("wednesdayShift"));
@@ -439,8 +393,13 @@ public class CreateDefaultScheduleController implements Initializable {
     }
 
     @FXML
-    private void saveSchedule() {
-        // Logic for saving the schedule
+    private void saveSchedule(ActionEvent event) throws IOException {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Default Department Schedule Added");
+        alert.setHeaderText(null);
+        alert.setContentText("Default Department Schedule Saved Succesfully");
+        alert.showAndWait();
+        loadFXML("main.fxml", event);
     }
 
     @FXML

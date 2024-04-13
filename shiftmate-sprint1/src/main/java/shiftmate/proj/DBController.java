@@ -8,6 +8,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
 /* PUBLIC CLASSES WITHIN THE DATABASE CONTROLLER
 addEmployee
     Function:
@@ -65,7 +68,17 @@ getDepartmentEmployees
     static String url = "jdbc:mysql://dcm.uhcl.edu/sens24g2";
     static String username = "sens24g2";
     static String password = "Sce9902292!!";
- 
+
+    private static LocalTime parseTime(String timeString) {
+        // Use DateTimeFormatter to parse the time string
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
+        return LocalTime.parse(timeString, formatter);
+    }
+
+    private static String formatTime(LocalTime time) {
+        // Format the LocalTime object into "HH:mm:ss" format
+        return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
+    }
     //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
     private static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
@@ -458,7 +471,14 @@ getDepartmentEmployees
     public static int addShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("defaultschedule");
         String addShiftQuery = "INSERT INTO " + table + " (depID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?)";
-    
+        // Parse the start and end time strings into LocalTime objects
+        LocalTime startTimeParsed = parseTime(startTime);
+        LocalTime endTimeParsed = parseTime(endTime);
+        
+        // Format the LocalTime objects into strings in "HH:mm:ss" format
+        String startTimeFormatted = formatTime(startTimeParsed);
+        String endTimeFormatted = formatTime(endTimeParsed);
+        
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             // Get department ID
             int depID = getDepartmentID(depName);
@@ -467,8 +487,8 @@ getDepartmentEmployees
                 try (PreparedStatement preparedStatement = connection.prepareStatement(addShiftQuery, Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setInt(1, depID);
                     preparedStatement.setString(2, dayOfWeek);
-                    preparedStatement.setString(3, startTime);
-                    preparedStatement.setString(4, endTime);
+                    preparedStatement.setString(3, startTimeFormatted);
+                    preparedStatement.setString(4, endTimeFormatted);
                     int rowsAffected = preparedStatement.executeUpdate();
                     if (rowsAffected > 0) {
                         ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
