@@ -88,14 +88,18 @@ public class DepartmentController implements Initializable
 
             if (valid) {
                 AlertWindow("Success", "You have successfully added a department");
-
                 // Load the new JavaFX page
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("createDefaultSchedule.fxml"));
                 Parent root = loader.load();
+                CreateDefaultScheduleController controller = loader.getController();
+                controller.setDepName(depName); // Set the department name
+                System.out.println("Value in DepartmentController.java");
+                System.out.println(depName);
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
                 stage.setScene(scene);
                 stage.show();
+
             } else {
                 AlertWindow("Fail", "Failed to add department");
             }

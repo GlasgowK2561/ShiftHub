@@ -270,6 +270,7 @@ getDepartmentEmployees
                 }
             }
         } catch (SQLException e) {
+            System.out.println(e);
             try {
                 if (connection != null) { // Check if connection is not null before rollback
                     System.err.println("Transaction is being rolled back");
@@ -307,7 +308,7 @@ getDepartmentEmployees
         }
     }    
     private static boolean createDefaultDepartmentTable(String depName) {
-        String tableName = "DefaultShifts_" + depName.replace(" ", "_"); // Replace spaces with underscores
+        String tableName = depName.concat("DefaultSchedule");
         String query = "CREATE TABLE " + tableName + " ( " +
                         "ShiftID INT PRIMARY KEY, " +
                         "DepID INT, " +
@@ -375,40 +376,93 @@ getDepartmentEmployees
     }
 
     public static boolean deleteDepartment(int depID) {
-        String query = "DELETE FROM departments WHERE depID = ?";
+        String querySelect = "SELECT depName FROM departments WHERE depID = ?";
+        String queryDelete = "DELETE FROM departments WHERE depID = ?";
+        Connection connection = null;
         try {
-            Connection connection = DriverManager.getConnection(url, username, password);
-            try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
-                connection.setAutoCommit(false);
-                prepstmt.setInt(1, depID);
-
-                int rowsAffected = prepstmt.executeUpdate();
-                connection.commit();
-                if (rowsAffected > 0) {
-                    System.out.println("Department deleted successfully.");
-                    return true;
-                } else {
-                    System.out.println("Department with ID " + depID + " not found.");
-                    return false;
+            connection = DriverManager.getConnection(url, username, password);
+            connection.setAutoCommit(false);
+    
+            // Retrieve department name associated with the department ID
+            String depName = null;
+            try (PreparedStatement selectStmt = connection.prepareStatement(querySelect)) {
+                selectStmt.setInt(1, depID);
+                ResultSet resultSet = selectStmt.executeQuery();
+                if (resultSet.next()) {
+                    depName = resultSet.getString("depName");
                 }
             }
+    
+            // If department name is retrieved, proceed with deletion
+            if (depName != null) {
+                try (PreparedStatement deleteStmt = connection.prepareStatement(queryDelete)) {
+                    deleteStmt.setInt(1, depID);
+                    int rowsAffected = deleteStmt.executeUpdate();
+                    if (rowsAffected > 0) {
+                        System.out.println("Department '" + depName + "' deleted successfully.");
+                        // Call deleteDefaultScheduleTable function using department name
+                        boolean affirm = deleteDefaultScheduleTable(connection, depName);
+                        connection.commit();
+                        return true;
+                    } else {
+                        System.out.println("Department with ID " + depID + " not found.");
+                        return false;
+                    }
+                }
+            } else {
+                System.out.println("Department with ID " + depID + " not found.");
+                return false;
+            }
         } catch (SQLException e) {
-            try{
-                System.err.println("Transaction is being rolled back");
-                connection.rollback();
-            } catch (SQLException excep) {}
+            try {
+                if (connection != null) {
+                    System.err.println("Transaction is being rolled back");
+                    connection.rollback();
+                }
+            } catch (SQLException excep) {
+                excep.printStackTrace();
+            }
+            e.printStackTrace();
+            return false;
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.setAutoCommit(true);
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+    private static boolean deleteDefaultScheduleTable(Connection connection, String depName) {
+        String table = "defaultschedule";
+        String defaultScheduleTableName = depName + table;
+        String queryDelete = "DROP TABLE " + defaultScheduleTableName;
+        
+        try (Statement statement = connection.createStatement()) {
+            int rowsAffected = statement.executeUpdate(queryDelete);
+            if (rowsAffected > 0) {
+                System.out.println("Department schedule table '" + defaultScheduleTableName + "' deleted successfully.");
+                return true;
+            } else {
+                System.out.println("Department schedule table with name '" + defaultScheduleTableName + "' not found.");
+                return false;
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }    
+
     // Get shifts from default department schedule
-    public static LinkedList<Hashtable<String,String>> getDefaultSchedule(int employeeID){
-        String params[] = {Integer.toString(employeeID)};
-        // WRITE QUERY HERE
-        return getParameterizedQuery("IDK YET PHAM", 0 , params);
-        /* REFERENCE CODE
-        return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
-        */
+    public static LinkedList<Hashtable<String,String>> getDefaultSchedule(String depName){
+        System.out.println("GETTING DEFAULT SCHEDULE");
+        System.out.println("Value in DBController.java");
+        System.out.println(depName);
+        String table = "defaultschedule";
+        String params[] = {depName.concat(table)};
+        return getParameterizedQuery("SELECT d.* FROM ? as d;", 1, params);       
     }
     // Add shift to default department schedule
     // Edit shift in default department schedule
