@@ -321,8 +321,6 @@ public class CreateDefaultScheduleController implements Initializable {
             switch (day.toLowerCase()) {
                 case "monday":
                     newShift.setMondayShift(Arrays.asList(startTime + " - " + endTime));
-                    System.out.println("MONDAY SHIFT ADDED");
-                    DefaultScheduleTable();
                     break;
                 case "tuesday":
                     newShift.setTuesdayShift(Arrays.asList(startTime + " - " + endTime));

@@ -36,6 +36,7 @@
                 <Button text="Add Shift (Friday)" onAction="#addShiftFriday" />
                 <Button text="Add Shift (Saturday)" onAction="#addShiftSaturday" />
                 <Button text="Add Shift (Sunday)" onAction="#addShiftSunday" />
+                
             </HBox>
             
             <!-- Button to save the schedule -->
