@@ -536,14 +536,16 @@ getDepartmentEmployees
         }
     }    
     // Edit shift in default department schedule
-    public static boolean editShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime){
+    public static boolean editShiftDefaultSchedule(String depName, String oldStartTime, String oldEndTime, String dayOfWeek, String newStartTime, String newEndTime){
         String table = depName.concat("defaultschedule");
         String updateShiftQuery = "UPDATE " + table + " SET startTime = ?, endTime = ? WHERE dayOfWeek = ? AND startTime = ? AND endTime = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             try (PreparedStatement preparedStatement = connection.prepareStatement(updateShiftQuery)) {
-                preparedStatement.setString(1, dayOfWeek);
-                preparedStatement.setString(2, startTime);
-                preparedStatement.setString(3, endTime);
+                preparedStatement.setString(1, newStartTime);
+                preparedStatement.setString(2, newEndTime);
+                preparedStatement.setString(3, dayOfWeek);
+                preparedStatement.setString(4, oldStartTime);
+                preparedStatement.setString(5, oldEndTime);
                 int rowsAffected = preparedStatement.executeUpdate();
                 if (rowsAffected > 0) {
                     System.out.println("Shift updated successfully.");

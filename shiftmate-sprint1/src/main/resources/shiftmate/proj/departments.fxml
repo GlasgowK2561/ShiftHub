@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
@@ -14,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.DepartmentController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.DepartmentController">
    <left>
       <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
@@ -104,8 +109,8 @@
             </Label>
             <TableView fx:id="departmentTableView" layoutX="175.0" layoutY="163.0" prefHeight="320.0" prefWidth="681.0" AnchorPane.leftAnchor="174.0" AnchorPane.rightAnchor="173.0">
                <columns>
-                  <TableColumn fx:id="depNamecolumn" prefWidth="288.0" text="Department Name" />
-                  <TableColumn fx:id="depManagercolumn" prefWidth="211.0" text="Department Manager" />
+                  <TableColumn fx:id="depNamecolumn" prefWidth="349.0" text="Department Name" />
+                  <TableColumn fx:id="depManagercolumn" prefWidth="332.0" text="Department Manager" />
                </columns>
             </TableView>
             <Label layoutX="174.0" layoutY="530.0" text="Department ID" />
@@ -114,10 +119,11 @@
             <TextField fx:id="depNameTextField" layoutX="299.0" layoutY="590.0" />
             <TextField fx:id="depManagerTextField" layoutX="299.0" layoutY="650.0" />
             <Label layoutX="174.0" layoutY="650.0" text="Department Manager" />
-            <Button fx:id="addDepartmentOnAction" layoutX="707.0" layoutY="530.0" mnemonicParsing="false" onAction="#addDepartmentOnAction" text="Add" />
-            <Button fx:id="editDepartmentOnAction" layoutX="757.0" layoutY="530.0" mnemonicParsing="false" onAction="#editDepartmentOnAction" text="Edit" />
-            <Button fx:id="deleteDepartmentOnAction" layoutX="807.0" layoutY="530.0" mnemonicParsing="false" onAction="#deleteDepartmentOnAction" text="Delete" />
-            <Button fx:id="saveDepartmentOnAction" layoutX="657.0" layoutY="530.0" mnemonicParsing="false" onAction="#saveDepartmentOnAction" text="Save" />
+            <Button fx:id="addDepartmentOnAction" layoutX="173.0" layoutY="719.0" mnemonicParsing="false" onAction="#addDepartmentOnAction" text="Add" />
+            <Button fx:id="saveDepartmentOnAction" layoutX="248.0" layoutY="719.0" mnemonicParsing="false" onAction="#saveDepartmentOnAction" text="Save" />
+            <Button fx:id="editScheduleOnAction" layoutX="350.0" layoutY="483.0" mnemonicParsing="false" onAction="#editScheduleOnAction" text="Edit Schedule" />
+            <Button fx:id="editDepartmentOnAction" layoutX="174.0" layoutY="483.0" mnemonicParsing="false" onAction="#editDepartmentOnAction" text="Edit" />
+            <Button fx:id="deleteDepartmentOnAction" layoutX="249.0" layoutY="483.0" mnemonicParsing="false" onAction="#deleteDepartmentOnAction" text="Delete" />
          </children></AnchorPane>
    </center>
 </BorderPane>

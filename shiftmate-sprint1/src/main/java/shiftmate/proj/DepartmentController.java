@@ -140,7 +140,28 @@ public class DepartmentController implements Initializable
             }
         });
     }
-
+    @FXML
+    void editScheduleOnAction(ActionEvent event) throws IOException {
+        Departments slctdDep = departmentTableView.getSelectionModel().getSelectedItem();
+    
+        if (slctdDep != null) {
+            int depID = slctdDep.getDepID();
+            String depName = slctdDep.getDepName();
+    
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("createDefaultSchedule.fxml"));
+            Parent root = loader.load();
+            CreateDefaultScheduleController controller = loader.getController();
+            controller.setDepName(depName);
+            controller.setDepID(depID);
+            controller.initController();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
+        } else {
+            AlertWindow("Select Department", "Please select a department you'd like to edit");
+        }
+    }    
     // edit department. Select the department you'd like to edit and click edit button. The Text will go into the TextBoxes
     @FXML
     void editDepartmentOnAction(ActionEvent event) throws IOException     
@@ -210,7 +231,6 @@ public class DepartmentController implements Initializable
             }
         }
     }
-    
 
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
@@ -256,8 +276,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
-
+    
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
     {
@@ -275,12 +294,13 @@ public class DepartmentController implements Initializable
 
     void AlertWindow(String title, String message, String headerText, AlertType alertType) 
     {
-        Alert alert = new Alert(alertType);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(headerText);
         alert.setContentText(message);
-        alert.showAndWait();
+        alert.show(); // Change showAndWait() to show()
     }
+    
     public void initialize(URL url, ResourceBundle rb)
     {
         DepartmentTable();

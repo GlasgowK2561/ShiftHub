@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -8,41 +12,47 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
     <center>
-        <VBox xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" spacing="10" alignment="TOP_CENTER">
-            <Label text="Weekly Schedule" />
-            
-            <!-- TableView to display shifts for each day -->
-            <TableView fx:id="scheduleTableView" prefHeight="400.0" prefWidth="600.0">
-                <columns>
-                    <!-- Other columns -->
-                    <TableColumn fx:id="mondayColumn" text="Monday" />
-                    <TableColumn fx:id="tuesdayColumn" text="Tuesday" />
-                    <TableColumn fx:id="wednesdayColumn" text="Wednesday" />
-                    <TableColumn fx:id="thursdayColumn" text="Thursday" />
-                    <TableColumn fx:id="fridayColumn" text="Friday" />
-                    <TableColumn fx:id="saturdayColumn" text="Saturday" />
-                    <TableColumn fx:id="sundayColumn" text="Sunday" />
-                </columns>
-            </TableView>
-
-            <!-- Button to add a shift for each day -->
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Add Shift (Monday)" onAction="#addShiftMonday" />
-                <Button text="Add Shift (Tuesday)" onAction="#addShiftTuesday" />
-                <Button text="Add Shift (Wednesday)" onAction="#addShiftWednesday" />
-                <Button text="Add Shift (Thursday)" onAction="#addShiftThursday" />
-                <Button text="Add Shift (Friday)" onAction="#addShiftFriday" />
-                <Button text="Add Shift (Saturday)" onAction="#addShiftSaturday" />
-                <Button text="Add Shift (Sunday)" onAction="#addShiftSunday" />
-                
-            </HBox>
-            
-            <!-- Button to save the schedule -->
-            <HBox spacing="10" alignment="CENTER">
-                <Button text="Save Schedule" onAction="#saveSchedule" />
-            </HBox>
+        <VBox alignment="TOP_CENTER" spacing="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
+           <children>
+               <Label text="Weekly Schedule">
+               <font>
+                  <Font size="30.0" />
+               </font></Label>
+            <Label contentDisplay="TEXT_ONLY" text="Double click on a shift to edit details" />
+               
+               <!-- TableView to display shifts for each day -->
+               <TableView fx:id="scheduleTableView" prefHeight="517.0" prefWidth="1244.0">
+                   <columns>
+                       <!-- Other columns -->
+                       <TableColumn fx:id="mondayColumn" prefWidth="184.0" text="Monday" />
+                       <TableColumn fx:id="tuesdayColumn" prefWidth="166.0" text="Tuesday" />
+                       <TableColumn fx:id="wednesdayColumn" prefWidth="182.0" text="Wednesday" />
+                       <TableColumn fx:id="thursdayColumn" prefWidth="189.0" text="Thursday" />
+                       <TableColumn fx:id="fridayColumn" prefWidth="181.0" text="Friday" />
+                       <TableColumn fx:id="saturdayColumn" prefWidth="163.0" text="Saturday" />
+                       <TableColumn fx:id="sundayColumn" prefWidth="178.0" text="Sunday" />
+                   </columns>
+               </TableView>
+   
+               <!-- Button to add a shift for each day -->
+               <HBox alignment="CENTER" spacing="10" />
+               
+               <!-- Button to save the schedule -->
+               <HBox alignment="CENTER" spacing="10">
+                  <children>
+                      <Button onAction="#addShiftMonday" text="Add Shift (Monday)" />
+                      <Button onAction="#addShiftTuesday" text="Add Shift (Tuesday)" />
+                      <Button onAction="#addShiftWednesday" text="Add Shift (Wednesday)" />
+                      <Button onAction="#addShiftThursday" text="Add Shift (Thursday)" />
+                      <Button onAction="#addShiftFriday" text="Add Shift (Friday)" />
+                      <Button onAction="#addShiftSaturday" text="Add Shift (Saturday)" />
+                      <Button onAction="#addShiftSunday" text="Add Shift (Sunday)" />
+                  </children>
+               </HBox>
+                <Button onAction="#saveSchedule" text="Save Schedule" />
+           </children>
         </VBox>
     </center>
 </BorderPane>

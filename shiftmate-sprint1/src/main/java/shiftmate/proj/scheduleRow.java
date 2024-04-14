@@ -63,5 +63,45 @@ public String getSaturdayShift(){
 public String getSundayShift(){
     return sundayShift;
 }
-
+public int getShiftCount() {
+    int count = 0;
+    if (!mondayShift.isEmpty()) count++;
+    if (!tuesdayShift.isEmpty()) count++;
+    if (!wednesdayShift.isEmpty()) count++;
+    if (!thursdayShift.isEmpty()) count++;
+    if (!fridayShift.isEmpty()) count++;
+    if (!saturdayShift.isEmpty()) count++;
+    if (!sundayShift.isEmpty()) count++;
+    return count;
+}
+public String getShift(String dayOfWeek) {
+    switch (dayOfWeek) {
+        case "Monday":
+            return mondayShift;
+        case "Tuesday":
+            return tuesdayShift;
+        case "Wednesday":
+            return wednesdayShift;
+        case "Thursday":
+            return thursdayShift;
+        case "Friday":
+            return fridayShift;
+        case "Saturday":
+            return saturdayShift;
+        case "Sunday":
+            return sundayShift;
+        default:
+            return ""; // Handle any unexpected cases
+    }
+}
+@Override
+public String toString() {
+    return "Monday Shift: " + mondayShift + "\n" +
+           "Tuesday Shift: " + tuesdayShift + "\n" +
+           "Wednesday Shift: " + wednesdayShift + "\n" +
+           "Thursday Shift: " + thursdayShift + "\n" +
+           "Friday Shift: " + fridayShift + "\n" +
+           "Saturday Shift: " + saturdayShift + "\n" +
+           "Sunday Shift: " + sundayShift;
+}
 }
