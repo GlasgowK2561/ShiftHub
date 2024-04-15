@@ -15,7 +15,6 @@ public class EmployeeInfo
 public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
 String phone, String startDate, String contact, String contactPhone)
 {
-
     this.employeeID = employeeID;
     this.depID = depID;
     this.fName = fname;

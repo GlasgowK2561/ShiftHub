@@ -1,6 +1,6 @@
 package shiftmate.proj;
 
-public class ScheduleRow {
+public class WeeklyScheduleRow {
     private String mondayShift;
     private String tuesdayShift;
     private String wednesdayShift;
@@ -9,7 +9,7 @@ public class ScheduleRow {
     private String saturdayShift;
     private String sundayShift;
 
-public ScheduleRow(String mondayShift, String tuesdayShift, String wednesdayShift, String thursdayShift, String fridayShift, String saturdayShift, String sundayShift) {
+public WeeklyScheduleRow(String mondayShift, String tuesdayShift, String wednesdayShift, String thursdayShift, String fridayShift, String saturdayShift, String sundayShift) {
     this.mondayShift = mondayShift;
     this.tuesdayShift = tuesdayShift;
     this.wednesdayShift = wednesdayShift;
@@ -89,6 +89,42 @@ public String getShift(String dayOfWeek) {
             return sundayShift;
         default:
             return ""; // Handle any unexpected cases
+    }
+}
+public int getEmployeeID(String dayOfWeek) {
+    int employeeID;
+    String[] parts;
+    switch (dayOfWeek) {
+        case "Monday":
+            parts = mondayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Tuesday":
+            parts = tuesdayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Wednesday":
+            parts = wednesdayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Thursday":
+            parts = thursdayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Friday":
+            parts = fridayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Saturday":
+            parts = saturdayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        case "Sunday":
+            parts = sundayShift.split(":"); // Split the string by ":" to separate employee ID
+            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
+            return employeeID;
+        default:
+            return -1; // Handle any unexpected cases by returning a default value (e.g., -1)
     }
 }
 @Override

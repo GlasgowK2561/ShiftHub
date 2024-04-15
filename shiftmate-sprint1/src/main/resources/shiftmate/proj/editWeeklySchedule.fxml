@@ -16,7 +16,7 @@
     <center>
         <VBox alignment="TOP_CENTER" spacing="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
            <children>
-               <Label text="Default Weekly Schedule">
+               <Label text="Weekly Schedule">
                <font>
                   <Font size="30.0" />
                </font></Label>

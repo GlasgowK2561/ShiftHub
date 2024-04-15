@@ -1,19 +1,15 @@
 package shiftmate.proj;
 
-import java.sql.Time;
-
 public class Availability 
 {
     private int availID;
     private int employeeID;
     private String weekdayDate;
-    private Time startTime;
-    private Time endTime;
+    private String startTime;
+    private String endTime;
     private String availType;    
     
-public Availability(int availID, int employeeID, String weekdayDate,Time startTime,
-Time endTime, String availType)
-
+public Availability(int availID, int employeeID, String weekdayDate,String startTime, String endTime, String availType)
 {
     this.availID = availID;
     this.employeeID = employeeID;
@@ -53,22 +49,22 @@ public void setWeekdayDate(String weekdayDate)
     this.weekdayDate = weekdayDate;
 }
 
-public Time getStartTime()     
+public String getStartTime()     
 {
     return startTime;
 }
 
-public void setStartTime(Time startTime)       
+public void setStartTime(String startTime)       
 {
     this.startTime = startTime;
 }
 
-public Time getEndTime() 
+public String getEndTime() 
 {
     return endTime;
 }
 
-public void setEndTime(Time endTime)
+public void setEndTime(String endTime)
 {
     this.endTime = endTime;
 }

@@ -583,8 +583,136 @@ getDepartmentEmployees
             return false;
         }
     }
-    // Create weekly schedule
-    // Get weekly schedule
-    // Edit weekly schedule
-    // Delete weekly schedule
-}
+    // Create weekly schedule Table
+    public static boolean createWeeklyScheduleTable(String depName) {
+        String tableName = depName.concat("WeeklySchedule");
+        String shiftIDName = depName + "ShiftID";
+        String query = "CREATE TABLE " + tableName + " ( " + shiftIDName +
+                        " INT AUTO_INCREMENT PRIMARY KEY, " +
+                        "DepID INT, " +
+                        "WeekStartDate DATE, " +  // Add column for week start date
+                        "EmployeeID INT, " +
+                        "DayOfWeek VARCHAR(255), " +
+                        "StartTime TIME, " +
+                        "EndTime TIME, " +
+                        "FOREIGN KEY (DepID) REFERENCES Departments(depID), " +
+                        "FOREIGN KEY (EmployeeID) REFERENCES EmployeeInfo(employeeID)" +
+                        ")";
+        try (Connection connection = DriverManager.getConnection(url, username, password);
+             Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(query);
+            System.out.println("Table " + tableName + " created successfully.");
+            createWeeklySchedule(depName);
+            // CHECK IF IT WORKED
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+ }
+    public static LinkedList<Hashtable<String,String>> getAvailabilities(String depName){
+        String query = "SELECT a.*, e.fname, e.lname, e.maxWeeklyHours FROM availability AS a " +
+                    "INNER JOIN employeeinfo AS e ON a.employeeID = e.employeeID " +
+                    "INNER JOIN departments AS d ON e.depID = d.depID " +
+                    "WHERE d.depName = ?";
+        String params[] = {depName};
+        return getParameterizedQuery(query, 1, params);
+    }
+    private static Boolean createWeeklySchedule(String depName) {
+        LinkedList<Hashtable<String, String>> weeklySchedule = CreateWeeklyScheduleUtils.buildWeeklySchedule(depName);
+        boolean allShiftsAdded = true; // Flag to track if all shifts were successfully added
+        // NEED TO FIX FOR IF ANY DATA IS EMPTY
+        for (Hashtable<String, String> shift : weeklySchedule) {
+            int employeeID = Integer.parseInt(shift.get("employeeID"));
+            String dayOfWeek = shift.get("dayOfWeek");
+            String startTime = shift.get("startTime");
+            String endTime = shift.get("endTime");
+
+            int scheduleID = addShiftWeeklySchedule(depName, employeeID, dayOfWeek, startTime, endTime);
+            if (scheduleID == -1) {
+                allShiftsAdded = false;
+                break; // Exit the loop if any shift fails to be added
+            }
+        }
+        return allShiftsAdded;
+    }
+    public static LinkedList<Hashtable<String,String>> getWeeklySchedule(String depName){
+        System.out.println(depName);
+        String table = depName.concat("weeklyschedule");
+        String query = "SELECT * FROM " + table;
+        return getParameterizedQuery(query, 0, null);
+    }
+    public static int addShiftWeeklySchedule(String depName, int employeeID, String dayOfWeek, String startTime, String endTime) {
+        String table = depName.concat("weeklyschedule");
+        String addShiftQuery = "INSERT INTO " + table + " (depID, employeeID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
+        // Parse the start and end time strings into LocalTime objects
+        LocalTime startTimeParsed = parseTime(startTime);
+        LocalTime endTimeParsed = parseTime(endTime);
+        
+        // Format the LocalTime objects into strings in "HH:mm:ss" format
+        String startTimeFormatted = formatTime(startTimeParsed);
+        String endTimeFormatted = formatTime(endTimeParsed);
+        
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            // Get department ID
+            int depID = getDepartmentID(depName);
+            if (depID != -1) {
+                // Department exists, proceed to add shift
+                try (PreparedStatement preparedStatement = connection.prepareStatement(addShiftQuery, Statement.RETURN_GENERATED_KEYS)) {
+                    preparedStatement.setInt(1, depID);
+                    preparedStatement.setInt(1, employeeID);
+                    preparedStatement.setString(2, dayOfWeek);
+                    preparedStatement.setString(3, startTimeFormatted);
+                    preparedStatement.setString(4, endTimeFormatted);
+                    int rowsAffected = preparedStatement.executeUpdate();
+                    if (rowsAffected > 0) {
+                        ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
+                        if (generatedKeys.next()) {
+                            int scheduleID = generatedKeys.getInt(1);
+                            System.out.println("Shift added successfully with scheduleID: " + scheduleID);
+                            return scheduleID;
+                        } else {
+                            System.out.println("Failed to retrieve scheduleID.");
+                            return -1;
+                        }
+                    } else {
+                        System.out.println("Failed to add shift.");
+                        return -1;
+                    }
+                }
+            } else {
+                System.out.println("Department does not exist.");
+                return -1;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return -1;
+        }
+    }  
+    public static boolean editShiftWeeklySchedule(String depName, int oldEmployeeID, String oldStartTime, String oldEndTime, String dayOfWeek, int newEmployeeID, String newStartTime, String newEndTime) {
+        String table = depName + "weeklyschedule";
+        String updateShiftQuery = "UPDATE " + table + " SET startTime = ?, endTime = ?, employeeID = ? WHERE dayOfWeek = ? AND startTime = ? AND endTime = ? AND employeeID = ?";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            try (PreparedStatement preparedStatement = connection.prepareStatement(updateShiftQuery)) {
+                preparedStatement.setString(1, newStartTime);
+                preparedStatement.setString(2, newEndTime);
+                preparedStatement.setInt(3, newEmployeeID); // Set the new employee ID
+                preparedStatement.setString(4, dayOfWeek);
+                preparedStatement.setString(5, oldStartTime);
+                preparedStatement.setString(6, oldEndTime);
+                preparedStatement.setInt(7, oldEmployeeID); // Use the old employee ID in the WHERE clause
+                int rowsAffected = preparedStatement.executeUpdate();
+                if (rowsAffected > 0) {
+                    System.out.println("Shift updated successfully.");
+                    return true;
+                } else {
+                    System.out.println("Failed to update shift.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+ }    
