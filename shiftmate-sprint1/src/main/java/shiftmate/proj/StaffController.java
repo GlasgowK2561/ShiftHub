@@ -89,7 +89,7 @@ public class StaffController implements Initializable
     void createScheduleButtonOnAction(ActionEvent event) throws IOException
     {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("createschedules.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("createWeeklySchedule.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
     }
@@ -128,7 +128,8 @@ public class StaffController implements Initializable
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
     {
-       
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.close();
     }
    
     public void initialize(URL url, ResourceBundle rb)
