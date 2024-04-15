@@ -94,19 +94,19 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <HBox layoutX="527.0" layoutY="41.0" prefHeight="51.0" prefWidth="426.0">
+            <HBox alignment="CENTER" layoutX="572.0" layoutY="41.0" prefHeight="51.0" prefWidth="264.0">
                <children>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #E6FFFD;" text="&lt;">
+                  <Button mnemonicParsing="false" onAction="#previousScheduleOnAction" style="-fx-background-color: #E6FFFD;" text="&lt;">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
                   </Button>
-                  <Label text="This label will have week date range">
+                  <Label fx:id="dateRangeLabel" contentDisplay="CENTER" prefHeight="27.0" prefWidth="171.0">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Label>
-                  <Button mnemonicParsing="false" style="-fx-background-color: #E6FFFD;" text="&gt;">
+                  <Button mnemonicParsing="false" onAction="#nextScheduleOnAction" prefHeight="39.0" prefWidth="15.0" style="-fx-background-color: #E6FFFD;" text="&gt;">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font>
