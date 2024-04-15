@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -12,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.MainController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.MainController">
    <left>
       <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
          <children>
@@ -112,40 +113,18 @@
                   </Button>
                </children>
             </HBox>
-            <TabPane layoutX="8.0" layoutY="175.0" prefHeight="616.0" prefWidth="1014.0" tabClosingPolicy="UNAVAILABLE" tabMinWidth="154.0">
-              <tabs>
-                <Tab text="Grocery">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="243.0" prefWidth="1014.0" style="-fx-background-color: white;" />
-                  </content>
-                </Tab>
-                <Tab text="Checkout">
-                  <content>
-                    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                  </content>
-                </Tab>
-                  <Tab text="Beauty">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                     </content>
-                  </Tab>
-                  <Tab text="Clothes">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                     </content>
-                  </Tab>
-                  <Tab text="Fulfillment">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                     </content>
-                  </Tab>
-                  <Tab text="Deli">
-                     <content>
-                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-background-color: white;" />
-                     </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
+            <TableView fx:id="schedulesTableView" layoutX="3.0" layoutY="148.0" prefHeight="398.0" prefWidth="1020.0">
+              <columns>
+                <TableColumn fx:id="mondayColumn" prefWidth="117.0" text="Monday" />
+                <TableColumn fx:id="tuesdayColumn" prefWidth="148.0" text="Tuesday" />
+                  <TableColumn fx:id="wednesdayColumn" prefWidth="185.0" text="Wednesday" />
+                  <TableColumn fx:id="thursdayColumn" prefWidth="150.0" text="Thursday" />
+                  <TableColumn fx:id="fridayColumn" prefWidth="150.0" text="Friday" />
+                  <TableColumn fx:id="saturdayColumn" prefWidth="150.0" text="Saturday" />
+                  <TableColumn fx:id="sundayColumn" prefWidth="118.0" text="Sunday" />
+              </columns>
+            </TableView>
+            <ComboBox fx:id="departmentComboBox" layoutX="858.0" layoutY="104.0" prefWidth="150.0" promptText="Select Department" />
          </children></AnchorPane>
    </center>
 </BorderPane>

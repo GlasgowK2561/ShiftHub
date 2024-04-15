@@ -1,5 +1,7 @@
 package shiftmate.proj;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +9,17 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Hashtable;
+import java.util.LinkedList;
 import java.util.ResourceBundle;
+
 
 
 public class MainController implements Initializable
@@ -19,6 +28,120 @@ public class MainController implements Initializable
 
     Parent scene;
 
+    @FXML
+    private TableView<WeeklyScheduleRow> schedulesTableView;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> mondayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> tuesdayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> wednesdayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> thursdayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> fridayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> saturdayColumn;
+    @FXML
+    private TableColumn<WeeklyScheduleRow, String> sundayColumn;
+
+    @FXML
+    private ComboBox<Departments> departmentComboBox;
+
+
+    private void populateWeeklyScheduleTable(String depName) {
+        schedulesTableView.getItems().clear();
+        LinkedList<Hashtable<String, String>> weeklyScheduleInformation = DBController.getWeeklySchedule(depName);
+        ObservableList<WeeklyScheduleRow> weeklyScheduleRows = FXCollections.observableArrayList();
+        for (Hashtable<String, String> data : weeklyScheduleInformation) {
+            String dayOfWeek = data.get("DayOfWeek");
+            String employeeFName = data.get("fname");
+            String employeeLName = data.get("lname");
+            String shiftStart = data.get("StartTime");
+            String shiftEnd = data.get("EndTime");
+            // Create a new WeeklyScheduleRow instance
+            WeeklyScheduleRow row = new WeeklyScheduleRow("", "", "", "", "", "", "");
+            // Set the shift for the corresponding day of the week
+            switch (dayOfWeek.toLowerCase()) {
+                case "monday":
+                    row.setMondayShift(employeeFName + " " + employeeLName + "\n" + shiftStart + " - " + shiftEnd);
+                    break;
+                case "tuesday":
+                    row.setTuesdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                case "wednesday":
+                    row.setWednesdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                case "thursday":
+                    row.setThursdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                case "friday":
+                    row.setFridayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                case "saturday":
+                    row.setSaturdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                case "sunday":
+                    row.setSundayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    break;
+                default:
+                    break;
+            }
+            // Add the schedule row to the list
+            weeklyScheduleRows.add(row);
+        }
+        schedulesTableView.setItems(weeklyScheduleRows);
+        mondayColumn.setCellValueFactory(new PropertyValueFactory<>("mondayShift"));
+        tuesdayColumn.setCellValueFactory(new PropertyValueFactory<>("tuesdayShift"));
+        wednesdayColumn.setCellValueFactory(new PropertyValueFactory<>("wednesdayShift"));
+        thursdayColumn.setCellValueFactory(new PropertyValueFactory<>("thursdayShift"));
+        fridayColumn.setCellValueFactory(new PropertyValueFactory<>("fridayShift"));
+        saturdayColumn.setCellValueFactory(new PropertyValueFactory<>("saturdayShift"));
+        sundayColumn.setCellValueFactory(new PropertyValueFactory<>("sundayShift"));
+    }
+
+    private void departmentsComboBox() 
+    { 
+       
+        LinkedList<Hashtable<String, String>> departmentsList = DBController.getDepartments();
+   
+        ObservableList<Departments> departmentNames = FXCollections.observableArrayList();
+
+        for (int i = 0; i < departmentsList.size(); i++)                
+        {
+            Hashtable<String,String> data = departmentsList.get(i);
+        
+            String depName = data.get("depName");
+            Departments dep = new Departments(0, depName, depName); 
+            departmentNames.add(dep);
+        }
+        departmentComboBox.setItems(departmentNames);
+
+        if (!departmentNames.isEmpty())
+        {
+            departmentComboBox.getSelectionModel().selectFirst();
+        }
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) 
+    {
+        departmentsComboBox();
+        departmentComboBox.setOnAction(event -> 
+        {
+            Departments selectedDepartment = departmentComboBox.getSelectionModel().getSelectedItem();
+
+            if (selectedDepartment != null) 
+            {
+                String depName = selectedDepartment.getDepName();
+
+                populateWeeklyScheduleTable(depName);
+            }
+
+        });
+      
+    }
+    
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {
@@ -70,11 +193,5 @@ public class MainController implements Initializable
     {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         stage.close();
-    }
-    
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-
     }
 }

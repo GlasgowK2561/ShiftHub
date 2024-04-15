@@ -42,4 +42,11 @@ public void setDepManager(String depManager)
 {
     this.depManager = depManager;
 }
+
+
+@Override
+    public String toString() {
+        return depName;
+    }
+    
 }
