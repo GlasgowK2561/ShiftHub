@@ -92,40 +92,16 @@ public String getShift(String dayOfWeek) {
     }
 }
 public int getEmployeeID(String dayOfWeek) {
-    int employeeID;
-    String[] parts;
-    switch (dayOfWeek) {
-        case "Monday":
-            parts = mondayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Tuesday":
-            parts = tuesdayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Wednesday":
-            parts = wednesdayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Thursday":
-            parts = thursdayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Friday":
-            parts = fridayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Saturday":
-            parts = saturdayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        case "Sunday":
-            parts = sundayShift.split(":"); // Split the string by ":" to separate employee ID
-            employeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-            return employeeID;
-        default:
-            return -1; // Handle any unexpected cases by returning a default value (e.g., -1)
-    }
+    String shiftDetails = getShift(dayOfWeek);
+    String[] parts = shiftDetails.split("\n");
+    // Now parts[0] will contain the employee name, and parts[1] will contain the shift information
+    String employeeName = parts[0]; // "John Doe"    
+    // Split the employee name string by space character to separate first name and last name
+    String[] nameParts = employeeName.split(" ");
+    String firstName = nameParts[0]; // "John"
+    String lastName = nameParts[1]; // "Doe"
+    int employeeID = DBController.getEmployeeID(firstName, lastName);
+    return employeeID;
 }
 @Override
 public String toString() {

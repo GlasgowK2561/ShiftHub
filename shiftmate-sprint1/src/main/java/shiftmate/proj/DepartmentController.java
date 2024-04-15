@@ -32,8 +32,6 @@ public class DepartmentController implements Initializable
 
     @FXML
     private TableView <Departments> departmentTableView;
-    //@FXML
-    //private TableColumn<Departments, Integer> depIDcolumn;
     @FXML
     private TableColumn<Departments, String> depNamecolumn;
     @FXML
@@ -85,9 +83,6 @@ public class DepartmentController implements Initializable
         } else {
             // Call method to add department to the database
             boolean valid = DBController.addDepartment(depName, depManager);
-            System.out.println("GETTING DEPID");
-            int depID = DBController.getDepartmentID(depName);
-            System.out.println(depID);
             if (valid) {
                 AlertWindow("Success", "You have successfully added a department");
                 // Load the new JavaFX page
@@ -95,7 +90,6 @@ public class DepartmentController implements Initializable
                 Parent root = loader.load();
                 CreateDefaultScheduleController controller = loader.getController();
                 controller.setDepName(depName); // Set the department name
-                controller.setDepID(depID);
                 controller.initController(); // Initialize the controller manually
                 Scene scene = new Scene(root);
                 Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -106,7 +100,6 @@ public class DepartmentController implements Initializable
             }
         }
     }
-    //delete selected department
     @FXML
     void deleteDepartmentOnAction (ActionEvent event) throws IOException
     {
@@ -143,16 +136,12 @@ public class DepartmentController implements Initializable
     @FXML
     void editScheduleOnAction(ActionEvent event) throws IOException {
         Departments slctdDep = departmentTableView.getSelectionModel().getSelectedItem();
-    
         if (slctdDep != null) {
-            int depID = slctdDep.getDepID();
             String depName = slctdDep.getDepName();
-    
             FXMLLoader loader = new FXMLLoader(getClass().getResource("createDefaultSchedule.fxml"));
             Parent root = loader.load();
             CreateDefaultScheduleController controller = loader.getController();
             controller.setDepName(depName);
-            controller.setDepID(depID);
             controller.initController();
             Scene scene = new Scene(root);
             Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();

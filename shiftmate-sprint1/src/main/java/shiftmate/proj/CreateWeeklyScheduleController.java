@@ -93,7 +93,6 @@ public class CreateWeeklyScheduleController implements Initializable
             }
         }
     }
-
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {

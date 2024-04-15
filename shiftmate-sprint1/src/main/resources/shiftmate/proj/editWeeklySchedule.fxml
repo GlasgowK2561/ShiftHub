@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditWeeklyScheduleController">
     <center>
         <VBox alignment="TOP_CENTER" spacing="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
            <children>
@@ -23,7 +23,7 @@
             <Label contentDisplay="TEXT_ONLY" text="Double click on a shift to edit details" />
                
                <!-- TableView to display shifts for each day -->
-               <TableView fx:id="scheduleTableView" prefHeight="517.0" prefWidth="1244.0">
+               <TableView fx:id="weeklyScheduleTableView" prefHeight="517.0" prefWidth="1244.0">
                    <columns>
                        <!-- Other columns -->
                        <TableColumn fx:id="mondayColumn" prefWidth="184.0" text="Monday" />

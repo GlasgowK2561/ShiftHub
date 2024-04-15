@@ -69,7 +69,6 @@ public class CreateDefaultScheduleController implements Initializable {
     private Button saveButton;
 
     private String depName;
-    private Integer depID;
 
     public void setDepName(String depName) {
         this.depName = depName;
@@ -137,11 +136,8 @@ public class CreateDefaultScheduleController implements Initializable {
         }        
         return scheduleRows;
     }
-    public void setDepID(int depID) {
-        this.depID = depID;
-        }
+
     public void DefaultScheduleTable() {
-        System.out.println("POPULATING TABLE");
         scheduleTableView.getItems().clear();
     
         LinkedList<Hashtable<String, String>> defaultScheduleInformation = DBController.getDefaultSchedule(depName);
@@ -253,10 +249,8 @@ public class CreateDefaultScheduleController implements Initializable {
     }
     private void saveShift(String day, String startTime, String endTime) {
         // Find the DefaultSchedule object corresponding to the given day
-        System.out.println("SAVING SHIFT");
         Integer scheduleID = DBController.addShiftDefaultSchedule(depName, day, startTime, endTime);
         if (scheduleID != -1) {
-            System.out.println("USER HAS ADDED SHIFT");
             // Refresh the TableView to reflect the changes
             DefaultScheduleTable();
             
@@ -276,16 +270,13 @@ public class CreateDefaultScheduleController implements Initializable {
     }
     private void editShift(String shiftDetails, String day, String startTime, String endTime) {
         // Find the DefaultSchedule object corresponding to the given day
-        System.out.println("SAVING SHIFT");
         String[] times = shiftDetails.split("-");
-
         // Remove leading and trailing whitespace from each time
         String oldStartTime = times[0].trim();
         String oldEndTime = times[1].trim();
 
         Boolean checkEdit = DBController.editShiftDefaultSchedule(depName,oldStartTime, oldEndTime, day, startTime, endTime);
         if (checkEdit) {
-            System.out.println("USER HAS EDITED SHIFT");
             DefaultScheduleTable();
             // Close the dialog and show a confirmation message
             Stage stage = (Stage) saveButton.getScene().getWindow();
@@ -396,8 +387,6 @@ public class CreateDefaultScheduleController implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
-        // Check if depName is available
-        System.out.println("INITIALIZING");
         if (depName != null && !depName.isEmpty()) {
             DefaultScheduleTable();
             scheduleTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -455,7 +444,6 @@ public class CreateDefaultScheduleController implements Initializable {
     });
     }
     public void initController() {
-        System.out.println(depID);
         if (depName != null && !depName.isEmpty()) {
             DefaultScheduleTable();
             // Set cell value factories, etc.

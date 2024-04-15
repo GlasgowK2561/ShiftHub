@@ -9,15 +9,6 @@ import java.util.LinkedList;
 
 public class CreateWeeklyScheduleUtils {
     private static HashMap<Integer, Integer> scheduledHoursMap = new HashMap<>();
-    private static void printScheduledShiftsList(LinkedList<Hashtable<String, String>> scheduledShiftsList) {
-        for (Hashtable<String, String> scheduledShift : scheduledShiftsList) {
-            System.out.println("Scheduled Shift:");
-            for (String key : scheduledShift.keySet()) {
-                System.out.println(key + ": " + scheduledShift.get(key));
-            }
-            System.out.println(); // Add a blank line for separation
-        }
-    }    
     public static LinkedList<Hashtable<String, String>> buildWeeklySchedule(String depName) {
         // Retrieve employee availabilities and default schedule information
         LinkedList<Hashtable<String, String>> employeeAvailabilities = DBController.getAvailabilities(depName);
@@ -44,7 +35,6 @@ public class CreateWeeklyScheduleUtils {
                     if (scheduledShifts.contains(shiftIdentifier)) {
                         continue; // Skip to the next employee
                     }
-    
                     String employeeStartTime = employeeAvailability.get("StartTime");
                     String employeeEndTime = employeeAvailability.get("EndTime");
                     String employeeAvailType = employeeAvailability.get("availType");

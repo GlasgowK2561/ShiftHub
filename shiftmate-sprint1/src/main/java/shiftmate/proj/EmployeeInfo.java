@@ -11,7 +11,10 @@ public class EmployeeInfo
     private String startDate;
     private String contact;
     private String contactPhone;
-
+@Override
+public String toString() {
+    return fName + " " + lName; // Assuming fname and lname are fields representing first name and last name
+}
 public EmployeeInfo(int employeeID , int depID, String fname, String lName, String email, 
 String phone, String startDate, String contact, String contactPhone)
 {

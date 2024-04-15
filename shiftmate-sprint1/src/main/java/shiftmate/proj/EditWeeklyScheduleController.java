@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.URL;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -63,6 +64,7 @@ public class EditWeeklyScheduleController implements Initializable {
     private Button saveButton;
     private String depName;
     private int depID;
+    
     public void setDepName(String depName) {
         this.depName = depName;
     }
@@ -72,34 +74,87 @@ public class EditWeeklyScheduleController implements Initializable {
     private ObservableList<EmployeeInfo> getEmployeeList() {
         LinkedList<Hashtable<String,String>> employees = DBController.getDepartmentEmployees(depID);
         ObservableList<EmployeeInfo> employeeList = FXCollections.observableArrayList();
-    
         for (int i = 0; i < employees.size(); i++) {
             Hashtable<String,String> data = employees.get(i);
             int employeeID = Integer.parseInt(data.get("employeeID"));
-            int departmentID = Integer.parseInt(data.get("depID")); // Assuming depID is the department ID
             String fname = data.get("fname");
             String lname = data.get("lname");
-            String email = data.get("email");
-            String phone = data.get("phone");
-            String startDate = data.get("startDate");
-            String contact = data.get("contact");
-            String contactPhone = data.get("contactPhone");
-            employeeList.add(new EmployeeInfo(employeeID, departmentID, fname, lname, email, phone, startDate, contact, contactPhone));
+            employeeList.add(new EmployeeInfo(employeeID, depID, fname, lname, "", "", "", "", ""));
         }
         
         return employeeList;
     }
+    public static List<List<String>> buildShiftLists(List<WeeklyScheduleRow> scheduleRows) {
+        List<List<String>> shiftLists = new ArrayList<>();
     
+        // Determine the number of shifts in each row
+        int numRows = scheduleRows.size();
+    
+        // Initialize lists for each shift position
+        for (int i = 0; i < numRows; i++) {
+            shiftLists.add(new ArrayList<>());
+        }
+    
+        // Iterate through each row
+        for (WeeklyScheduleRow row : scheduleRows) {
+            // Iterate through each shift position in the row
+            if (!row.getMondayShift().isEmpty()) {
+                shiftLists.get(0).add(row.getMondayShift());
+            }
+            if (!row.getTuesdayShift().isEmpty()) {
+                shiftLists.get(1).add(row.getTuesdayShift());
+            }
+            if (!row.getWednesdayShift().isEmpty()) {
+                shiftLists.get(2).add(row.getWednesdayShift());
+            }
+            if (!row.getThursdayShift().isEmpty()) {
+                shiftLists.get(3).add(row.getThursdayShift());
+            }
+            if (!row.getFridayShift().isEmpty()) {
+                shiftLists.get(4).add(row.getFridayShift());
+            }
+            if (!row.getSaturdayShift().isEmpty()) {
+                shiftLists.get(5).add(row.getSaturdayShift());
+            }
+            if (!row.getSundayShift().isEmpty()) {
+                shiftLists.get(6).add(row.getSundayShift());
+            }
+        }        
+        return shiftLists;
+    }
+    public ObservableList<WeeklyScheduleRow> convertToScheduleRows(List<List<String>> shiftLists) {
+        ObservableList<WeeklyScheduleRow> scheduleRows = FXCollections.observableArrayList();
+        int numRows = 0;
+
+        for (List<String> shiftList : shiftLists) {
+            int size = shiftList.size();
+            if (size > numRows) {
+                numRows = size;
+            }
+        }
+        for (int i = 0; i < numRows; i++) {
+            String mondayShift = i < shiftLists.get(0).size() ? shiftLists.get(0).get(i) : "";
+            String tuesdayShift = i < shiftLists.get(1).size() ? shiftLists.get(1).get(i) : "";
+            String wednesdayShift = i < shiftLists.get(2).size() ? shiftLists.get(2).get(i) : "";
+            String thursdayShift = i < shiftLists.get(3).size() ? shiftLists.get(3).get(i) : "";
+            String fridayShift = i < shiftLists.get(4).size() ? shiftLists.get(4).get(i) : "";
+            String saturdayShift = i < shiftLists.get(5).size() ? shiftLists.get(5).get(i) : "";
+            String sundayShift = i < shiftLists.get(6).size() ? shiftLists.get(6).get(i) : "";
+        
+            WeeklyScheduleRow row = new WeeklyScheduleRow(mondayShift, tuesdayShift, wednesdayShift,
+                                               thursdayShift, fridayShift, saturdayShift, sundayShift);
+            scheduleRows.add(row);
+        }        
+        return scheduleRows;
+    }
     private void populateWeeklyScheduleTable() {
         weeklyScheduleTableView.getItems().clear();
-
         LinkedList<Hashtable<String, String>> weeklyScheduleInformation = DBController.getWeeklySchedule(depName);
         ObservableList<WeeklyScheduleRow> weeklyScheduleRows = FXCollections.observableArrayList();
         for (Hashtable<String, String> data : weeklyScheduleInformation) {
             String dayOfWeek = data.get("DayOfWeek");
-            String employeeFName = data.get("FName");
-            String employeeLName = data.get("LName");
-            String employeeID = data.get("EmployeeID");
+            String employeeFName = data.get("fname");
+            String employeeLName = data.get("lname");
             String shiftStart = data.get("StartTime");
             String shiftEnd = data.get("EndTime");
             // Create a new WeeklyScheduleRow instance
@@ -107,25 +162,25 @@ public class EditWeeklyScheduleController implements Initializable {
             // Set the shift for the corresponding day of the week
             switch (dayOfWeek.toLowerCase()) {
                 case "monday":
-                    row.setMondayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" + shiftStart + " - " + shiftEnd);
+                    row.setMondayShift(employeeFName + " " + employeeLName + "\n" + shiftStart + " - " + shiftEnd);
                     break;
                 case "tuesday":
-                    row.setTuesdayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setTuesdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 case "wednesday":
-                    row.setWednesdayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setWednesdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 case "thursday":
-                    row.setThursdayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setThursdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 case "friday":
-                    row.setFridayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setFridayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 case "saturday":
-                    row.setSaturdayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setSaturdayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 case "sunday":
-                    row.setSundayShift(employeeID + ":" + employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
+                    row.setSundayShift(employeeFName + " " + employeeLName + "\n" +shiftStart + " - " + shiftEnd);
                     break;
                 default:
                     break;
@@ -133,8 +188,10 @@ public class EditWeeklyScheduleController implements Initializable {
             // Add the schedule row to the list
             weeklyScheduleRows.add(row);
         }
+        List<List<String>> shiftLists = buildShiftLists(weeklyScheduleRows);
+        ObservableList<WeeklyScheduleRow> organizedScheduleRows = convertToScheduleRows(shiftLists);
         // Populate the TableView
-        weeklyScheduleTableView.setItems(weeklyScheduleRows);
+        weeklyScheduleTableView.setItems(organizedScheduleRows);
         mondayColumn.setCellValueFactory(new PropertyValueFactory<>("mondayShift"));
         tuesdayColumn.setCellValueFactory(new PropertyValueFactory<>("tuesdayShift"));
         wednesdayColumn.setCellValueFactory(new PropertyValueFactory<>("wednesdayShift"));
@@ -147,13 +204,11 @@ public class EditWeeklyScheduleController implements Initializable {
         // Create the dialog
         Stage dialog = new Stage();
         dialog.setTitle("Add Shift for " + day);
-    
         // Create a dropdown menu for selecting an employee
         ComboBox<EmployeeInfo> employeeDropdown = new ComboBox<>();
         // Retrieve the list of employees for the department and populate the dropdown
         ObservableList<EmployeeInfo> employeeList = getEmployeeList();
         employeeDropdown.setItems(employeeList);
-    
         // Create text fields for entering start time and end time
         TextField startTimeField = new TextField();
         TextField endTimeField = new TextField();
@@ -186,7 +241,6 @@ public class EditWeeklyScheduleController implements Initializable {
         dialog.setScene(scene);
         dialog.show();
     }
-    
     // Modify editShiftDialog to parse the selected employee and pass the employee ID to saveShift method
     private void editShiftDialog(WeeklyScheduleRow selectedRow, String dayOfWeek) {
         // Create the dialog
@@ -246,16 +300,13 @@ public class EditWeeklyScheduleController implements Initializable {
     }
     
     private void saveShift(String day, int employeeID, String startTime, String endTime) {
-            System.out.println("SAVING SHIFT");
             Integer scheduleID = DBController.addShiftWeeklySchedule(depName, employeeID, day, startTime, endTime);
             if (scheduleID != -1) {
-                System.out.println("USER HAS ADDED SHIFT");
                 // Refresh the TableView to reflect the changes
                 populateWeeklyScheduleTable();
                 // Close the dialog and show a confirmation message
                 Stage stage = (Stage) saveButton.getScene().getWindow();
                 stage.close();
-
                 Alert alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Shift Added");
                 alert.setHeaderText(null);
@@ -268,24 +319,17 @@ public class EditWeeklyScheduleController implements Initializable {
     }
     
     private void editShift(String shiftDetails, String day, int newEmployeeID, String startTime, String endTime) {
-        System.out.println("SAVING SHIFT");
-        String[] parts = shiftDetails.split(":"); // Split the string by ":" to separate employee ID and the rest of the information
-        int oldemployeeID = Integer.parseInt(parts[0]); // Convert the first part (employee ID) to an integer
-
-        // Extract the rest of the information
+        String[] parts = shiftDetails.split("\n");
+        String employeeName = parts[0]; // "John Doe"    
+        String[] nameParts = employeeName.split(" ");
+        String firstName = nameParts[0]; // "John"
+        String lastName = nameParts[1]; // "Doe"
+        int oldemployeeID = DBController.getEmployeeID(firstName, lastName);        // Extract the rest of the information
         String employeeInfo = parts[1].trim(); // Second part contains the rest of the information
-
-        // Further split the employeeInfo string to extract employee's first name, last name, and shift details
-        String[] employeeInfoParts = employeeInfo.split("\n"); // Split by newline to separate name and shift details
-        String[] nameParts = employeeInfoParts[0].split(" "); // Split by space to separate first name and last name
-
-        // Extract old start time and old end time
-        String oldStartTime = employeeInfoParts[1].split("-")[0].trim(); // Extract start time from shift details
-        String oldEndTime = employeeInfoParts[1].split("-")[1].trim(); // Extract end time from shift details
-
+        String oldStartTime = employeeInfo.split("-")[0].trim(); // Extract start time from shift details
+        String oldEndTime = employeeInfo.split("-")[1].trim(); // Extract end time from shift details
         boolean checkEdit = DBController.editShiftWeeklySchedule(depName, oldemployeeID, oldStartTime, oldEndTime, day, newEmployeeID, startTime, endTime);
         if (checkEdit) {
-            System.out.println("USER HAS EDITED SHIFT");
             populateWeeklyScheduleTable();
             // Close the dialog and show a confirmation message
             Stage stage = (Stage) saveButton.getScene().getWindow();
@@ -316,7 +360,6 @@ public class EditWeeklyScheduleController implements Initializable {
             }
         }
     }
-
     @FXML
     private void addShiftMonday() {
         showAddShiftDialog("Monday");
@@ -397,8 +440,6 @@ public class EditWeeklyScheduleController implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
-        // Check if depName is available
-        System.out.println("INITIALIZING");
         if (depName != null && !depName.isEmpty()) {
             populateWeeklyScheduleTable();
             weeklyScheduleTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
@@ -456,7 +497,6 @@ public class EditWeeklyScheduleController implements Initializable {
     });
     }
     public void initController() {
-        System.out.println(depID);
         if (depName != null && !depName.isEmpty()) {
             populateWeeklyScheduleTable();
             // Set cell value factories, etc.
