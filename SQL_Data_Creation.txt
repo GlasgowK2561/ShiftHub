@@ -14,7 +14,8 @@ CREATE TABLE EmployeeInfo (
     startDate VARCHAR(50),
     contact VARCHAR(100),
     contactPhone VARCHAR(15),
-    FOREIGN KEY (depID) REFERENCES Departments(depID)
+    FOREIGN KEY (depID) REFERENCES Departments(depID),
+    maxWeeklyHours INT
 );
 
 CREATE TABLE Login (
@@ -29,7 +30,7 @@ CREATE TABLE Availability (
     availID INT AUTO_INCREMENT PRIMARY KEY,
     employeeID INT,
     FOREIGN KEY (employeeID) REFERENCES EmployeeInfo(employeeID),
-    weekDayDate VARCHAR(20),
+    weekDay VARCHAR(20),
     StartTime TIME,
     EndTime TIME,
     availType VARCHAR(30)
@@ -42,33 +43,98 @@ INSERT INTO Departments (depID, depName, depManager) VALUES
 (5, 'Fulfillment', 'Michael Smith'),
 (6, 'Deli', 'Emily Brown');
 
-INSERT INTO EmployeeInfo (employeeID, depID, fName, lName, email, phone, startDate, contact, contactPhone) VALUES
-(101, 1, 'Alice', 'Johnson', 'alice@example.com', '123-456-7890', '2023-01-15', 'John Doe', '111-222-3333'),
-(102, 2, 'Bob', 'Smith', 'bob@example.com', '987-654-3210', '2023-02-01', 'Jane Smith', '444-555-6666'),
-(103, 3, 'Charlie', 'Brown', 'charlie@example.com', '555-123-4567', '2023-03-10', 'Mike Johnson', '777-888-9999'),
-(104, 4, 'David', 'Wilson', 'david@example.com', '222-333-4444', '2023-04-15', 'Sarah Johnson', '555-666-7777'),
-(105, 5, 'Emma', 'Davis', 'emma@example.com', '333-444-5555', '2023-05-01', 'Michael Smith', '666-777-8888'),
-(106, 6, 'Frank', 'Taylor', 'frank@example.com', '444-555-6666', '2023-06-01', 'Emily Brown', '777-888-9999');
+INSERT INTO EmployeeInfo (employeeID, depID, fName, lName, email, phone, startDate, contact, contactPhone, maxWeeklyHours) VALUES
+(101, 1, 'Alice', 'Johnson', 'alice@example.com', '123-456-7890', '2023-01-15', 'John Doe', '111-222-3333', 40),
+(102, 2, 'Bob', 'Smith', 'bob@example.com', '987-654-3210', '2023-02-01', 'Jane Smith', '444-555-6666', 25),
+(103, 3, 'Charlie', 'Brown', 'charlie@example.com', '555-123-4567', '2023-03-10', 'Mike Johnson', '777-888-9999', 30),
+(104, 4, 'David', 'Wilson', 'david@example.com', '222-333-4444', '2023-04-15', 'Sarah Johnson', '555-666-7777', 12),
+(105, 5, 'Emma', 'Davis', 'emma@example.com', '333-444-5555', '2023-05-01', 'Michael Smith', '666-777-8888', 40),
+(106, 6, 'Frank', 'Taylor', 'frank@example.com', '444-555-6666', '2023-06-01', 'Emily Brown', '777-888-9999', 40),
+(107, 2, 'Grace', 'Anderson', 'grace@example.com', '555-666-7777', '2023-07-01', 'Emma Wilson', '888-999-0000', 20),
+(108, 2, 'Henry', 'Clark', 'henry@example.com', '666-777-8888', '2023-08-01', 'John Wilson', '999-000-1111', 40),
+(109, 2, 'Isabella', 'Evans', 'isabella@example.com', '777-888-9999', '2023-09-01', 'Sarah Wilson', '000-111-2222', 35),
+(110, 2, 'Jack', 'Ford', 'jack@example.com', '888-999-0000', '2023-10-01', 'James Wilson', '111-222-3333', 15);
 
-INSERT INTO Availability (availID, employeeID, weekDayDate, StartTime, EndTime, availType) VALUES
-(1, 101, '2024-02-14', '08:00:00', '17:00:00', 'Available'),
-(2, 102, '2024-02-14', '09:00:00', '18:00:00', 'Unavailable'),
-(3, 103, '2024-02-14', '08:00:00', '17:00:00', 'Available'),
-(4, 104, '2024-02-14', '08:00:00', '17:00:00', 'Available'),
-(5, 105, '2024-02-14', '09:00:00', '18:00:00', 'Unavailable'),
-(6, 106, '2024-02-14', '08:00:00', '17:00:00', 'Available');
+INSERT INTO Availability (employeeID, weekDay, StartTime, EndTime, availType) VALUES
+(101, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(101, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(101, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(101, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(101, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(101, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(101, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(102, 'Monday', '09:00:00', '18:00:00', 'Unavailable'),
+(102, 'Tuesday', '09:30:00', '18:30:00', 'Unavailable'),
+(102, 'Wednesday', '10:00:00', '19:00:00', 'Unavailable'),
+(102, 'Thursday', '10:30:00', '19:30:00', 'Unavailable'),
+(102, 'Friday', '11:00:00', '20:00:00', 'Unavailable'),
+(102, 'Saturday', '11:30:00', '20:30:00', 'Unavailable'),
+(102, 'Sunday', '12:00:00', '21:00:00', 'Unavailable'),
+(103, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(103, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(103, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(103, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(103, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(103, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(103, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(104, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(104, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(104, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(104, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(104, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(104, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(104, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(105, 'Monday', '09:00:00', '18:00:00', 'Unavailable'),
+(105, 'Tuesday', '09:30:00', '18:30:00', 'Unavailable'),
+(105, 'Wednesday', '10:00:00', '19:00:00', 'Unavailable'),
+(105, 'Thursday', '10:30:00', '19:30:00', 'Unavailable'),
+(105, 'Friday', '11:00:00', '20:00:00', 'Unavailable'),
+(105, 'Saturday', '11:30:00', '20:30:00', 'Unavailable'),
+(105, 'Sunday', '12:00:00', '21:00:00', 'Unavailable'),
+(106, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(106, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(106, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(106, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(106, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(106, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(106, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(107, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(107, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(107, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(107, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(107, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(107, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(107, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(108, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(108, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(108, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(108, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(108, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(108, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(108, 'Sunday', '11:00:00', '20:00:00', 'Available'),
+(109, 'Monday', '09:00:00', '18:00:00', 'Unavailable'),
+(109, 'Tuesday', '09:30:00', '18:30:00', 'Unavailable'),
+(109, 'Wednesday', '10:00:00', '19:00:00', 'Unavailable'),
+(109, 'Thursday', '10:30:00', '19:30:00', 'Unavailable'),
+(109, 'Friday', '11:00:00', '20:00:00', 'Unavailable'),
+(109, 'Saturday', '11:30:00', '20:30:00', 'Unavailable'),
+(110, 'Monday', '08:00:00', '17:00:00', 'Available'),
+(110, 'Tuesday', '08:30:00', '17:30:00', 'Available'),
+(110, 'Wednesday', '09:00:00', '18:00:00', 'Available'),
+(110, 'Thursday', '09:30:00', '18:30:00', 'Available'),
+(110, 'Friday', '10:00:00', '19:00:00', 'Available'),
+(110, 'Saturday', '10:30:00', '19:30:00', 'Available'),
+(110, 'Sunday', '11:00:00', '20:00:00', 'Available');
+
 
 INSERT INTO Login (username, pass, employeeID) VALUES
-('alice_login', 'password123', 101),
-('bob_login', 'securepass', 102),
-('charlie_login', 'abc123', 103),
-('david_login', 'mypassword', 104),
-('emma_login', 'pass1234', 105),
-('frank_login', 'password', 106);
+('alice_johnson', 'password123', 101);
 
 -- Create default shift schedule table for the Grocery department
 CREATE TABLE GroceryDefaultSchedule (
     GroceryShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
@@ -77,6 +143,8 @@ CREATE TABLE GroceryDefaultSchedule (
 -- Create default shift schedule table for the Checkout department
 CREATE TABLE CheckoutDefaultSchedule (
     CheckoutShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
@@ -85,6 +153,8 @@ CREATE TABLE CheckoutDefaultSchedule (
 -- Create default shift schedule table for the Beauty department
 CREATE TABLE BeautyDefaultSchedule (
     BeautyShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
@@ -93,6 +163,8 @@ CREATE TABLE BeautyDefaultSchedule (
 -- Create default shift schedule table for the Clothes department
 CREATE TABLE ClothesDefaultSchedule (
     ClothesShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
@@ -101,6 +173,8 @@ CREATE TABLE ClothesDefaultSchedule (
 -- Create default shift schedule table for the Fulfillment department
 CREATE TABLE FulfillmentDefaultSchedule (
     FulfillmentShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
@@ -109,66 +183,69 @@ CREATE TABLE FulfillmentDefaultSchedule (
 -- Create default shift schedule table for the Deli department
 CREATE TABLE DeliDefaultSchedule (
     DeliShiftID INT AUTO_INCREMENT PRIMARY KEY,
+    DepID INT,
+    FOREIGN KEY (DepID) REFERENCES Departments(DepID),
     DayOfWeek VARCHAR(255),
     StartTime TIME,
     EndTime TIME
 );
 
 
-INSERT INTO GroceryDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '08:00:00', '17:00:00'),
-('Tuesday', '08:30:00', '17:30:00'),
-('Wednesday', '09:00:00', '18:00:00'),
-('Thursday', '09:30:00', '18:30:00'),
-('Friday', '10:00:00', '19:00:00'),
-('Saturday', '10:30:00', '19:30:00'),
-('Sunday', '11:00:00', '20:00:00');
+INSERT INTO GroceryDefaultSchedule (DepID,DayOfWeek, StartTime, EndTime) VALUES
+(1, 'Monday', '08:00:00', '17:00:00'),
+(1,'Tuesday', '08:30:00', '17:30:00'),
+(1,'Wednesday', '09:00:00', '18:00:00'),
+(1,'Thursday', '09:30:00', '18:30:00'),
+(1,'Friday', '10:00:00', '19:00:00'),
+(1,'Saturday', '10:30:00', '19:30:00'),
+(1,'Sunday', '11:00:00', '20:00:00');
 
-INSERT INTO CheckoutDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '08:30:00', '17:30:00'),
-('Tuesday', '09:00:00', '18:00:00'),
-('Wednesday', '09:30:00', '18:30:00'),
-('Thursday', '10:00:00', '19:00:00'),
-('Friday', '10:30:00', '19:30:00'),
-('Saturday', '11:00:00', '20:00:00'),
-('Sunday', '11:30:00', '20:30:00');
+INSERT INTO CheckoutDefaultSchedule (DepID, DayOfWeek, StartTime, EndTime) VALUES
+(2, 'Monday', '08:30:00', '17:30:00'),
+(2, 'Tuesday', '09:00:00', '18:00:00'),
+(2, 'Wednesday', '09:30:00', '18:30:00'),
+(2, 'Thursday', '10:00:00', '19:00:00'),
+(2, 'Friday', '10:30:00', '19:30:00'),
+(2, 'Saturday', '11:00:00', '20:00:00'),
+(2, 'Sunday', '11:30:00', '20:30:00');
 
-INSERT INTO BeautyDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '09:00:00', '18:00:00'),
-('Tuesday', '09:30:00', '18:30:00'),
-('Wednesday', '10:00:00', '19:00:00'),
-('Thursday', '10:30:00', '19:30:00'),
-('Friday', '11:00:00', '20:00:00'),
-('Saturday', '11:30:00', '20:30:00'),
-('Sunday', '12:00:00', '21:00:00');
+INSERT INTO BeautyDefaultSchedule (DepID, DayOfWeek, StartTime, EndTime) VALUES
+(3, 'Monday', '09:00:00', '18:00:00'),
+(3, 'Tuesday', '09:30:00', '18:30:00'),
+(3, 'Wednesday', '10:00:00', '19:00:00'),
+(3, 'Thursday', '10:30:00', '19:30:00'),
+(3, 'Friday', '11:00:00', '20:00:00'),
+(3, 'Saturday', '11:30:00', '20:30:00'),
+(3, 'Sunday', '12:00:00', '21:00:00');
 
-INSERT INTO ClothesDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '09:00:00', '18:00:00'),
-('Monday', '12:00:00', '21:00:00'),
-('Tuesday', '10:00:00', '18:30:00'),
-('Wednesday', '10:30:00', '19:00:00'),
-('Thursday', '10:30:00', '19:30:00'),
-('Friday', '11:00:00', '20:00:00'),
-('Saturday', '11:30:00', '20:30:00'),
-('Sunday', '12:00:00', '21:00:00'),
-('Sunday', '13:00:00', '22:00:00');
+INSERT INTO ClothesDefaultSchedule (DepID, DayOfWeek, StartTime, EndTime) VALUES
+(4, 'Monday', '09:00:00', '18:00:00'),
+(4, 'Monday', '12:00:00', '21:00:00'),
+(4, 'Tuesday', '10:00:00', '18:30:00'),
+(4, 'Wednesday', '10:30:00', '19:00:00'),
+(4, 'Thursday', '10:30:00', '19:30:00'),
+(4, 'Friday', '11:00:00', '20:00:00'),
+(4, 'Saturday', '11:30:00', '20:30:00'),
+(4, 'Sunday', '12:00:00', '21:00:00'),
+(4, 'Sunday', '13:00:00', '22:00:00');
 
-INSERT INTO FufillmentDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '09:00:00', '18:00:00'),
-('Monday', '12:00:00', '21:00:00'),
-('Tuesday', '10:00:00', '18:30:00'),
-('Wednesday', '10:30:00', '19:00:00'),
-('Thursday', '10:30:00', '19:30:00'),
-('Friday', '11:00:00', '20:00:00'),
-('Saturday', '11:30:00', '20:30:00'),
-('Sunday', '12:00:00', '21:00:00'),
-('Sunday', '13:00:00', '22:00:00');
+INSERT INTO FulfillmentDefaultSchedule (DepID, DayOfWeek, StartTime, EndTime) VALUES
+(5, 'Monday', '09:00:00', '18:00:00'),
+(5,'Monday', '12:00:00', '21:00:00'),
+(5,'Tuesday', '10:00:00', '18:30:00'),
+(5,'Wednesday', '10:30:00', '19:00:00'),
+(5,'Thursday', '10:30:00', '19:30:00'),
+(5,'Friday', '11:00:00', '20:00:00'),
+(5,'Saturday', '11:30:00', '20:30:00'),
+(5,'Sunday', '12:00:00', '21:00:00'),
+(5,'Sunday', '13:00:00', '22:00:00');
 
-INSERT INTO DeliDefaultSchedule (DayOfWeek, StartTime, EndTime) VALUES
-('Monday', '09:00:00', '18:00:00'),
-('Monday', '12:00:00', '21:00:00'),
-('Thursday', '10:30:00', '19:30:00'),
-('Friday', '11:00:00', '20:00:00'),
-('Saturday', '11:30:00', '20:30:00'),
-('Sunday', '12:00:00', '21:00:00'),
-('Sunday', '13:00:00', '22:00:00');
+INSERT INTO DeliDefaultSchedule (DepID, DayOfWeek, StartTime, EndTime) VALUES
+(6, 'Monday', '09:00:00', '18:00:00'),
+(6, 'Monday', '12:00:00', '21:00:00'),
+(6, 'Thursday', '10:30:00', '19:30:00'),
+(6, 'Friday', '11:00:00', '20:00:00'),
+(6, 'Saturday', '11:30:00', '20:30:00'),
+(6, 'Sunday', '12:00:00', '21:00:00'),
+(6, 'Sunday', '13:00:00', '22:00:00');
+
