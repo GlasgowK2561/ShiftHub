@@ -6,6 +6,8 @@ import java.util.LinkedList;
 
 public class Notify{
   //public static String s;
+
+  //sends schedule notification email to entire department staff
   public static void sendDepEmail(int depID) throws IOException{
     LinkedList<Hashtable<String,String>> employeeList = DBController.getDepartmentEmployeesWithEmail(depID);
     String depName = DBController.getDepartmentInformation(depID).getFirst().get("depName");
@@ -18,35 +20,37 @@ public class Notify{
       String eEmail = employeeInfo.get("email");
       int employeeID = Integer.parseInt(employeeInfo.get("employeeID"));
       monHours = tuesHours = wedHours = thursHours = friHours = satHours = sunHours = "N/A";
+      System.out.println("Working on: " + eName);
 
       //get and format weekly schedule
       LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeWeeklySchedule(depName, employeeID);
-      if(schedule != null){ //check that department schedule exists
+      if(schedule.peekFirst() != null){ //check that department schedule exists
         startDate = schedule.peekFirst().get("WeekStartDate");
+        System.out.println("Found schedule. Retrieving data...");
         
-        for(Hashtable<String,String> dayOfWeek: schedule){ //format each day
+        for(Hashtable<String,String> shift: schedule){ //format each day
           
-          switch(dayOfWeek.get("DayOfWeek")){
+          switch(shift.get("DayOfWeek")){
             case "Monday":
-              monHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              monHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Tuesday":
-              tuesHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              tuesHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Wednesday":
-              wedHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              wedHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Thursday":
-              thursHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              thursHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Friday":
-              friHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              friHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Saturday":
-              satHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              satHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             case "Sunday":
-              sunHours = dayOfWeek.get("StartTime") + " - " + dayOfWeek.get("EndTime");
+              sunHours = shift.get("StartTime") + " - " + shift.get("EndTime");
               break;
             default:
           }
@@ -55,6 +59,7 @@ public class Notify{
         System.out.println("empty schedule");
       }
 
+      System.out.println("Formatting...");
       //formats schedule into email body
       String emailBody = String.format("""
         %s's schedule for week starting on %s\n
@@ -65,7 +70,7 @@ public class Notify{
         Friday: %s\n
         Saturday: %s\n
         Sunday: %s\n
-          """, eName, startDate, monHours, tuesHours, wedHours, thursHours, friHours, satHours, sunHours);
+        """, eName, startDate, monHours, tuesHours, wedHours, thursHours, friHours, satHours, sunHours);
           
       sendEmail(eEmail, startDate, emailBody); //sends formatted email for this employee
       System.out.println("Email sent for: " + eName);
@@ -103,8 +108,6 @@ public class Notify{
         Wednesday: N/A
         """;
     sendEmail("elizabethnjaa@gmail.com","testDate", schedule); */
-    //sendDepEmail(1);
-  }
-  
-
+    //sendDepEmail(2);
+  }  
 }
