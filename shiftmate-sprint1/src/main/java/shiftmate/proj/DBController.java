@@ -401,8 +401,14 @@ getDepartmentEmployees
     }    
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
         String params[] = {Integer.toString(depID)};
-        return getParameterizedQuery("SELECT fname, lname, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
-    } 
+        return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
+    }
+
+    public static LinkedList<Hashtable<String,String>> getDepartmentEmployeesWithEmail(int depID){
+        String params[] = {Integer.toString(depID)};
+        return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID, email FROM employeeinfo WHERE depID = ?", 1, params);
+    }
+
     public static LinkedList<Hashtable<String,String>> getDepartments(){
         String params[] = {};
         return getParameterizedQuery("SELECT d.* FROM departments d;", 0, params);
@@ -660,6 +666,14 @@ getDepartmentEmployees
         String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid)";
         return getParameterizedQuery(query, 0, null);
     }
+
+    public static LinkedList<Hashtable<String,String>> getEmployeeWeeklySchedule(String depName, int employeeID){
+        String params[] = {Integer.toString(employeeID)};
+        String table = depName.concat("weeklyschedule");
+        String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ?";
+        return getParameterizedQuery(query, 1, params);
+    }
+
     public static int addShiftWeeklySchedule(String depName, int employeeID, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("weeklyschedule");
         String addShiftQuery = "INSERT INTO " + table + " (depID, employeeID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
