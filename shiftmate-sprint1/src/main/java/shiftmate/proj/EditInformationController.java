@@ -1,11 +1,10 @@
 package shiftmate.proj;
-
+// Imports
 import java.io.IOException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,9 +27,10 @@ public class EditInformationController implements Initializable
 {
     Stage stage;
     Parent scene;
-
+    // Define the table
     @FXML
     private TableView <EmployeeInfo> employeeTableView;
+    // Define the columns
     @FXML
     private TableColumn<EmployeeInfo, Integer> employeeIDcolumn;
     @FXML
@@ -51,7 +51,7 @@ public class EditInformationController implements Initializable
     private TableColumn<EmployeeInfo, String> contactPhonecolumn;
     @FXML
     private TableColumn<EmployeeInfo,String> depNamecolumn;
-
+    // Define the text fields
     @FXML
     private TextField employeeIDTextField;
     @FXML
@@ -72,17 +72,14 @@ public class EditInformationController implements Initializable
     private TextField contactPhoneTextField;
     @FXML
     private TextField depNameTextField;
-
+    // Populate the employee information table
     public void EmployeeInfoTable() 
     {
         LinkedList<Hashtable<String,String>> employeeInformation = DBController.getEmployees();  //gets employee data from DBController
-
         ObservableList<EmployeeInfo> employeeList = FXCollections.observableArrayList();    //list to hold employee objects
-
         for (int i = 0; i < employeeInformation.size(); i++)                //iterate through the data
         {
             Hashtable<String,String> data = employeeInformation.get(i);
-
             int employeeID = Integer.parseInt(data.get("employeeID"));      
             int depID = Integer.parseInt(data.get("depID"));
             String fName = data.get("fName");
@@ -93,18 +90,13 @@ public class EditInformationController implements Initializable
             String contact = data.get("contact");
             String contactPhone = data.get("contactPhone");
             String depName = data.get("depName");
-
             EmployeeInfo employeeInfo = new EmployeeInfo(employeeID, depID, fName, lName, email,
             phone, startDate, contact, contactPhone);
-            
             employeeInfo.setDepName(depName);
             employeeList.add(employeeInfo);
-
         }
-    
     //fill TableView with data
     employeeTableView.setItems(employeeList);
-
     employeeIDcolumn.setCellValueFactory(new PropertyValueFactory<>("employeeID"));
     depIDcolumn.setCellValueFactory(new PropertyValueFactory<>("depID"));
     fNamecolumn.setCellValueFactory(new PropertyValueFactory<>("fName"));
@@ -115,10 +107,7 @@ public class EditInformationController implements Initializable
     contactcolumn.setCellValueFactory(new PropertyValueFactory<>("contact"));
     contactPhonecolumn.setCellValueFactory(new PropertyValueFactory<>("contactPhone"));
     depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
-
     }
-    
-
     //add employee to table/database
     @FXML
     void addEmployeeOnAction(ActionEvent event) throws IOException
@@ -133,13 +122,10 @@ public class EditInformationController implements Initializable
         String startDate = startDateTextField.getText();
         String contact = contactTextField.getText();
         String contactPhone = contactPhoneTextField.getText();
-
         if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || phone.isEmpty() || employeeIDText.isEmpty() || depIDText.isEmpty()
         || startDate.isEmpty() || contact.isEmpty() || contactPhone.isEmpty())
         { 
-        
         StringBuffer missingField = new StringBuffer("Missing: ");
-
         if (fName.isEmpty())
         {
             missingField.append("  First Name  ");
@@ -154,8 +140,7 @@ public class EditInformationController implements Initializable
         }
         if (phone.isEmpty())
         {
-            missingField.append("  Phone  ");
-            
+            missingField.append("  Phone  ");    
         }
         if (employeeIDText.isEmpty())
         {
@@ -177,19 +162,13 @@ public class EditInformationController implements Initializable
         {
             missingField.append("  Contact Phone  ");
         }
-    
-    
         AlertWindow("Missing Information", missingField.toString(), " ", AlertType.NONE);
     }
     else
     {
-
         int depID = Integer.parseInt(depIDText);
         int employeeID= Integer.parseInt(employeeIDText);
-       
-
         boolean valid = DBController.addEmployee(fName,lName,phone,email,startDate,depID,contact,contactPhone,employeeID);
-
         if(valid)
         {
             AlertWindow("Success", "You have sucessfully added an employee");
@@ -202,22 +181,16 @@ public class EditInformationController implements Initializable
 
     }
 }
-
-
-
     //delete selected employee
     @FXML
     void deleteEmployeeOnAction (ActionEvent event) throws IOException
     {
         EmployeeInfo slctdEmp = employeeTableView.getSelectionModel().getSelectedItem();
-
         if(slctdEmp == null)
         {
             AlertWindow("No employee selected", "Please select an employee to delete");
             return;
-        
         }
-
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Confirmation");
         confirmAlert.setHeaderText("Delete Employee");
@@ -227,7 +200,6 @@ public class EditInformationController implements Initializable
             if (response == ButtonType.OK)
             {
                 boolean delete = DBController.deleteEmployee(slctdEmp.getEmployeeID());
-                
                 if (delete)
                 {
                     AlertWindow("Success", "Employee has been deleted successfully");
@@ -240,20 +212,15 @@ public class EditInformationController implements Initializable
             }
         });
     }
-
 // edit employee. Select the employee you'd like to edit and click edit button. The Text will go into the TextBoxes
     @FXML
     void editEmployeeOnAction(ActionEvent event) throws IOException     
     {
         EmployeeInfo slctdEmp = employeeTableView.getSelectionModel().getSelectedItem();
-
         if (slctdEmp != null)
         {
-            
             int employeeID = slctdEmp.getEmployeeID();
             int depID = slctdEmp.getDepID();
-            
-
             employeeIDTextField.setText(String.valueOf(employeeID));
             depIDTextField.setText(String.valueOf(depID));
             depNameTextField.setText(slctdEmp.getDepName());
@@ -263,9 +230,7 @@ public class EditInformationController implements Initializable
             phoneTextField.setText(slctdEmp.getPhone());
             startDateTextField.setText(slctdEmp.getStartDate());
             contactTextField.setText(slctdEmp.getContact());
-            contactPhoneTextField.setText(slctdEmp.getContactPhone());
-            
-            
+            contactPhoneTextField.setText(slctdEmp.getContactPhone()); 
         }
         else
         {
@@ -286,13 +251,10 @@ public class EditInformationController implements Initializable
         String startDate = startDateTextField.getText();
         String contact = contactTextField.getText();
         String contactPhone = contactPhoneTextField.getText();
-
         if (fName.isEmpty() || lName.isEmpty() || email.isEmpty() || phone.isEmpty() || employeeIDText.isEmpty() || depIDText.isEmpty()
         || startDate.isEmpty() || contact.isEmpty() || contactPhone.isEmpty())
         { 
-        
         StringBuffer missingField = new StringBuffer("Missing: ");
-
         if (fName.isEmpty())
         {
             missingField.append("  First Name  ");
@@ -307,8 +269,7 @@ public class EditInformationController implements Initializable
         }
         if (phone.isEmpty())
         {
-            missingField.append("  Phone  ");
-            
+            missingField.append("  Phone  "); 
         }
         if (employeeIDText.isEmpty())
         {
@@ -339,7 +300,6 @@ public class EditInformationController implements Initializable
         {
             int employeeID = slctdEmp.getEmployeeID();
             int depID = slctdEmp.getDepID();
-
             slctdEmp.setFName(fNameTextField.getText());
             slctdEmp.setEmployeeID(employeeID);
             slctdEmp.setDepID(depID);
@@ -350,16 +310,13 @@ public class EditInformationController implements Initializable
             slctdEmp.setStartDate(startDateTextField.getText());
             slctdEmp.setContact(contactTextField.getText());
             slctdEmp.setContactPhone(contactPhoneTextField.getText());
-
             boolean update = DBController.editEmployeeInformation(employeeID, slctdEmp.getFName(), slctdEmp.getLName(), depID,
              slctdEmp.getPhone(), slctdEmp.getEmail(), 
              slctdEmp.getContact(), slctdEmp.getContactPhone(),slctdEmp.getStartDate());
-
              if (update)
              {
                 AlertWindow("Success", "You successfully edited the Employee's Information");
                 EmployeeInfoTable();
-
                 fNameTextField.clear();
                 lNameTextField.clear();
                 emailTextField.clear();
@@ -370,7 +327,6 @@ public class EditInformationController implements Initializable
                 contactTextField.clear();
                 contactPhoneTextField.clear();
                 depNameTextField.clear();
-                
              }
              else
              {
@@ -380,7 +336,6 @@ public class EditInformationController implements Initializable
         } 
     }
     }
-
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {
@@ -389,7 +344,6 @@ public class EditInformationController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
     @FXML
     void createScheduleButtonOnAction(ActionEvent event) throws IOException
     {
@@ -398,7 +352,6 @@ public class EditInformationController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException
     {
@@ -407,7 +360,6 @@ public class EditInformationController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
     @FXML
     void staffButtonOnAction (ActionEvent event) throws IOException
     {
@@ -416,7 +368,6 @@ public class EditInformationController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
     @FXML
     void departmentsButtonOnAction(ActionEvent event) throws IOException
     {
@@ -425,14 +376,12 @@ public class EditInformationController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
      {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         stage.close();
      }
-
     void AlertWindow(String title, String message)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -441,7 +390,6 @@ public class EditInformationController implements Initializable
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     void AlertWindow(String title, String message, String headerText, AlertType alertType) 
     {
         Alert alert = new Alert(alertType);
@@ -450,7 +398,6 @@ public class EditInformationController implements Initializable
         alert.setContentText(message);
         alert.showAndWait();
     }
-
     public void initialize(URL url, ResourceBundle rb)
     {
         EmployeeInfoTable();

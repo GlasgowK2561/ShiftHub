@@ -1,4 +1,3 @@
-
 package shiftmate.proj;
 // Imports
 import java.io.IOException;
@@ -38,43 +37,37 @@ import javafx.scene.control.SelectionMode;
 public class CreateDefaultScheduleController implements Initializable {
     @FXML
     private GridPane gridPane;
-
     @FXML
     private Button saveScheduleButton;
-
+    // Define the Table View
     @FXML
     TableView<ScheduleRow> scheduleTableView = new TableView<>();
-    
+    // Define the Table Columns (One for each day of the week)
     @FXML
     private TableColumn<ScheduleRow, String> mondayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> tuesdayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> wednesdayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> thursdayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> fridayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> saturdayColumn;
-    
     @FXML
     private TableColumn<ScheduleRow, String> sundayColumn;
-
+    // Define the global variable for saveButton and depName
     private Button saveButton;
-
     private String depName;
 
     public void setDepName(String depName) {
         this.depName = depName;
     }
+    // This function will get the raw schedule and format it for the table view -- Written By: Kellie
     public static ObservableList<ScheduleRow> buildShiftLists(List<ScheduleRow> scheduleRows) {
         ObservableList<ScheduleRow> newScheduleRows = FXCollections.observableArrayList();
+        // Define an array list for each day of the week
         List<String> mondayShifts =  new ArrayList<>(); 
         List<String> tuesdayShifts =  new ArrayList<>(); 
         List<String> wednesdayShifts = new ArrayList<>();
@@ -83,13 +76,11 @@ public class CreateDefaultScheduleController implements Initializable {
         List<String> saturdayShifts = new ArrayList<>();
         List<String> sundayShifts = new ArrayList<>();
         String mondayShift, tuesdayShift, wednesdayShift, thursdayShift, fridayShift, saturdayShift, sundayShift;
-
         // Determine the number of shifts in each row
         int numRows = scheduleRows.size();
-        
-        // Iterate through each row
+        // Iterate through each row of the schedule
         for (ScheduleRow row : scheduleRows) {
-            // Iterate through each shift position in the row
+            // Iterate through each shift position in the row, if there is a value, then put it in day array
             if (!row.getMondayShift().isEmpty()) {
                 mondayShifts.add(row.getMondayShift());
             }
@@ -111,7 +102,8 @@ public class CreateDefaultScheduleController implements Initializable {
             if (!row.getSundayShift().isEmpty()) {
                 sundayShifts.add(row.getSundayShift());
             }
-        }        
+        }
+        // Go through every value in the day lists and put them back into a schedule row        
         for (int i = 0; i < numRows; i++) {        
             // Check if Monday shift is available
             if (mondayShifts.size() > i && !mondayShifts.get(i).isEmpty()) {
@@ -162,7 +154,7 @@ public class CreateDefaultScheduleController implements Initializable {
         }        
         return newScheduleRows;
     }
-
+    // Populates the table for the user to view the default schedule -- Written By: Elmer
     public void DefaultScheduleTable() {
         scheduleTableView.getItems().clear();
     
@@ -214,12 +206,12 @@ public class CreateDefaultScheduleController implements Initializable {
         fridayColumn.setCellValueFactory(new PropertyValueFactory<>("fridayShift"));
         saturdayColumn.setCellValueFactory(new PropertyValueFactory<>("saturdayShift"));
         sundayColumn.setCellValueFactory(new PropertyValueFactory<>("sundayShift"));
-    }             
+    }      
+    // Opens a Dialog Box for the user to add a new shift to the table -- Written By: Kellie       
     private void showAddShiftDialog(String day) {
         // Create the dialog
         Stage dialog = new Stage();
         dialog.setTitle("Add Shift for " + day);
-    
         // Create text fields for entering start time and end time
         TextField startTimeField = new TextField();
         TextField endTimeField = new TextField();
@@ -237,12 +229,12 @@ public class CreateDefaultScheduleController implements Initializable {
                 new Label("End Time: "), endTimeField,
                 saveButton
         );
-    
         // Show the dialog
         Scene scene = new Scene(layout);
         dialog.setScene(scene);
         dialog.show();
     }   
+    // Open a Dialog Box for the user to edit an existing shift in the table -- Written By: Kellie
     private void editShiftDialog(ScheduleRow selectedRow, String dayOfWeek) {
         // Create the dialog
         Stage dialog = new Stage();
@@ -266,23 +258,21 @@ public class CreateDefaultScheduleController implements Initializable {
                 new Label("End Time: "), endTimeField,
                 saveButton
         );
-    
         // Show the dialog
         Scene scene = new Scene(layout);
         dialog.setScene(scene);
         dialog.show();
     }
+    // Called from showAddShiftDialog to save the shift to the table and rebuild the page -- Written By: Kellie
     private void saveShift(String day, String startTime, String endTime) {
         // Find the DefaultSchedule object corresponding to the given day
         Integer scheduleID = DBController.addShiftDefaultSchedule(depName, day, startTime, endTime);
         if (scheduleID != -1) {
             // Refresh the TableView to reflect the changes
             DefaultScheduleTable();
-            
             // Close the dialog and show a confirmation message
             Stage stage = (Stage) saveButton.getScene().getWindow();
             stage.close();
-    
             Alert alert = new Alert(AlertType.INFORMATION);
             alert.setTitle("Shift Added");
             alert.setHeaderText(null);
@@ -293,13 +283,13 @@ public class CreateDefaultScheduleController implements Initializable {
             System.out.println("Failed to add shift.");
         }
     }
+    // Called from showEditShiftDialog to save the shift to the table and rebuild the page -- Written By: Kellie
     private void editShift(String shiftDetails, String day, String startTime, String endTime) {
         // Find the DefaultSchedule object corresponding to the given day
         String[] times = shiftDetails.split("-");
         // Remove leading and trailing whitespace from each time
         String oldStartTime = times[0].trim();
         String oldEndTime = times[1].trim();
-
         Boolean checkEdit = DBController.editShiftDefaultSchedule(depName,oldStartTime, oldEndTime, day, startTime, endTime);
         if (checkEdit) {
             DefaultScheduleTable();
@@ -317,11 +307,9 @@ public class CreateDefaultScheduleController implements Initializable {
             confirmAddShift.setTitle("Shift Not Found");
             confirmAddShift.setHeaderText(null);
             confirmAddShift.setContentText("Shift does not exist. Do you want to add a new shift?");
-            
             ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
             ButtonType noButton = new ButtonType("No", ButtonData.NO);
             confirmAddShift.getButtonTypes().setAll(yesButton, noButton);
-            
             Optional<ButtonType> result = confirmAddShift.showAndWait();
             if (result.isPresent() && result.get() == yesButton) {
                 // User wants to add a new shift
@@ -332,35 +320,42 @@ public class CreateDefaultScheduleController implements Initializable {
             }
         }
     }
+    // Button called when user adds a shift to monday -- Written By: Kellie
     @FXML
     private void addShiftMonday() {
         showAddShiftDialog("Monday");
     }
     @FXML
+    // Button called when user adds a shift to tuesday -- Written By: Kellie
     private void addShiftTuesday() {
         showAddShiftDialog("Tuesday");
     }
+    // Button called when user adds a shift to wednesday -- Written By: Kellie
     @FXML
     private void addShiftWednesday() {
         showAddShiftDialog("Wednesday");
     }
+    // Button called when user adds a shift to thursday -- Written By: Kellie
     @FXML
     private void addShiftThursday() {
         showAddShiftDialog("Thursday");
     }
+    // Button called when user adds a shift to friday -- Written By: Kellie
     @FXML
     private void addShiftFriday() {
         showAddShiftDialog("Friday");
     }
+    // Button called when user adds a shift to saturday -- Written By: Kellie
     @FXML
     private void addShiftSaturday() {
         showAddShiftDialog("Saturday");
     }
+    // Button called when user adds a shift to sunday -- Written By: Kellie
     @FXML
     private void addShiftSunday() {
         showAddShiftDialog("Sunday");
     }
-
+    // Button called when user clicks "save schedule" -- Written By: Kellie
     @FXML
     private void saveSchedule(ActionEvent event) throws IOException {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -370,37 +365,37 @@ public class CreateDefaultScheduleController implements Initializable {
         alert.showAndWait();
         loadFXML("main.fxml", event);
     }
-
+    // Button called when user clicks "home button" -- Written By: Elmer
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("main.fxml", event);
     }
-
+    // Button called when user clicks "create schedule" -- Written By: Elmer
     @FXML
     void createScheduleButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("createschedules.fxml", event);
     }
-
+    // Button called when user clicks "edit information" -- Written By: Elmer
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("editinformation.fxml", event);
     }
-
+    // Button called when user clicks "staff" -- Written By: Elmer
     @FXML
     void staffButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("staff.fxml", event);
     }
-
+    // Button called when user clicks "departments" -- Written By: Elmer
     @FXML
     void departmentsButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("departments.fxml", event);
     }
-
+    // Button called when user clicks "logout" -- Written By: Elmer
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException {
         // Implement logout functionality here
     }
-
+    // Loads the fxml file and sets scene -- Written By: Elmer
     private void loadFXML(String fxmlFile, ActionEvent event) throws IOException {
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
@@ -409,6 +404,7 @@ public class CreateDefaultScheduleController implements Initializable {
         stage.setScene(scene);
         stage.show();
     }
+    // Initializes the page details, sets values on fxml -- Written By: Elmer
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
@@ -468,6 +464,7 @@ public class CreateDefaultScheduleController implements Initializable {
         }
     });
     }
+    // Controls initialization according to gathered values -- Written By: Elmer
     public void initController() {
         if (depName != null && !depName.isEmpty()) {
             DefaultScheduleTable();

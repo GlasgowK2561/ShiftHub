@@ -1,36 +1,30 @@
 package shiftmate.proj;
-
+ // Imports 
 import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.LinkedList;
-
+// This class is used to create the weekly schedule-- Written By: Kellie
 public class CreateWeeklyScheduleUtils {
     private static HashMap<Integer, Integer> scheduledHoursMap = new HashMap<>();
     public static LinkedList<Hashtable<String, String>> buildWeeklySchedule(String depName) {
         // Retrieve employee availabilities and default schedule information
         LinkedList<Hashtable<String, String>> employeeAvailabilities = DBController.getAvailabilities(depName);
         LinkedList<Hashtable<String, String>> defaultScheduleInformation = DBController.getDefaultSchedule(depName);
-    
         // LinkedList to store scheduled shifts
         LinkedList<Hashtable<String, String>> scheduledShiftsList = new LinkedList<>();
-    
         // HashSet to store scheduled shifts
         HashSet<String> scheduledShifts = new HashSet<>();
-    
         for (Hashtable<String, String> shift : defaultScheduleInformation) {
             String dayOfWeek = shift.get("DayOfWeek");
-    
             for (Hashtable<String, String> employeeAvailability : employeeAvailabilities) {
                 if (employeeAvailability.get("weekDay").equalsIgnoreCase(dayOfWeek)) {
                     String startTime = shift.get("StartTime");
                     String endTime = shift.get("EndTime");
-    
                     // Construct a unique identifier for the shift
                     String shiftIdentifier = dayOfWeek + "-" + startTime;
-    
                     // Check if the shift has already been scheduled
                     if (scheduledShifts.contains(shiftIdentifier)) {
                         continue; // Skip to the next employee
@@ -38,17 +32,14 @@ public class CreateWeeklyScheduleUtils {
                     String employeeStartTime = employeeAvailability.get("StartTime");
                     String employeeEndTime = employeeAvailability.get("EndTime");
                     String employeeAvailType = employeeAvailability.get("availType");
-    
                     // Calculate the duration of the shift
                     LocalTime shiftStartTimeParsed = parseTime(startTime);
                     LocalTime shiftEndTimeParsed = parseTime(endTime);
                     long hoursForThisShift = ChronoUnit.HOURS.between(shiftStartTimeParsed, shiftEndTimeParsed);
-    
                     // Check if employee is available during this shift
                     if (isAvailable(startTime, endTime, employeeStartTime, employeeEndTime, employeeAvailType)) {
                         int maxWeeklyHours = Integer.parseInt(employeeAvailability.get("maxWeeklyHours"));
                         int scheduledHours = calculateScheduledHours(employeeAvailability);
-    
                         // Check if employee has not reached maxWeeklyHours
                         if (scheduledHours + hoursForThisShift <= maxWeeklyHours) {
                             // Construct a Hashtable to represent the scheduled shift
@@ -57,14 +48,11 @@ public class CreateWeeklyScheduleUtils {
                             scheduledShift.put("StartTime", startTime);
                             scheduledShift.put("EndTime", endTime);
                             scheduledShift.put("EmployeeID", employeeAvailability.get("employeeID"));
-    
                             // Add the scheduled shift to the list
                             scheduledShiftsList.add(scheduledShift);
-    
                             // Update the scheduled hours for the employee
                             int employeeID = Integer.parseInt(employeeAvailability.get("employeeID"));
                             scheduledHoursMap.put(employeeID, scheduledHoursMap.getOrDefault(employeeID, 0) + (int) hoursForThisShift);
-    
                             // Add the shift to the set of scheduled shifts
                             scheduledShifts.add(shiftIdentifier);
                         }
@@ -87,7 +75,6 @@ public class CreateWeeklyScheduleUtils {
         // Format Employee Availability
         LocalTime employeeStartTimeParsed = parseTime(employeeStartTime);
         LocalTime employeeEndTimeParsed = parseTime(employeeEndTime);
-    
         if (availType.equals("Available")) {
             // Check if the employee's available time overlaps with the shift time
             if (employeeStartTimeParsed.compareTo(shiftEndTimeParsed) < 0 &&
@@ -106,11 +93,9 @@ public class CreateWeeklyScheduleUtils {
             }
         }
     }
-    
     // Helper method to parse time string to LocalTime
     private static LocalTime parseTime(String timeStr) {
         // Assuming timeStr is in "HH:mm:ss" format
         return LocalTime.parse(timeStr);
     }
-
 }

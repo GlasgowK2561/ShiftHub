@@ -1,11 +1,10 @@
 package shiftmate.proj;
-
+// Imports
 import java.io.IOException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.LinkedList;
 import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,30 +28,29 @@ public class DepartmentController implements Initializable
     Stage stage;
 
     Parent scene;
-
+    // Define the table
     @FXML
     private TableView <Departments> departmentTableView;
+    // Define the table columns
     @FXML
     private TableColumn<Departments, String> depNamecolumn;
     @FXML
     private TableColumn<Departments, String> depManagercolumn;
+    // Define the text fields
     @FXML
     private TextField depIDTextField;
     @FXML
     private TextField depNameTextField;
     @FXML 
     private TextField depManagerTextField;
-
+    // Populate the department table -- Written By: Elmer
     public void DepartmentTable() 
     {
         LinkedList<Hashtable<String,String>> departmentInformation = DBController.getDepartments();
-
         ObservableList<Departments> departmentList = FXCollections.observableArrayList();
-
         for (int i = 0; i < departmentInformation.size(); i++)                
         {
             Hashtable<String,String> data = departmentInformation.get(i);
-
             int depID = Integer.parseInt(data.get("depID"));
             String depName = data.get("depName");
             String depManager = data.get("depManager");
@@ -60,15 +58,14 @@ public class DepartmentController implements Initializable
             departmentTableView.setItems(departmentList);
             depNamecolumn.setCellValueFactory(new PropertyValueFactory<>("depName"));
             depManagercolumn.setCellValueFactory(new PropertyValueFactory<>("depManager"));
-
         }
     }
+    // Add department button -- Written by: Elmer
     @FXML
     void addDepartmentOnAction(ActionEvent event) throws IOException {
         // Get text from TextField
         String depName = depNameTextField.getText();
         String depManager = depManagerTextField.getText();
-
         if (depName.isEmpty() || depManager.isEmpty()) {
             StringBuffer missingField = new StringBuffer("Missing: ");
 
@@ -78,7 +75,6 @@ public class DepartmentController implements Initializable
             if (depManager.isEmpty()) {
                 missingField.append("  Department Manager ");
             }
-
             AlertWindow("Missing Information", missingField.toString(), " ", AlertType.NONE);
         } else {
             // Call method to add department to the database
@@ -100,6 +96,7 @@ public class DepartmentController implements Initializable
             }
         }
     }
+    // Delete department button - Written by: Elmer
     @FXML
     void deleteDepartmentOnAction (ActionEvent event) throws IOException
     {
@@ -133,6 +130,7 @@ public class DepartmentController implements Initializable
             }
         });
     }
+    // Edit schedule button -- Written by: Elmer
     @FXML
     void editScheduleOnAction(ActionEvent event) throws IOException {
         Departments slctdDep = departmentTableView.getSelectionModel().getSelectedItem();
@@ -151,7 +149,7 @@ public class DepartmentController implements Initializable
             AlertWindow("Select Department", "Please select a department you'd like to edit");
         }
     }    
-    // edit department. Select the department you'd like to edit and click edit button. The Text will go into the TextBoxes
+    // edit department. Select the department you'd like to edit and click edit button. The Text will go into the TextBoxes -- Written By: Elmer
     @FXML
     void editDepartmentOnAction(ActionEvent event) throws IOException     
     {
@@ -170,6 +168,7 @@ public class DepartmentController implements Initializable
             AlertWindow("Select Department", "Please select a department you'd like to edit");
         }
     }
+    // Save department button -- Written by: Elmer
     @FXML
     void saveDepartmentOnAction(ActionEvent event) throws IOException {
         Departments selectedDepartment = departmentTableView.getSelectionModel().getSelectedItem();
@@ -220,7 +219,7 @@ public class DepartmentController implements Initializable
             }
         }
     }
-
+    // Home button -- Written by: Elmer
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
     {
@@ -229,7 +228,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
+    // Create schedule button -- Written by: Elmer
     @FXML
     void createScheduleButtonOnAction(ActionEvent event) throws IOException
     {
@@ -238,7 +237,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+    // Edit information button -- Written by: Elmer
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException
     {
@@ -247,7 +246,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+    // View staff button -- Written by: Elmer
     @FXML
     void staffButtonOnAction (ActionEvent event) throws IOException
     {
@@ -256,7 +255,7 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-
+    // View departments button -- Written by: Elmer
     @FXML
     void departmentsButtonOnAction(ActionEvent event) throws IOException
     {
@@ -265,14 +264,14 @@ public class DepartmentController implements Initializable
         stage.setScene(new Scene(scene));
         stage.show();
     }
-    
+    // Logout button -- Written by: Elmer
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException
     {
         Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         stage.close();
     }
-    
+    // Helper function to build alert window -- Written by: Elmer
     void AlertWindow(String title, String message)
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -281,7 +280,7 @@ public class DepartmentController implements Initializable
         alert.setContentText(message);
         alert.showAndWait();
     }
-
+    // Helper function to build alert window -- Written by: Elmer
     void AlertWindow(String title, String message, String headerText, AlertType alertType) 
     {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -290,10 +289,9 @@ public class DepartmentController implements Initializable
         alert.setContentText(message);
         alert.show(); // Change showAndWait() to show()
     }
-    
+    // Build the values on the page -- Written by: Elmer
     public void initialize(URL url, ResourceBundle rb)
     {
         DepartmentTable();
     }
-    
 }

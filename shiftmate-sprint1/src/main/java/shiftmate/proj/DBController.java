@@ -1,4 +1,5 @@
 package shiftmate.proj;
+// Imports
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -8,141 +9,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Hashtable;
 import java.util.LinkedList;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-
-/* PUBLIC CLASSES WITHIN THE DATABASE CONTROLLER
-addEmployee
-    Function:
-    Parameters: String fname, String lname, String phone, String email, String startDate, int depID, String contact, String contactPhone,int employeeID
-    Returns: boolean
-getEmployeeInformation
-    Function:
-    Parameters: int employeeID
-    Returns: LinkedList<Hashtable<String,String>>
-editEmployeeInformation
-    Function:
-    Parameters: int employeeID, String fname, String lname, int depID, String phone, String email, String contact, String contactPhone,String startDate
-    Returns: boolean 
-getEmployeeID
-    Function:
-    Parameters: String firstName, String lastName
-    Returns: int
-getEmployees
-    Function:
-    Parameters:
-    Returns: LinkedList<Hashtable<String,String>>
-deleteEmployee
-    Function:
-    Parameters: int employeeID
-    Returns: boolean
-addDepartment
-    Function:
-    Parameters: String depName, String depManager
-    Returns: boolean
-renameDefaultShiftTable
-    Function:
-    Parameters: String oldDepName, String newDepName
-    Returns: boolean 
-createDefaultDepartmentTable
-    Function:
-    Parameters: String depName
-    Returns: boolean
-getDepartmentInformation
-    Function:
-    Parameters: int depID
-    Returns: LinkedList<Hashtable<String,String>>
-editDepartmentInformation
-    Function:
-    Parameters: int depID, String depName, String depManager
-    Returns: boolean
-getDepartmentEmployees
-    Function:
-    Parameters: int depID
-    Returns: LinkedList<Hashtable<String,String>>
-getDepartmentEmployeesWithEmail
-    Function:
-    Parameters: int depID
-    Returns: LinkedList<Hashtable<String,String>>
-getDepartments
-    Function:
-    Parameters:
-    Returns: LinkedList<Hashtable<String,String>>
-deleteDepartment
-    Function:
-    Parameters: int depID, String depName
-    Returns: LinkedList<Hashtable<String,String>>
-getDefaultSchedule
-    Function:
-    Parameters: String depName
-    Returns: LinkedList<Hashtable<String,String>>
-addShiftDefaultSchedule
-    Function:
-    Parameters: String depName, String dayOfWeek, String startTime, String endTime
-    Returns: int
-getDepartmentID
-    Function:
-    Parameters: String depName
-    Returns: int
-editShiftDefaultSchedule
-    Function:
-    Parameters: String depName, String oldStartTime, String oldEndTime, String dayOfWeek, String newStartTime, String newEndTim
-    Returns: boolean
-deleteShiftDefaultSchedule
-    Function: 
-    Parameters: String depName, String dayOfWeek, String startTime, String endTime
-    Returns: boolean
-createWeeklyScheduleTable
-    Function:
-    Parameters: String depName
-    Returns: boolean
-getAvailabilities
-    Function:
-    Parameters: string depName
-    Returns: LinkedList<Hashtable<String,String>>
-createWeeklySchedule
-    Function:
-    Parameters: String depName
-    Returns: boolean
-getWeeklySchedule
-    Function:
-    Parameters: String depName
-    Returns: LinkedList<Hashtable<String,String>>
-getEmployeeWeeklySchedule
-    Function:
-    Parameters: String depName, int employeeID
-    Returns: LinkedList<Hashtable<String,String>>
-addShiftWeeklySchedule
-    Function:
-    Parameters: String depName, int employeeID, String dayOfWeek, String startTime, String endTime
-    Returns: int
-editShiftWeeklySchedule
-    Function:
-    Parameters: String depName, int oldEmployeeID, String oldStartTime, String oldEndTime, String dayOfWeek, int newEmployeeID, String newStartTime, String newEndTime
-    Returns: boolean
- */
- public class DBController {
-
+public class DBController {
     // Database connection parameters
     static Connection connection;
     static String url = "jdbc:mysql://dcm.uhcl.edu/sens24g2";
     static String username = "sens24g2";
     static String password = "Sce9902292!!";
-
-    private static LocalTime parseTime(String timeString) {
-        // Use DateTimeFormatter to parse the time string
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("H:mm");
-        return LocalTime.parse(timeString, formatter);
-    }
-
-    private static String formatTime(LocalTime time) {
-        // Format the LocalTime object into "HH:mm:ss" format
-        return time.format(DateTimeFormatter.ofPattern("HH:mm:ss"));
-    }
-    //takes a string query and returns a linked list of hastables where each row is a table of key value pairs 
+    //takes a string query and returns a linked list of hastables where each row is a table of key value pairs -- Written By: Elizabeth
     private static LinkedList<Hashtable<String,String>> getParameterizedQuery(String query, int numParams, String [] param){
         LinkedList<Hashtable<String,String>> list = new LinkedList<>();     
-
         try {
             // Establishing a connection to the database
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -154,14 +29,11 @@ editShiftWeeklySchedule
                     //fill in each parameter
                     for(int i = 1; i<= numParams; i++){
                         prepstmt.setString(numParams, param[i-1]);
-                    }                   
-                    
+                    }                    
                     ResultSet rs = prepstmt.executeQuery() ;
                     try {
-                        
                         while(rs.next()){
                             Hashtable<String, String> currentRowMap = new Hashtable<>();
-                        
                             ResultSetMetaData rsmd = rs.getMetaData(); //gets column name
                             int columnCount = rsmd.getColumnCount();
                             for (int i = 1; i <= columnCount; i++) {
@@ -182,8 +54,6 @@ editShiftWeeklySchedule
                         // Propagate the original exception instead of this one that you may want just logged  
                         }
                     }
-                    
-
                 } finally {
                     try { prepstmt.close(); } 
                     catch (Throwable ignore) { 
@@ -203,7 +73,7 @@ editShiftWeeklySchedule
         }
         return list;
     } //end of class
-    
+    // Gets the employee information, and adds to database -- Written By: Elizabeth
     public static boolean addEmployee(String fname, String lname, String phone, String email, String startDate, int depID, String contact, String contactPhone,int employeeID) {
         String query = "INSERT INTO employeeinfo (fname, lname, phone, email, startDate, depID, contact, contactPhone,employeeID) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)";
         try {
@@ -241,12 +111,12 @@ editShiftWeeklySchedule
             return false;
         }
     }
-    
+    // Gets the employeeID and returns the employee information -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getEmployeeInformation(int employeeID){
         String params[] = {Integer.toString(employeeID)};
         return getParameterizedQuery("SELECT e.* FROM employeeinfo as e WHERE employeeid = ?;", 1, params);
     }
-   
+    // Gets the employee information, and updates the database -- Written By: Elizabeth
     public static boolean editEmployeeInformation(int employeeID, String fname, String lname, int depID, String phone, String email, String contact, String contactPhone,String startDate) {
         String query = "UPDATE employeeinfo SET fname = ?, lname = ?, depID = ?, phone = ?, email = ?, contact = ?, contactPhone = ?, startDate = ? WHERE employeeid = ?";
         try {
@@ -284,6 +154,7 @@ editShiftWeeklySchedule
             return false;
         }
     }    
+    // Gets the name of the employee, and returns the employeeID -- Written By: Kellie
     public static int getEmployeeID(String firstName, String lastName) {
         String query = "SELECT employeeID FROM EmployeeInfo WHERE fname = ? AND lname = ?";
         try (Connection connection = DriverManager.getConnection(url, username, password);
@@ -299,12 +170,12 @@ editShiftWeeklySchedule
         }
         return -1; // Return -1 if employee ID is not found or an error occurs
     }
-    
+    // Returns the employee information and their deparment name -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getEmployees(){
         String params[] = {};
         return getParameterizedQuery("SELECT e.*, d.depName FROM employeeinfo e INNER JOIN departments d ON e.depid = d.depid", 0, params);
     }
-
+    // Gets the employeeID and deletes employee -- Written By: Elizabeth
     public static boolean deleteEmployee(int employeeID) {
         String query = "DELETE FROM employeeinfo WHERE employeeID = ?";
         try {
@@ -312,9 +183,7 @@ editShiftWeeklySchedule
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
                 connection.setAutoCommit(false);
                 prepstmt.setInt(1, employeeID);
-    
                 int rowsAffected = prepstmt.executeUpdate();
-                
                 if (rowsAffected > 0) {
                     System.out.println("Employee deleted successfully.");
                     connection.commit();
@@ -333,7 +202,7 @@ editShiftWeeklySchedule
             return false;
         }
     }
-
+    // Gets the department name and the department manager and adds to the database -- Written By: Elizabeth
     public static boolean addDepartment(String depName, String depManager) {
         String query = "INSERT INTO departments (depName, depManager) VALUES (?, ?)";
         Connection connection = null; // Declare connection outside try block
@@ -343,7 +212,6 @@ editShiftWeeklySchedule
             try (PreparedStatement prepstmt = connection.prepareStatement(query)) {
                 prepstmt.setString(1, depName);
                 prepstmt.setString(2, depManager);
-    
                 int rowsAffected = prepstmt.executeUpdate();
                 connection.commit();
                 if (rowsAffected > 0) {
@@ -380,7 +248,7 @@ editShiftWeeklySchedule
         }
         return false; // Return false in case of any unexpected error
     }    
-
+    // Gets the old department name and the new department name and changes the name of the table -- Written By: Kellie
     public static boolean renameDefaultShiftTable(String oldDepName, String newDepName) {
         String oldTableName = oldDepName + "DefaultSchedule";
         String newTableName = newDepName + "DefaultSchedule";
@@ -395,8 +263,8 @@ editShiftWeeklySchedule
             System.out.println("Failed to rename default shift table.");
             return false;
         }
-    }    
-    
+    }      
+    // Gets the department name and creates the default schedule table -- Written By: Kellie
     private static boolean createDefaultDepartmentTable(String depName) {
         String tableName = depName.concat("DefaultSchedule");
         String shiftIDName = depName + "shiftID";
@@ -424,12 +292,12 @@ editShiftWeeklySchedule
             return false;
         }
     }
-        
+    // Gets the department id and returns the department information -- Written By: Elizabeth 
     public static LinkedList<Hashtable<String,String>> getDepartmentInformation(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT d.* FROM departments as d WHERE depid = ?;", 1, params);
     }
-
+    // Get the department id, department name, and department manager and updates database -- Written By: Kellie
     public static boolean editDepartmentInformation(int depID, String depName, String depManager) {
         String query = "UPDATE departments SET depName = ?, depManager = ? WHERE depid = ?";
         try {
@@ -439,7 +307,6 @@ editShiftWeeklySchedule
                 prepstmt.setString(1, depName);
                 prepstmt.setString(2, depManager);
                 prepstmt.setInt(3, depID);
-    
                 int rowsAffected = prepstmt.executeUpdate();
                 connection.commit();
                 if (rowsAffected > 0) {
@@ -463,25 +330,23 @@ editShiftWeeklySchedule
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
     }
-
+    // Get the departmentID and return the department's employee emails -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployeesWithEmail(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID, email FROM employeeinfo WHERE depID = ?", 1, params);
     }
-
+    // Return the departments -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getDepartments(){
         String params[] = {};
         return getParameterizedQuery("SELECT d.* FROM departments d;", 0, params);
     }
-
+    // Get the department id and delete from the database -- Written By: Elizabeth
     public static boolean deleteDepartment(int depID, String depName) {
         String queryDeleteDepartment = "DELETE FROM departments WHERE depID = ?";
         String table = depName.concat("defaultschedule");
         String queryDeleteShifts = "DELETE FROM " + table + " WHERE depID = ?";
         String queryDropTable = "DROP TABLE IF EXISTS " + table; // Ensure the table exists before dropping
-        
         Connection connection = null;
-        
         try {
             connection = DriverManager.getConnection(url, username, password);
             connection.setAutoCommit(false);
@@ -490,20 +355,16 @@ editShiftWeeklySchedule
                 deleteHelpShiftsStmt.setInt(1, depID);
                 deleteHelpShiftsStmt.executeUpdate();
             }
-            
             // Delete the department
             try (PreparedStatement deleteDeptStmt = connection.prepareStatement(queryDeleteDepartment)) {
                 deleteDeptStmt.setInt(1, depID);
                 int rowsAffected = deleteDeptStmt.executeUpdate();
-                
                 if (rowsAffected > 0) {
                     System.out.println("Department '" + depName + "' deleted successfully.");
-                    
                     // Drop the default schedule table
                     try (PreparedStatement dropTableStmt = connection.prepareStatement(queryDropTable)) {
                         dropTableStmt.executeUpdate();
                     }
-                    
                     connection.commit();
                     return true;
                 } else {
@@ -530,19 +391,16 @@ editShiftWeeklySchedule
                 }
             }
         }
-        
         return false; // Return false outside the try-catch-finally block
     }
-
+    // Get the department name and return the departments default schedule -- Written By: Kellie
     public static LinkedList<Hashtable<String,String>> getDefaultSchedule(String depName){
         System.out.println(depName);
         String table = depName.concat("defaultschedule");
         String query = "SELECT * FROM " + table;
-    
-        // Assuming `getParameterizedQuery` expects a plain SQL query string
         return getParameterizedQuery(query, 0, null);
     }
-    
+    // Get the shift details and returns the scheduleid -- Written By: Kellie
     public static int addShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("defaultschedule");
         String addShiftQuery = "INSERT INTO " + table + " (depID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?)";
@@ -581,11 +439,10 @@ editShiftWeeklySchedule
             return -1;
         }
     }    
-
+    // Get the department name and return the department id -- Written By: Kellie
     public static int getDepartmentID(String depName) {
         String params[] = {depName};
         LinkedList<Hashtable<String, String>> result = getParameterizedQuery("SELECT depID FROM departments WHERE depName = ?;", 1, params);
-        
         // Check if the result is not empty and contains the "depID" key
         if (!result.isEmpty() && result.getFirst().containsKey("depID")) {
             String depIDString = result.getFirst().get("depID");
@@ -602,7 +459,7 @@ editShiftWeeklySchedule
             return -1; // Return -1 to indicate failure
         }
     }    
-    // Edit shift in default department schedule
+    // Get the shift details and update the database -- Written By: Kellie
     public static boolean editShiftDefaultSchedule(String depName, String oldStartTime, String oldEndTime, String dayOfWeek, String newStartTime, String newEndTime){
         String table = depName.concat("defaultschedule");
         String updateShiftQuery = "UPDATE " + table + " SET startTime = ?, endTime = ? WHERE dayOfWeek = ? AND startTime = ? AND endTime = ?";
@@ -627,7 +484,7 @@ editShiftWeeklySchedule
             return false;
         }
     }
-    // Delete shift from default department schedule
+    // Delete shift from default department schedule -- Written By: Kellie
     public static boolean deleteShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime){
         String table = depName.concat("defaultschedule");
         String deleteShiftQuery = "DELETE FROM " + table + " WHERE dayOfWeek = ? AND startTime = ? AND endTime = ?";
@@ -650,13 +507,12 @@ editShiftWeeklySchedule
             return false;
         }
     }
+    // Create the weekly schedule table -- Written By: Kellie
     public static boolean createWeeklyScheduleTable(String depName) {
         String tableName = depName.concat("WeeklySchedule");
         String shiftIDName = depName + "ShiftID";
-    
         // Query to drop the table if it exists
         String dropQuery = "DROP TABLE IF EXISTS " + tableName;
-    
         // Query to create the new table
         String query = "CREATE TABLE " + tableName + " ( " + shiftIDName +
                         " INT AUTO_INCREMENT PRIMARY KEY, " +
@@ -669,15 +525,12 @@ editShiftWeeklySchedule
                         "FOREIGN KEY (DepID) REFERENCES Departments(depID), " +
                         "FOREIGN KEY (EmployeeID) REFERENCES EmployeeInfo(employeeID)" +
                         ")";
-    
         try (Connection connection = DriverManager.getConnection(url, username, password);
              Statement stmt = connection.createStatement()) {
             // Drop the table if it exists
             stmt.executeUpdate(dropQuery);
-    
             // Create the new table
             stmt.executeUpdate(query);
-    
             System.out.println("Table " + tableName + " created successfully.");
             createWeeklySchedule(depName);
             // CHECK IF IT WORKED
@@ -687,6 +540,7 @@ editShiftWeeklySchedule
             return false;
         }
     }
+    // Get the department name and return the employee availabilities -- Written By: Kellie
     public static LinkedList<Hashtable<String,String>> getAvailabilities(String depName){
         String query = "SELECT a.*, e.fname, e.lname, e.maxWeeklyHours FROM availability AS a " +
                     "INNER JOIN employeeinfo AS e ON a.employeeID = e.employeeID " +
@@ -695,6 +549,7 @@ editShiftWeeklySchedule
         String params[] = {depName};
         return getParameterizedQuery(query, 1, params);
     }
+    // Get the department name and build the weekly schedule-- Written By: Kellie
     private static Boolean createWeeklySchedule(String depName) {
         LinkedList<Hashtable<String, String>> weeklySchedule = CreateWeeklyScheduleUtils.buildWeeklySchedule(depName);
         boolean allShiftsAdded = true; // Flag to track if all shifts were successfully added
@@ -712,20 +567,21 @@ editShiftWeeklySchedule
         }
         return allShiftsAdded;
     }
+    // Get the department name and return the weekly schedule -- Written By: Kellie
     public static LinkedList<Hashtable<String,String>> getWeeklySchedule(String depName){
         System.out.println(depName);
         String table = depName.concat("weeklyschedule");
         String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid)";
         return getParameterizedQuery(query, 0, null);
     }
-
+    // Get the department name and the employee id and return the employees scheudle --Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getEmployeeWeeklySchedule(String depName, int employeeID){
         String params[] = {Integer.toString(employeeID)};
         String table = depName.concat("weeklyschedule");
         String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ?";
         return getParameterizedQuery(query, 1, params);
     }
-
+    // Get the shift details and add shif to the weekly schedule -- Written By: Kellie
     public static int addShiftWeeklySchedule(String depName, int employeeID, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("weeklyschedule");
         String addShiftQuery = "INSERT INTO " + table + " (depID, employeeID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
@@ -765,6 +621,7 @@ editShiftWeeklySchedule
             return -1;
         }
     }  
+    // Get the shift details and update shift in weekly schedule -- Written By: Kellie
     public static boolean editShiftWeeklySchedule(String depName, int oldEmployeeID, String oldStartTime, String oldEndTime, String dayOfWeek, int newEmployeeID, String newStartTime, String newEndTime) {
         String table = depName + "weeklyschedule";
         String updateShiftQuery = "UPDATE " + table + " SET startTime = ?, endTime = ?, employeeID = ? WHERE dayOfWeek = ? AND startTime = ? AND endTime = ? AND employeeID = ?";
