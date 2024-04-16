@@ -1,3 +1,9 @@
+#called from Notify.java
+#takes email address, start of week date, and formatted email body as command line args
+#sends one email with those parameters
+#used to send weekly schedule notifications to employees
+# -- Written by: Elizabeth
+
 import smtplib
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart

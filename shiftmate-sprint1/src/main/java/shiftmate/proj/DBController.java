@@ -325,12 +325,13 @@ public class DBController {
             e.printStackTrace();
             return false;
         }
-    }    
+    }  
+    // Get the departmentID and return the department's employees -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployees(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID FROM employeeinfo WHERE depID = ?", 1, params);
     }
-    // Get the departmentID and return the department's employee emails -- Written By: Elizabeth
+    // Get the departmentID and return the department's employees + emails -- Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getDepartmentEmployeesWithEmail(int depID){
         String params[] = {Integer.toString(depID)};
         return getParameterizedQuery("SELECT CONCAT(fname, ' ', lname) AS eName, employeeID, email FROM employeeinfo WHERE depID = ?", 1, params);

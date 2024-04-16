@@ -1,13 +1,12 @@
 package shiftmate.proj;
-
+//Imports
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
 public class Notify{
-  //public static String s;
 
-  //sends schedule notification email to entire department staff
+  //sends schedule notification email to entire department staff -- Written by: Elizabeth
   public static void sendDepEmail(int depID) throws IOException{
     LinkedList<Hashtable<String,String>> employeeList = DBController.getDepartmentEmployeesWithEmail(depID);
     String depName = DBController.getDepartmentInformation(depID).getFirst().get("depName");
@@ -77,7 +76,7 @@ public class Notify{
     }
   }
 
-  //sends a single email 
+  //sends a single email -- Written by: Elizabeth
   private static void sendEmail(String emailTo, String subjectDate, String bodyText) throws IOException 
   { 
     String[] cmd = { //sends to python with command like args
@@ -88,26 +87,5 @@ public class Notify{
       bodyText
     };
     Runtime.getRuntime().exec(cmd);
-    
-    //for debugging/ returning errors if necessary
-    //Runtime r = Runtime.getRuntime();
-    //Process p = r.exec(cmd);
-    
-    //System.out.println("printed?");
-    //BufferedReader in = new BufferedReader(new InputStreamReader(p.getInputStream()));
-    //while((s=in.readLine()) != null){
-    //  System.out.println(s);
-    //}
   }
-
-    
-  public static void main(String[] args) throws IOException{
-    /*String schedule = """
-        Monday: N/A
-        Tuesday: 9:00AM - 5:00PM
-        Wednesday: N/A
-        """;
-    sendEmail("elizabethnjaa@gmail.com","testDate", schedule); */
-    //sendDepEmail(2);
-  }  
 }
