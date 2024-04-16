@@ -14,52 +14,112 @@ import java.time.format.DateTimeFormatter;
 /* PUBLIC CLASSES WITHIN THE DATABASE CONTROLLER
 addEmployee
     Function:
-    Parameters:
-    Returns:
+    Parameters: String fname, String lname, String phone, String email, String startDate, int depID, String contact, String contactPhone,int employeeID
+    Returns: boolean
 getEmployeeInformation
     Function:
-    Parameters:
-    Returns:
+    Parameters: int employeeID
+    Returns: LinkedList<Hashtable<String,String>>
 editEmployeeInformation
     Function:
+    Parameters: int employeeID, String fname, String lname, int depID, String phone, String email, String contact, String contactPhone,String startDate
+    Returns: boolean 
+getEmployeeID
+    Function:
+    Parameters: String firstName, String lastName
+    Returns: int
+getEmployees
+    Function:
     Parameters:
-    Returns:
+    Returns: LinkedList<Hashtable<String,String>>
 deleteEmployee
     Function:
-    Parameters:
-    Returns:
+    Parameters: int employeeID
+    Returns: boolean
 addDepartment
     Function:
-    Parameters:
-    Returns:
+    Parameters: String depName, String depManager
+    Returns: boolean
 renameDefaultShiftTable
     Function:
-    Parameters:
-    Returns:
+    Parameters: String oldDepName, String newDepName
+    Returns: boolean 
+createDefaultDepartmentTable
+    Function:
+    Parameters: String depName
+    Returns: boolean
 getDepartmentInformation
     Function:
-    Parameters:
-    Returns:
+    Parameters: int depID
+    Returns: LinkedList<Hashtable<String,String>>
 editDepartmentInformation
     Function:
-    Parameters:
-    Returns:
+    Parameters: int depID, String depName, String depManager
+    Returns: boolean
+getDepartmentEmployees
+    Function:
+    Parameters: int depID
+    Returns: LinkedList<Hashtable<String,String>>
+getDepartmentEmployeesWithEmail
+    Function:
+    Parameters: int depID
+    Returns: LinkedList<Hashtable<String,String>>
 getDepartments
     Function:
     Parameters:
-    Returns:
+    Returns: LinkedList<Hashtable<String,String>>
 deleteDepartment
     Function:
-    Parameters:
-    Returns:
+    Parameters: int depID, String depName
+    Returns: LinkedList<Hashtable<String,String>>
 getDefaultSchedule
     Function:
-    Parameters:
-    Returns:
-getDepartmentEmployees
+    Parameters: String depName
+    Returns: LinkedList<Hashtable<String,String>>
+addShiftDefaultSchedule
     Function:
-    Parameters:
-    Returns:
+    Parameters: String depName, String dayOfWeek, String startTime, String endTime
+    Returns: int
+getDepartmentID
+    Function:
+    Parameters: String depName
+    Returns: int
+editShiftDefaultSchedule
+    Function:
+    Parameters: String depName, String oldStartTime, String oldEndTime, String dayOfWeek, String newStartTime, String newEndTim
+    Returns: boolean
+deleteShiftDefaultSchedule
+    Function: 
+    Parameters: String depName, String dayOfWeek, String startTime, String endTime
+    Returns: boolean
+createWeeklyScheduleTable
+    Function:
+    Parameters: String depName
+    Returns: boolean
+getAvailabilities
+    Function:
+    Parameters: string depName
+    Returns: LinkedList<Hashtable<String,String>>
+createWeeklySchedule
+    Function:
+    Parameters: String depName
+    Returns: boolean
+getWeeklySchedule
+    Function:
+    Parameters: String depName
+    Returns: LinkedList<Hashtable<String,String>>
+getEmployeeWeeklySchedule
+    Function:
+    Parameters: String depName, int employeeID
+    Returns: LinkedList<Hashtable<String,String>>
+addShiftWeeklySchedule
+    Function:
+    Parameters: String depName, int employeeID, String dayOfWeek, String startTime, String endTime
+    Returns: int
+editShiftWeeklySchedule
+    Function:
+    Parameters: String depName, int oldEmployeeID, String oldStartTime, String oldEndTime, String dayOfWeek, int newEmployeeID, String newStartTime, String newEndTime
+    Returns: boolean
  */
  public class DBController {
 
