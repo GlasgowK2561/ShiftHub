@@ -94,6 +94,7 @@ public String getShift(String dayOfWeek) {
 public int getEmployeeID(String dayOfWeek) {
     String shiftDetails = getShift(dayOfWeek);
     String[] parts = shiftDetails.split("\n");
+    System.out.println(shiftDetails);
     // Now parts[0] will contain the employee name, and parts[1] will contain the shift information
     String employeeName = parts[0]; // "John Doe"    
     // Split the employee name string by space character to separate first name and last name
@@ -101,6 +102,7 @@ public int getEmployeeID(String dayOfWeek) {
     String firstName = nameParts[0]; // "John"
     String lastName = nameParts[1]; // "Doe"
     int employeeID = DBController.getEmployeeID(firstName, lastName);
+    System.out.println(employeeID);
     return employeeID;
 }
 @Override

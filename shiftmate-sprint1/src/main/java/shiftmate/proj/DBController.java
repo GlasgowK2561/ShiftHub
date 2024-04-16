@@ -526,6 +526,7 @@ public class DBController {
                         "FOREIGN KEY (DepID) REFERENCES Departments(depID), " +
                         "FOREIGN KEY (EmployeeID) REFERENCES EmployeeInfo(employeeID)" +
                         ")";
+        
         try (Connection connection = DriverManager.getConnection(url, username, password);
              Statement stmt = connection.createStatement()) {
             // Drop the table if it exists

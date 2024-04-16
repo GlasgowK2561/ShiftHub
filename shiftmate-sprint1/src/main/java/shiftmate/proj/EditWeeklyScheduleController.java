@@ -73,14 +73,13 @@ public class EditWeeklyScheduleController implements Initializable {
     private ObservableList<EmployeeInfo> getEmployeeList() {
         LinkedList<Hashtable<String,String>> employees = DBController.getDepartmentEmployees(depID);
         ObservableList<EmployeeInfo> employeeList = FXCollections.observableArrayList();
-        for (int i = 0; i < employees.size(); i++) {
-            Hashtable<String,String> data = employees.get(i);
-            int employeeID = Integer.parseInt(data.get("employeeID"));
-            String fname = data.get("fname");
-            String lname = data.get("lname");
-            employeeList.add(new EmployeeInfo(employeeID, depID, fname, lname, "", "", "", "", ""));
+        for (Hashtable<String, String> employee : employees) {
+            System.out.println(employee);
+            String ename = employee.get("eName");
+            String[] parts = ename.split(" ");
+            employeeList.add(new EmployeeInfo(Integer.parseInt(employee.get("employeeID")), depID, parts[0], parts[1], "","","","",""));
         }
-        
+
         return employeeList;
     }
     public static ObservableList<WeeklyScheduleRow> buildShiftLists(List<WeeklyScheduleRow> scheduleRows) {
@@ -282,6 +281,7 @@ public class EditWeeklyScheduleController implements Initializable {
     
         int selectedEmployeeID = selectedRow.getEmployeeID(dayOfWeek);
         for (EmployeeInfo employee : employeeList) {
+            System.out.println(employee.getEmployeeID());
             if (employee.getEmployeeID() == selectedEmployeeID) {
                 selectedEmployee[0] = employee; // Set the selectedEmployee in the array
                 break;
