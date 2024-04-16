@@ -11,7 +11,7 @@ import sys
 emailFrom = "shiftmateseniorproject@gmail.com"
 emailPass = "fatyqvaxplucijvo"
 emailTo = str(sys.argv[1])
-subject = "ShiftMate Test " + str(sys.argv[2])
+subject = "ShiftMate Schedule for Week of " + str(sys.argv[2])
 body = str(sys.argv[3])
 
 msg = MIMEMultipart()
