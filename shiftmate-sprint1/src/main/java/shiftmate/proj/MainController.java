@@ -19,8 +19,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
@@ -52,8 +54,95 @@ public class MainController implements Initializable
     private ComboBox<Departments> departmentComboBox;
     @FXML
     private Label dateRangeLabel;
+    public static ObservableList<WeeklyScheduleRow> buildShiftLists(List<WeeklyScheduleRow> scheduleRows) {
+        ObservableList<WeeklyScheduleRow> newScheduleRows = FXCollections.observableArrayList();
+        List<String> mondayShifts =  new ArrayList<>(); 
+        List<String> tuesdayShifts =  new ArrayList<>(); 
+        List<String> wednesdayShifts = new ArrayList<>();
+        List<String> thursdayShifts = new ArrayList<>();
+        List<String> fridayShifts = new ArrayList<>();
+        List<String> saturdayShifts = new ArrayList<>();
+        List<String> sundayShifts = new ArrayList<>();
+        String mondayShift, tuesdayShift, wednesdayShift, thursdayShift, fridayShift, saturdayShift, sundayShift;
 
-
+        // Determine the number of shifts in each row
+        int numRows = scheduleRows.size();
+        
+        // Iterate through each row
+        for (WeeklyScheduleRow row : scheduleRows) {
+            // Iterate through each shift position in the row
+            if (!row.getMondayShift().isEmpty()) {
+                mondayShifts.add(row.getMondayShift());
+            }
+            if (!row.getTuesdayShift().isEmpty()) {
+                tuesdayShifts.add(row.getTuesdayShift());
+            }
+            if (!row.getWednesdayShift().isEmpty()) {
+                wednesdayShifts.add(row.getWednesdayShift());
+            }
+            if (!row.getThursdayShift().isEmpty()) {
+                thursdayShifts.add(row.getThursdayShift());
+            }
+            if (!row.getFridayShift().isEmpty()) {
+                fridayShifts.add(row.getFridayShift());
+            }
+            if (!row.getSaturdayShift().isEmpty()) {
+                saturdayShifts.add(row.getSaturdayShift());
+            }
+            if (!row.getSundayShift().isEmpty()) {
+                sundayShifts.add(row.getSundayShift());
+            }
+        }        
+        for (int i = 0; i < numRows; i++) {        
+            // Check if Monday shift is available
+            if (mondayShifts.size() > i && !mondayShifts.get(i).isEmpty()) {
+                mondayShift = mondayShifts.get(i);
+            } else {
+                mondayShift = "";
+            }
+            // Check if Tuesday shift is available
+            if (tuesdayShifts.size() > i && !tuesdayShifts.get(i).isEmpty()) {
+                tuesdayShift = tuesdayShifts.get(i);
+            } else {
+                tuesdayShift = "";
+            }
+            // Check if Wednesday shift is available
+            if (wednesdayShifts.size() > i && !wednesdayShifts.get(i).isEmpty()) {
+                wednesdayShift = wednesdayShifts.get(i);
+            } else {
+                wednesdayShift = "";
+            }
+            // Check if Thursday shift is available
+            if (thursdayShifts.size() > i && !thursdayShifts.get(i).isEmpty()) {
+                thursdayShift = thursdayShifts.get(i);
+            } else {
+                thursdayShift = "";
+            }
+            // Check if Friday shift is available
+            if (fridayShifts.size() > i && !fridayShifts.get(i).isEmpty()) {
+                fridayShift = fridayShifts.get(i);
+            } else {
+                fridayShift = "";
+            }
+            // Check if Saturday shift is available
+            if (saturdayShifts.size() > i && !saturdayShifts.get(i).isEmpty()) {
+                saturdayShift = saturdayShifts.get(i);
+            } else {
+                saturdayShift = "";
+            }
+            // Check if Sunday shift is available
+            if (sundayShifts.size() > i && !sundayShifts.get(i).isEmpty()) {
+                sundayShift = sundayShifts.get(i);
+            } else {
+                sundayShift = "";
+            }
+            // Create a new WeeklyScheduleRow object with shifts for each day
+            WeeklyScheduleRow row = new WeeklyScheduleRow(mondayShift, tuesdayShift, wednesdayShift,
+                                                           thursdayShift, fridayShift, saturdayShift, sundayShift);
+            newScheduleRows.add(row);
+        }        
+        return newScheduleRows;
+    }
     private void populateWeeklyScheduleTable(String depName) {
         schedulesTableView.getItems().clear();
         LinkedList<Hashtable<String, String>> weeklyScheduleInformation = DBController.getWeeklySchedule(depName);
@@ -95,7 +184,10 @@ public class MainController implements Initializable
             // Add the schedule row to the list
             weeklyScheduleRows.add(row);
         }
-        schedulesTableView.setItems(weeklyScheduleRows);
+        ObservableList<WeeklyScheduleRow> organizedScheduleRows = buildShiftLists(weeklyScheduleRows);
+        // Populate the TableView
+        schedulesTableView.setItems(organizedScheduleRows);
+        schedulesTableView.setItems(organizedScheduleRows);
         mondayColumn.setCellValueFactory(new PropertyValueFactory<>("mondayShift"));
         tuesdayColumn.setCellValueFactory(new PropertyValueFactory<>("tuesdayShift"));
         wednesdayColumn.setCellValueFactory(new PropertyValueFactory<>("wednesdayShift"));

@@ -480,14 +480,6 @@ getDepartmentEmployees
     public static int addShiftDefaultSchedule(String depName, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("defaultschedule");
         String addShiftQuery = "INSERT INTO " + table + " (depID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?)";
-        // Parse the start and end time strings into LocalTime objects
-        LocalTime startTimeParsed = parseTime(startTime);
-        LocalTime endTimeParsed = parseTime(endTime);
-        
-        // Format the LocalTime objects into strings in "HH:mm:ss" format
-        String startTimeFormatted = formatTime(startTimeParsed);
-        String endTimeFormatted = formatTime(endTimeParsed);
-        
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             // Get department ID
             int depID = getDepartmentID(depName);
@@ -496,8 +488,8 @@ getDepartmentEmployees
                 try (PreparedStatement preparedStatement = connection.prepareStatement(addShiftQuery, Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setInt(1, depID);
                     preparedStatement.setString(2, dayOfWeek);
-                    preparedStatement.setString(3, startTimeFormatted);
-                    preparedStatement.setString(4, endTimeFormatted);
+                    preparedStatement.setString(3, startTime);
+                    preparedStatement.setString(4, endTime);
                     int rowsAffected = preparedStatement.executeUpdate();
                     if (rowsAffected > 0) {
                         ResultSet generatedKeys = preparedStatement.getGeneratedKeys();

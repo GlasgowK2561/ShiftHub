@@ -73,68 +73,94 @@ public class CreateDefaultScheduleController implements Initializable {
     public void setDepName(String depName) {
         this.depName = depName;
     }
-    public static List<List<String>> buildShiftLists(List<ScheduleRow> scheduleRows) {
-        List<List<String>> shiftLists = new ArrayList<>();
-    
+    public static ObservableList<ScheduleRow> buildShiftLists(List<ScheduleRow> scheduleRows) {
+        ObservableList<ScheduleRow> newScheduleRows = FXCollections.observableArrayList();
+        List<String> mondayShifts =  new ArrayList<>(); 
+        List<String> tuesdayShifts =  new ArrayList<>(); 
+        List<String> wednesdayShifts = new ArrayList<>();
+        List<String> thursdayShifts = new ArrayList<>();
+        List<String> fridayShifts = new ArrayList<>();
+        List<String> saturdayShifts = new ArrayList<>();
+        List<String> sundayShifts = new ArrayList<>();
+        String mondayShift, tuesdayShift, wednesdayShift, thursdayShift, fridayShift, saturdayShift, sundayShift;
+
         // Determine the number of shifts in each row
         int numRows = scheduleRows.size();
-    
-        // Initialize lists for each shift position
-        for (int i = 0; i < numRows; i++) {
-            shiftLists.add(new ArrayList<>());
-        }
-    
+        
         // Iterate through each row
         for (ScheduleRow row : scheduleRows) {
             // Iterate through each shift position in the row
             if (!row.getMondayShift().isEmpty()) {
-                shiftLists.get(0).add(row.getMondayShift());
+                mondayShifts.add(row.getMondayShift());
             }
             if (!row.getTuesdayShift().isEmpty()) {
-                shiftLists.get(1).add(row.getTuesdayShift());
+                tuesdayShifts.add(row.getTuesdayShift());
             }
             if (!row.getWednesdayShift().isEmpty()) {
-                shiftLists.get(2).add(row.getWednesdayShift());
+                wednesdayShifts.add(row.getWednesdayShift());
             }
             if (!row.getThursdayShift().isEmpty()) {
-                shiftLists.get(3).add(row.getThursdayShift());
+                thursdayShifts.add(row.getThursdayShift());
             }
             if (!row.getFridayShift().isEmpty()) {
-                shiftLists.get(4).add(row.getFridayShift());
+                fridayShifts.add(row.getFridayShift());
             }
             if (!row.getSaturdayShift().isEmpty()) {
-                shiftLists.get(5).add(row.getSaturdayShift());
+                saturdayShifts.add(row.getSaturdayShift());
             }
             if (!row.getSundayShift().isEmpty()) {
-                shiftLists.get(6).add(row.getSundayShift());
+                sundayShifts.add(row.getSundayShift());
             }
         }        
-        return shiftLists;
-    }
-    public ObservableList<ScheduleRow> convertToScheduleRows(List<List<String>> shiftLists) {
-        ObservableList<ScheduleRow> scheduleRows = FXCollections.observableArrayList();
-        int numRows = 0;
-
-        for (List<String> shiftList : shiftLists) {
-            int size = shiftList.size();
-            if (size > numRows) {
-                numRows = size;
+        for (int i = 0; i < numRows; i++) {        
+            // Check if Monday shift is available
+            if (mondayShifts.size() > i && !mondayShifts.get(i).isEmpty()) {
+                mondayShift = mondayShifts.get(i);
+            } else {
+                mondayShift = "";
             }
-        }
-        for (int i = 0; i < numRows; i++) {
-            String mondayShift = i < shiftLists.get(0).size() ? shiftLists.get(0).get(i) : "";
-            String tuesdayShift = i < shiftLists.get(1).size() ? shiftLists.get(1).get(i) : "";
-            String wednesdayShift = i < shiftLists.get(2).size() ? shiftLists.get(2).get(i) : "";
-            String thursdayShift = i < shiftLists.get(3).size() ? shiftLists.get(3).get(i) : "";
-            String fridayShift = i < shiftLists.get(4).size() ? shiftLists.get(4).get(i) : "";
-            String saturdayShift = i < shiftLists.get(5).size() ? shiftLists.get(5).get(i) : "";
-            String sundayShift = i < shiftLists.get(6).size() ? shiftLists.get(6).get(i) : "";
-        
+            // Check if Tuesday shift is available
+            if (tuesdayShifts.size() > i && !tuesdayShifts.get(i).isEmpty()) {
+                tuesdayShift = tuesdayShifts.get(i);
+            } else {
+                tuesdayShift = "";
+            }
+            // Check if Wednesday shift is available
+            if (wednesdayShifts.size() > i && !wednesdayShifts.get(i).isEmpty()) {
+                wednesdayShift = wednesdayShifts.get(i);
+            } else {
+                wednesdayShift = "";
+            }
+            // Check if Thursday shift is available
+            if (thursdayShifts.size() > i && !thursdayShifts.get(i).isEmpty()) {
+                thursdayShift = thursdayShifts.get(i);
+            } else {
+                thursdayShift = "";
+            }
+            // Check if Friday shift is available
+            if (fridayShifts.size() > i && !fridayShifts.get(i).isEmpty()) {
+                fridayShift = fridayShifts.get(i);
+            } else {
+                fridayShift = "";
+            }
+            // Check if Saturday shift is available
+            if (saturdayShifts.size() > i && !saturdayShifts.get(i).isEmpty()) {
+                saturdayShift = saturdayShifts.get(i);
+            } else {
+                saturdayShift = "";
+            }
+            // Check if Sunday shift is available
+            if (sundayShifts.size() > i && !sundayShifts.get(i).isEmpty()) {
+                sundayShift = sundayShifts.get(i);
+            } else {
+                sundayShift = "";
+            }
+            // Create a new WeeklyScheduleRow object with shifts for each day
             ScheduleRow row = new ScheduleRow(mondayShift, tuesdayShift, wednesdayShift,
-                                               thursdayShift, fridayShift, saturdayShift, sundayShift);
-            scheduleRows.add(row);
+                                                           thursdayShift, fridayShift, saturdayShift, sundayShift);
+            newScheduleRows.add(row);
         }        
-        return scheduleRows;
+        return newScheduleRows;
     }
 
     public void DefaultScheduleTable() {
@@ -178,8 +204,7 @@ public class CreateDefaultScheduleController implements Initializable {
             scheduleRows.add(row);
         }
         // Sort the original observable list
-        List<List<String>> shiftLists = buildShiftLists(scheduleRows);
-        ObservableList<ScheduleRow> organizedScheduleRows = convertToScheduleRows(shiftLists);
+        ObservableList<ScheduleRow> organizedScheduleRows = buildShiftLists(scheduleRows);
         // Populate the TableView
         scheduleTableView.setItems(organizedScheduleRows);
         mondayColumn.setCellValueFactory(new PropertyValueFactory<>("mondayShift"));
