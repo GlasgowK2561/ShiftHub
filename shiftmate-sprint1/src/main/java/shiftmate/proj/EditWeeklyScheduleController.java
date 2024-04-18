@@ -554,7 +554,10 @@ public class EditWeeklyScheduleController implements Initializable {
     }
     @FXML
     void sendNotificationsOnAction(ActionEvent event) throws IOException{
-        Notify.sendDepEmail(depID, depName);
+        LocalDate currentDate = LocalDate.now();
+        LocalDate mondayDate = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+        String startDate = mondayDate.toString();
+        Notify.sendDepEmail(depID, startDate);
     }
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException {

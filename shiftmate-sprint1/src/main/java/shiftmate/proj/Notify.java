@@ -13,14 +13,12 @@ public class Notify{
     String depName = DBController.getDepartmentInformation(depID).getFirst().get("depName");
     System.out.println("Sending schedule emails for: " + depName);
     String monHours, tuesHours, wedHours, thursHours, friHours, satHours, sunHours = "N/A";
-    
     for(Hashtable<String,String> employeeInfo: employeeList){ //get each employees info
       String eName = employeeInfo.get("eName");
       String eEmail = employeeInfo.get("email");
       int employeeID = Integer.parseInt(employeeInfo.get("employeeID"));
       monHours = tuesHours = wedHours = thursHours = friHours = satHours = sunHours = "N/A";
       System.out.println("Working on: " + eName);
-
       //get and format weekly schedule
       LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeScheduleWeekOf(depName, employeeID);
       if(schedule.peekFirst() != null){ //check that department schedule exists
