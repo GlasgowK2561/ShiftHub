@@ -3,6 +3,10 @@ package shiftmate.proj;
 // Imports
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import java.util.ArrayList;
@@ -60,6 +64,12 @@ public class EditWeeklyScheduleController implements Initializable {
 
     @FXML
     private TableColumn<WeeklyScheduleRow, String> sundayColumn;
+    @FXML
+    private Button createWeeklyScheduleOnAction;
+
+    @FXML
+    private ComboBox<Departments> departmentsComboBox;
+
     private Button saveButton;
     private String depName;
     private int depID;
@@ -70,8 +80,15 @@ public class EditWeeklyScheduleController implements Initializable {
     public void setDepID(int depID) {
         this.depID = depID;
     }
+    public int getDepID()      
+{
+    return depID;
+}
+    
+
     private ObservableList<EmployeeInfo> getEmployeeList() {
         LinkedList<Hashtable<String,String>> employees = DBController.getDepartmentEmployees(depID);
+        System.out.println("Number of employees given to me:" + employees.size());
         ObservableList<EmployeeInfo> employeeList = FXCollections.observableArrayList();
         for (Hashtable<String, String> employee : employees) {
             System.out.println(employee);
@@ -425,6 +442,110 @@ public class EditWeeklyScheduleController implements Initializable {
     }
 
     @FXML
+    private void createWeeklyScheduleOnAction(ActionEvent event) {
+        // Get the selected department information
+        Departments selectedDepartment = departmentsComboBox.getValue();
+    
+        if (selectedDepartment != null) 
+        {
+            String selectedDepName = selectedDepartment.getDepName();
+
+        Alert confirmCreateSchedule = new Alert(AlertType.CONFIRMATION);
+        // Confirm selection with user
+        confirmCreateSchedule.setTitle("Create Weekly Schedule");
+        confirmCreateSchedule.setHeaderText(null);
+        confirmCreateSchedule.setContentText("Do you want to create a new weekly schedule for the selected department?");
+        ButtonType yesButton = new ButtonType("Yes", ButtonData.YES);
+        ButtonType noButton = new ButtonType("No", ButtonData.NO);
+        confirmCreateSchedule.getButtonTypes().setAll(yesButton, noButton);
+        Optional<ButtonType> result = confirmCreateSchedule.showAndWait();
+        if (result.isPresent() && result.get() == yesButton) {
+            // Create weekly schedule if user agrees
+            Boolean checkTableCreation = DBController.createWeeklyScheduleTable(selectedDepName);
+            if (checkTableCreation)
+            {
+                Alert alert = new Alert(AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText(null);
+                alert.setContentText("Weekly Schedule has been created");
+                alert.showAndWait();
+
+                populateWeeklyScheduleTable();
+            }
+            
+            else
+            {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText(null);
+                alert.setContentText("Failed to create the weekly schedule");
+                alert.showAndWait();
+            }
+        }
+    }
+}
+
+    private void departmentsComboBox() 
+    {
+    LinkedList<Hashtable<String, String>> departmentsList = DBController.getDepartments();
+    ObservableList<Departments> departmentNames = FXCollections.observableArrayList();
+
+    for (Hashtable<String, String> data : departmentsList) 
+    {
+        String depName = data.get("depName");
+        int depId = Integer.parseInt(data.get("depID"));  
+        Departments dep = new Departments(depId, depName, depName); 
+        departmentNames.add(dep);
+    }
+
+    departmentsComboBox.setItems(departmentNames);
+
+    if (!departmentNames.isEmpty()) 
+    {
+        departmentsComboBox.getSelectionModel().selectFirst();
+        
+        Departments selectedDepartment = departmentsComboBox.getSelectionModel().getSelectedItem();
+        this.depName = selectedDepartment.getDepName();
+        this.depID = selectedDepartment.getDepID();  
+    }
+    }
+
+    private void setColumnHeaders() 
+    {
+        LocalDate currentDate = LocalDate.now();
+        LocalDate mondayDate = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+        String mondayHeader = "Monday " + mondayDate.format(DateTimeFormatter.ofPattern("M/d"));
+        String tuesdayHeader = "Tuesday " + mondayDate.plusDays(1).format(DateTimeFormatter.ofPattern("M/d"));
+        String wednesdayHeader = "Wednesday " + mondayDate.plusDays(2).format(DateTimeFormatter.ofPattern("M/d"));
+        String thursdayHeader = "Thursday " + mondayDate.plusDays(3).format(DateTimeFormatter.ofPattern("M/d"));
+        String fridayHeader = "Friday " + mondayDate.plusDays(4).format(DateTimeFormatter.ofPattern("M/d"));
+        String saturdayHeader = "Saturday " + mondayDate.plusDays(5).format(DateTimeFormatter.ofPattern("M/d"));
+        String sundayHeader = "Sunday " + mondayDate.plusDays(6).format(DateTimeFormatter.ofPattern("M/d"));
+
+        mondayColumn.setText(mondayHeader);
+        tuesdayColumn.setText(tuesdayHeader);
+        wednesdayColumn.setText(wednesdayHeader);
+        thursdayColumn.setText(thursdayHeader);
+        fridayColumn.setText(fridayHeader);
+        saturdayColumn.setText(saturdayHeader);
+        sundayColumn.setText(sundayHeader);
+    }
+
+
+    private void DepartmentSelection() 
+    {
+        Departments selectedDepartment = departmentsComboBox.getSelectionModel().getSelectedItem();
+    
+        if (selectedDepartment != null) 
+        {
+            this.depName = selectedDepartment.getDepName();
+            this.depID = selectedDepartment.getDepID();
+            populateWeeklyScheduleTable();
+        }
+    }
+
+    @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("main.fxml", event);
     }
@@ -451,7 +572,8 @@ public class EditWeeklyScheduleController implements Initializable {
 
     @FXML
     void logoutButtonOnAction(ActionEvent event) throws IOException {
-        // Implement logout functionality here
+        Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     private void loadFXML(String fxmlFile, ActionEvent event) throws IOException {
@@ -465,63 +587,73 @@ public class EditWeeklyScheduleController implements Initializable {
     @FXML
     public void initialize(URL url, ResourceBundle rb) {
         Platform.runLater(() -> {
-        if (depName != null && !depName.isEmpty()) {
-            populateWeeklyScheduleTable();
-            weeklyScheduleTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-            // Set the cell value factories for each day column
-            mondayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getMondayShift())));
-            tuesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getTuesdayShift())));
-            wednesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getWednesdayShift())));
-            thursdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getThursdayShift())));
-            fridayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getFridayShift())));
-            saturdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getSaturdayShift())));
-            sundayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getSundayShift())));
-            weeklyScheduleTableView.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2) {
-                // Check if a cell is selected
-                TablePosition<WeeklyScheduleRow, String> selectedCell = (TablePosition<WeeklyScheduleRow, String>) weeklyScheduleTableView.getSelectionModel().getSelectedCells().get(0);
-                int columnIndex = selectedCell.getColumn();
-                String dayOfWeek = ""; // Determine the day of the week based on the column index
-                switch (columnIndex) {
-                    case 0:
-                        dayOfWeek = "Monday";
-                        break;
-                    case 1:
-                        dayOfWeek = "Tuesday";
-                        break;
-                    case 2:
-                        dayOfWeek = "Wednesday";
-                        break;
-                    case 3:
-                        dayOfWeek = "Thursday";
-                        break;
-                    case 4:
-                        dayOfWeek = "Friday";
-                        break;
-                    case 5:
-                        dayOfWeek = "Saturday";
-                        break;
-                    case 6:
-                        dayOfWeek = "Sunday";
-                        break;
-                    default:
-                        break;
+            departmentsComboBox();
+            setColumnHeaders();
+            departmentsComboBox.setOnAction(event -> DepartmentSelection());
+            DepartmentSelection();
+            if (depName != null && !depName.isEmpty()) {
+                System.out.println("condition is met");
+                populateWeeklyScheduleTable();
+                weeklyScheduleTableView.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+                // Set the cell value factories for each day column
+                mondayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getMondayShift())));
+                tuesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getTuesdayShift())));
+                wednesdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getWednesdayShift())));
+                thursdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getThursdayShift())));
+                fridayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getFridayShift())));
+                saturdayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getSaturdayShift())));
+                sundayColumn.setCellValueFactory(cellData -> new SimpleStringProperty(String.join("\n", cellData.getValue().getSundayShift())));
+                weeklyScheduleTableView.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2) {
+                    // Check if a cell is selected
+                    TablePosition<WeeklyScheduleRow, String> selectedCell = (TablePosition<WeeklyScheduleRow, String>) weeklyScheduleTableView.getSelectionModel().getSelectedCells().get(0);
+                    int columnIndex = selectedCell.getColumn();
+                    String dayOfWeek = ""; // Determine the day of the week based on the column index
+                    switch (columnIndex) {
+                        case 0:
+                            dayOfWeek = "Monday";
+                            break;
+                        case 1:
+                            dayOfWeek = "Tuesday";
+                            break;
+                        case 2:
+                            dayOfWeek = "Wednesday";
+                            break;
+                        case 3:
+                            dayOfWeek = "Thursday";
+                            break;
+                        case 4:
+                            dayOfWeek = "Friday";
+                            break;
+                        case 5:
+                            dayOfWeek = "Saturday";
+                            break;
+                        case 6:
+                            dayOfWeek = "Sunday";
+                            break;
+                        default:
+                            break;
+                    }
+                    // Get the selected row
+                    WeeklyScheduleRow selectedRow = selectedCell.getTableView().getItems().get(selectedCell.getRow());
+                    // Edit the selected shift
+                    editShiftDialog(selectedRow, dayOfWeek);
                 }
-                // Get the selected row
-                WeeklyScheduleRow selectedRow = selectedCell.getTableView().getItems().get(selectedCell.getRow());
-                // Edit the selected shift
-                editShiftDialog(selectedRow, dayOfWeek);
-            }
-});
-
-        } else {
-            // depName is not available, display a message or take appropriate action
-            System.out.println("Department name is not available. Cannot populate schedule table.");
-            // Optionally, display an alert or message to the user indicating that department name is required.
-        }
+                
     });
-    }
+    
+            } else {
+                // depName is not available, display a message or take appropriate action
+                System.out.println("Department name is not available. Cannot populate schedule table.");
+                // Optionally, display an alert or message to the user indicating that department name is required.
+            }
+        });
+    
+        }
+
     public void initController() {
+
+        
         if (depName != null && !depName.isEmpty()) {
             populateWeeklyScheduleTable();
             // Set cell value factories, etc.
@@ -529,5 +661,6 @@ public class EditWeeklyScheduleController implements Initializable {
             System.out.println("Department name is not available. Cannot populate schedule table.");
             // Optionally, display an alert or message to the user indicating that department name is required.
         }
+         
     }
 }
