@@ -182,30 +182,6 @@
                   <String fx:value="shadow" />
                   <String fx:value="btn" />
                </styleClass></ComboBox>
-            <AnchorPane layoutX="8.0" layoutY="560.0" prefHeight="226.0" prefWidth="1014.0" style="-fx-background-color: #E6FFFD;" styleClass="shadow" stylesheets="@main.css">
-               <children>
-                  <AnchorPane layoutX="172.0" layoutY="13.0" prefHeight="200.0" prefWidth="274.0" stylesheets="@main.css">
-                     <styleClass>
-                        <String fx:value="nav-form1" />
-                        <String fx:value="shadow" />
-                     </styleClass>
-                  </AnchorPane>
-                  <AnchorPane layoutX="545.0" layoutY="13.0" prefHeight="200.0" prefWidth="274.0" stylesheets="@main.css">
-                     <styleClass>
-                        <String fx:value="nav-form1" />
-                        <String fx:value="shadow" />
-                     </styleClass>
-                     <children>
-                        <TableView fx:id="hoursTableView" prefHeight="200.0" prefWidth="272.0">
-                          <columns>
-                            <TableColumn fx:id="employeeNameColumn" prefWidth="131.0" text="Employee Name" />
-                            <TableColumn fx:id="scheduledHoursColumn" prefWidth="140.0" text="Hours Scheduled" />
-                          </columns>
-                        </TableView>
-                     </children>
-                  </AnchorPane>
-               </children>
-            </AnchorPane>
          </children></AnchorPane>
    </center>
 </BorderPane>
