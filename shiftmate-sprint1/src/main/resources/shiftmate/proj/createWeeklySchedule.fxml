@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.ContextMenu?>
@@ -17,11 +18,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.EditWeeklyScheduleController">
    <left>
-      <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: #00FFEF;" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="CENTER" prefHeight="167.0" prefWidth="223.0" text="ShiftMate">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="93.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
@@ -38,7 +39,7 @@
                   </ContextMenu>
                </contextMenu>
             </Label>
-            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" text="Home">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Home">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -47,7 +48,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="createScheduleButton" mnemonicParsing="false" onAction="#createScheduleButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Create Schedule">
+            <Button fx:id="createScheduleButton" mnemonicParsing="false" onAction="#createScheduleButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Create Schedule">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -56,7 +57,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="editInformationButton" mnemonicParsing="false" onAction="#editInformationButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Edit Information">
+            <Button fx:id="editInformationButton" mnemonicParsing="false" onAction="#editInformationButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Edit Information">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -65,7 +66,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="staffButton" mnemonicParsing="false" onAction="#staffButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Staff">
+            <Button fx:id="staffButton" mnemonicParsing="false" onAction="#staffButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Staff">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -74,7 +75,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="DepartmentsButton" mnemonicParsing="false" onAction="#departmentsButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Departments">
+            <Button fx:id="DepartmentsButton" mnemonicParsing="false" onAction="#departmentsButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Departments">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -83,7 +84,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Log Out">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: #00FFEF;" styleClass="btn" stylesheets="@main.css" text="Log Out">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -100,14 +101,26 @@
          <children>
             <VBox alignment="TOP_CENTER" spacing="10" AnchorPane.leftAnchor="8.0" AnchorPane.rightAnchor="8.0">
                <children>
-                  <Label text="Weekly Schedule">
+                  <Label stylesheets="@main.css" text="Weekly Schedule">
                      <font>
-                        <Font size="30.0" />
+                        <Font name="System Bold" size="30.0" />
                      </font>
+                     <styleClass>
+                        <String fx:value="label" />
+                        <String fx:value="label-info" />
+                     </styleClass>
                   </Label>
-                  <ComboBox fx:id="departmentsComboBox" prefWidth="150.0" />
-                  <Label contentDisplay="TEXT_ONLY" text="Double click on a shift to edit details" />
-                  <TableView fx:id="weeklyScheduleTableView" prefHeight="500.0" prefWidth="1020.0">
+                  <ComboBox fx:id="departmentsComboBox" prefWidth="150.0" stylesheets="@main.css">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></ComboBox>
+                  <Label contentDisplay="TEXT_ONLY" stylesheets="@main.css" text="Double click on a shift to edit details">
+                     <styleClass>
+                        <String fx:value="label" />
+                        <String fx:value="label-info" />
+                     </styleClass></Label>
+                  <TableView fx:id="weeklyScheduleTableView" prefHeight="500.0" prefWidth="1020.0" stylesheets="@main.css">
                      <columns>
                         <TableColumn fx:id="mondayColumn" prefWidth="147.20006716251373" text="Monday" />
                         <TableColumn fx:id="tuesdayColumn" prefWidth="135.199951171875" text="Tuesday" />
@@ -117,22 +130,98 @@
                         <TableColumn fx:id="saturdayColumn" maxWidth="196.0" prefWidth="138.39990234375" text="Saturday" />
                         <TableColumn fx:id="sundayColumn" prefWidth="190.40008544921875" text="Sunday" />
                      </columns>
+                     <styleClass>
+                        <String fx:value="column-header-background" />
+                        <String fx:value="column-header" />
+                        <String fx:value="shadow" />
+                        <String fx:value="table-column" />
+                     </styleClass>
                   </TableView>
                   <HBox alignment="CENTER" spacing="10" />
                   <HBox alignment="CENTER" spacing="10">
                      <children>
-                        <Button onAction="#addShiftMonday" text="Add Shift (Monday)" />
-                        <Button onAction="#addShiftTuesday" text="Add Shift (Tuesday)" />
-                        <Button onAction="#addShiftWednesday" text="Add Shift (Wednesday)" />
-                        <Button onAction="#addShiftThursday" text="Add Shift (Thursday)" />
-                        <Button onAction="#addShiftFriday" text="Add Shift (Friday)" />
-                        <Button onAction="#addShiftSaturday" text="Add Shift (Saturday)" />
-                        <Button onAction="#addShiftSunday" text="Add Shift (Sunday)" />
+                        <Button onAction="#addShiftMonday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Mon)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftTuesday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Tue)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftWednesday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Wed)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftThursday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Thur)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftFriday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Fri)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftSaturday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Sat)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
+                        <Button onAction="#addShiftSunday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Sun)">
+                           <styleClass>
+                              <String fx:value="btn" />
+                              <String fx:value="shadow" />
+                           </styleClass>
+                           <font>
+                              <Font size="10.0" />
+                           </font></Button>
                      </children>
                   </HBox>
-                  <Button onAction="#saveSchedule" text="Save Schedule" />
-                  <Button fx:id="createWeeklyScheduleOnAction" mnemonicParsing="false" onAction="#createWeeklyScheduleOnAction" text="Create Schedule" />
-                  <Button mnemonicParsing="false" text="Notify Employees" />
+                  <Button onAction="#saveSchedule" style="-fx-text-fill: black;" stylesheets="@main.css" text="Save Schedule">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
+                  <Button fx:id="createWeeklyScheduleOnAction" mnemonicParsing="false" onAction="#createWeeklyScheduleOnAction" style="-fx-text-fill: black;" stylesheets="@main.css" text="Create Schedule">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
+                  <Button mnemonicParsing="false" style="-fx-text-fill: black;" stylesheets="@main.css" text="Notify Employees">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass>
+                     <font>
+                        <Font size="10.0" />
+                     </font></Button>
                </children>
             </VBox>
          </children></AnchorPane>

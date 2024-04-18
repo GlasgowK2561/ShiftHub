@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -11,19 +8,24 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.CreateDefaultScheduleController">
     <center>
         <VBox alignment="TOP_CENTER" spacing="10" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1">
            <children>
-               <Label text="Default Weekly Schedule">
+               <Label stylesheets="@main.css" text="Default Weekly Schedule">
                <font>
-                  <Font size="30.0" />
-               </font></Label>
+                  <Font name="System Bold" size="30.0" />
+               </font>
+               <styleClass>
+                  <String fx:value="label" />
+                  <String fx:value="label-info" />
+               </styleClass></Label>
             <Label contentDisplay="TEXT_ONLY" text="Double click on a shift to edit details" />
                
                <!-- TableView to display shifts for each day -->
-               <TableView fx:id="scheduleTableView" prefHeight="517.0" prefWidth="1244.0">
+               <TableView fx:id="scheduleTableView" prefHeight="517.0" prefWidth="1244.0" stylesheets="@main.css">
                    <columns>
                        <!-- Other columns -->
                        <TableColumn fx:id="mondayColumn" prefWidth="184.0" text="Monday" />
@@ -34,6 +36,11 @@
                        <TableColumn fx:id="saturdayColumn" prefWidth="163.0" text="Saturday" />
                        <TableColumn fx:id="sundayColumn" prefWidth="178.0" text="Sunday" />
                    </columns>
+               <styleClass>
+                  <String fx:value="table-view" />
+                  <String fx:value="table-column" />
+                  <String fx:value="shadow" />
+               </styleClass>
                </TableView>
    
                <!-- Button to add a shift for each day -->
@@ -42,16 +49,48 @@
                <!-- Button to save the schedule -->
                <HBox alignment="CENTER" spacing="10">
                   <children>
-                      <Button onAction="#addShiftMonday" text="Add Shift (Monday)" />
-                      <Button onAction="#addShiftTuesday" text="Add Shift (Tuesday)" />
-                      <Button onAction="#addShiftWednesday" text="Add Shift (Wednesday)" />
-                      <Button onAction="#addShiftThursday" text="Add Shift (Thursday)" />
-                      <Button onAction="#addShiftFriday" text="Add Shift (Friday)" />
-                      <Button onAction="#addShiftSaturday" text="Add Shift (Saturday)" />
-                      <Button onAction="#addShiftSunday" text="Add Shift (Sunday)" />
+                      <Button onAction="#addShiftMonday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Mon)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftTuesday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Tues)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftWednesday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Wed)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftThursday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Thu)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftFriday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Fri)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftSaturday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Sat)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
+                      <Button onAction="#addShiftSunday" style="-fx-text-fill: black;" stylesheets="@main.css" text="Add Shift (Sun)">
+                     <styleClass>
+                        <String fx:value="btn" />
+                        <String fx:value="shadow" />
+                     </styleClass></Button>
                   </children>
                </HBox>
-                <Button onAction="#saveSchedule" text="Save Schedule" />
+                <Button onAction="#saveSchedule" style="-fx-text-fill: black;" stylesheets="@main.css" text="Save Schedule">
+               <styleClass>
+                  <String fx:value="btn" />
+                  <String fx:value="shadow" />
+               </styleClass></Button>
            </children>
         </VBox>
     </center>
