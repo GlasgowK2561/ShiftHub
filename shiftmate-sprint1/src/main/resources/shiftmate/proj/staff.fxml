@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
@@ -13,11 +14,11 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1250.0" style="-fx-background-color: #E6FFFD;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.StaffController">
    <left>
-      <VBox prefHeight="900.0" prefWidth="221.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="900.0" prefWidth="221.0" styleClass="nav-form" stylesheets="@main.css" BorderPane.alignment="CENTER">
          <children>
-            <Label alignment="CENTER" prefHeight="167.0" prefWidth="223.0" text="ShiftMate">
+            <Label alignment="CENTER" prefHeight="167.0" prefWidth="223.0" styleClass="nav-form" text="ShiftMate">
                <font>
-                  <Font size="18.0" />
+                  <Font name="System Bold" size="18.0" />
                </font>
                <graphic>
                   <ImageView fitHeight="93.0" fitWidth="76.0" pickOnBounds="true" preserveRatio="true">
@@ -27,7 +28,7 @@
                   </ImageView>
                </graphic>
             </Label>
-            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" text="Home">
+            <Button fx:id="homeButton" mnemonicParsing="false" onAction="#homeButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Home">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -35,8 +36,12 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="createScheduleButton" mnemonicParsing="false" onAction="#createScheduleButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Create Schedule">
+            <Button fx:id="createScheduleButton" mnemonicParsing="false" onAction="#createScheduleButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Create Schedule">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -44,8 +49,12 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="editInformationButton" mnemonicParsing="false" onAction="#editInformationButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Edit Information">
+            <Button fx:id="editInformationButton" mnemonicParsing="false" onAction="#editInformationButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Edit Information">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -53,8 +62,12 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="staffButton" mnemonicParsing="false" onAction="#staffButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Staff">
+            <Button fx:id="staffButton" mnemonicParsing="false" onAction="#staffButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Staff">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -62,8 +75,12 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="DepartmentsButton" mnemonicParsing="false" onAction="#departmentsButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Departments">
+            <Button fx:id="DepartmentsButton" mnemonicParsing="false" onAction="#departmentsButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Departments">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -71,8 +88,12 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
-            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black; -fx-background-color: white;" styleClass="-fx-effect: null;" text="Log Out">
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logoutButtonOnAction" prefHeight="59.0" prefWidth="221.0" style="-fx-text-fill: Black;" stylesheets="@main.css" text="Log Out">
                <graphic>
                   <ImageView fitHeight="31.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -80,6 +101,10 @@
                      </image>
                   </ImageView>
                </graphic>
+               <styleClass>
+                  <String fx:value="nav-btn" />
+                  <String fx:value="btn" />
+               </styleClass>
             </Button>
          </children>
       </VBox>
@@ -87,17 +112,27 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label layoutX="44.0" layoutY="41.0" text="Staff">
+            <Label layoutX="44.0" layoutY="41.0" prefHeight="37.0" prefWidth="74.0" stylesheets="@main.css" text="Staff">
                <font>
-                  <Font size="24.0" />
+                  <Font name="System Bold" size="24.0" />
                </font>
+               <styleClass>
+                  <String fx:value="label" />
+                  <String fx:value="label-info" />
+               </styleClass>
             </Label>
-            <TableView fx:id="staffTableView" layoutX="230.0" layoutY="105.0" prefHeight="770.0" prefWidth="543.0" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="105.0">
+            <TableView fx:id="staffTableView" layoutX="230.0" layoutY="105.0" prefHeight="770.0" prefWidth="543.0" stylesheets="@main.css" AnchorPane.bottomAnchor="25.0" AnchorPane.leftAnchor="240.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="105.0">
               <columns>
                 <TableColumn fx:id="fNamecolumn" prefWidth="180.0" text="First Name" />
                 <TableColumn fx:id="lNamecolumn" prefWidth="175.0" text="Last Name" />
                   <TableColumn fx:id="departmentcolumn" prefWidth="193.0" text="Department" />
               </columns>
+               <styleClass>
+                  <String fx:value="table-view" />
+                  <String fx:value="table-column" />
+                  <String fx:value="shadow" />
+                  <String fx:value="column-header" />
+               </styleClass>
             </TableView>
          </children></AnchorPane>
    </center>
