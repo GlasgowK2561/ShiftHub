@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.Hashtable;
 import java.util.LinkedList;
 public class DBController {
@@ -517,7 +521,7 @@ public class DBController {
         // Query to create the new table
         String query = "CREATE TABLE " + tableName + " ( " + shiftIDName +
                         " INT AUTO_INCREMENT PRIMARY KEY, " +
-                        "DepID INT, " +
+                        "DepID INT, " + 
                         "WeekStartDate DATE, " +  // Add column for week start date
                         "EmployeeID INT, " +
                         "DayOfWeek VARCHAR(255), " +
@@ -584,16 +588,16 @@ public class DBController {
         return getParameterizedQuery(query, 1, params);
     }
     // Get the department name, employee id, and week start date and return the employees scheudle --Written By: Elizabeth
-    public static LinkedList<Hashtable<String,String>> getEmployeeScheduleWeekOf(String depName, int employeeID, String startDate){
-        String params[] = {Integer.toString(employeeID), startDate};
+    public static LinkedList<Hashtable<String,String>> getEmployeeScheduleWeekOf(String depName, int employeeID){
+        String params[] = {Integer.toString(employeeID)};
         String table = depName.concat("weeklyschedule");
-        String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ? AND s.WeekStartDate = ?";
+        String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ?";
         return getParameterizedQuery(query, 1, params);
     }
     // Get the shift details and add shif to the weekly schedule -- Written By: Kellie
     public static int addShiftWeeklySchedule(String depName, int employeeID, String dayOfWeek, String startTime, String endTime) {
         String table = depName.concat("weeklyschedule");
-        String addShiftQuery = "INSERT INTO " + table + " (depID, employeeID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?, ?)";
+        String addShiftQuery = "INSERT INTO " + table + " (depID, WeekStartDate, employeeID, dayOfWeek, startTime, endTime) VALUES (?, ?, ?, ?, ?, ?)";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             // Get department ID
             int depID = getDepartmentID(depName);
@@ -601,10 +605,15 @@ public class DBController {
                 // Department exists, proceed to add shift
                 try (PreparedStatement preparedStatement = connection.prepareStatement(addShiftQuery, Statement.RETURN_GENERATED_KEYS)) {
                     preparedStatement.setInt(1, depID);
-                    preparedStatement.setInt(2, employeeID);
-                    preparedStatement.setString(3, dayOfWeek);
-                    preparedStatement.setString(4, startTime);
-                    preparedStatement.setString(5, endTime);
+                    preparedStatement.setInt(3, employeeID);
+                    preparedStatement.setString(4, dayOfWeek);
+                    preparedStatement.setString(5, startTime);
+                    preparedStatement.setString(6, endTime);
+                    LocalDate today = LocalDate.now();
+                    LocalDate nextMonday = today.with(TemporalAdjusters.next(DayOfWeek.MONDAY));
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+                    String nextMondaySQL = nextMonday.format(formatter);
+                    preparedStatement.setString(2, nextMondaySQL);
                     int rowsAffected = preparedStatement.executeUpdate();
                     if (rowsAffected > 0) {
                         ResultSet generatedKeys = preparedStatement.getGeneratedKeys();
@@ -629,7 +638,7 @@ public class DBController {
             e.printStackTrace();
             return -1;
         }
-    }  
+    }
     // Get the shift details and update shift in weekly schedule -- Written By: Kellie
     public static boolean editShiftWeeklySchedule(String depName, int oldEmployeeID, String oldStartTime, String oldEndTime, String dayOfWeek, int newEmployeeID, String newStartTime, String newEndTime) {
         String table = depName + "weeklyschedule";

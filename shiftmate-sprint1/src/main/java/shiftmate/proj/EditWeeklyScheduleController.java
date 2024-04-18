@@ -469,7 +469,6 @@ public class EditWeeklyScheduleController implements Initializable {
                 alert.setHeaderText(null);
                 alert.setContentText("Weekly Schedule has been created");
                 alert.showAndWait();
-
                 populateWeeklyScheduleTable();
             }
             
@@ -532,7 +531,6 @@ public class EditWeeklyScheduleController implements Initializable {
         sundayColumn.setText(sundayHeader);
     }
 
-
     private void DepartmentSelection() 
     {
         Departments selectedDepartment = departmentsComboBox.getSelectionModel().getSelectedItem();
@@ -554,7 +552,10 @@ public class EditWeeklyScheduleController implements Initializable {
     void createScheduleButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("createschedules.fxml", event);
     }
-
+    @FXML
+    void sendNotificationsOnAction(ActionEvent event) throws IOException{
+        Notify.sendDepEmail(depID, depName);
+    }
     @FXML
     void editInformationButtonOnAction(ActionEvent event) throws IOException {
         loadFXML("editinformation.fxml", event);
@@ -650,7 +651,6 @@ public class EditWeeklyScheduleController implements Initializable {
         });
     
         }
-
     public void initController() {
 
         

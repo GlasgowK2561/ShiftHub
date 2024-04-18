@@ -1,14 +1,12 @@
 package shiftmate.proj;
 //Imports
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.Hashtable;
 import java.util.LinkedList;
-
+import java.nio.file.Path;
 //REDO THIS TO TAKE A START DATE AND QUERY SPECIFICALLY FOR SHIFTS WITH THAT START DATE
-
-
 public class Notify{
-
   //sends schedule notification email to entire department staff for given start date-- Written by: Elizabeth
   public static void sendDepEmail(int depID, String startDate) throws IOException{
     LinkedList<Hashtable<String,String>> employeeList = DBController.getDepartmentEmployeesWithEmail(depID);
@@ -24,7 +22,7 @@ public class Notify{
       System.out.println("Working on: " + eName);
 
       //get and format weekly schedule
-      LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeScheduleWeekOf(depName, employeeID, startDate);
+      LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeScheduleWeekOf(depName, employeeID);
       if(schedule.peekFirst() != null){ //check that department schedule exists
         System.out.println("Found schedule. Retrieving data...");
         
@@ -80,9 +78,13 @@ public class Notify{
   //sends a single email -- Written by: Elizabeth
   private static void sendEmail(String emailTo, String subjectDate, String bodyText) throws IOException 
   { 
+    System.out.println("SENDING EMAIL FUNCTION");
+    String pythonScriptPath = "src/main/java/shiftmate/proj/notification_email.py"; // Relative path to Python script
+    Path scriptPath = Paths.get(pythonScriptPath);
+    String path = scriptPath.toString();
     String[] cmd = { //sends to python with command like args
       "python",
-      "shiftmate-sprint1/src/main/java/shiftmate/proj/notification_email.py", //make sure relative path stays correct
+      path, //make sure relative path stays correct
       emailTo,
       subjectDate,
       bodyText

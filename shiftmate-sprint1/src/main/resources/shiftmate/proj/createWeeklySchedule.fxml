@@ -238,7 +238,7 @@
                      <font>
                         <Font size="10.0" />
                      </font></Button>
-                  <Button mnemonicParsing="false" style="-fx-text-fill: black;" stylesheets="@main.css" text="Notify Employees">
+                  <Button fx:id="sendNotificationsOnAction" onAction="#sendNotificationsOnAction" mnemonicParsing="false" style="-fx-text-fill: black;" stylesheets="@main.css" text="Notify Employees">
                      <styleClass>
                         <String fx:value="btn" />
                         <String fx:value="shadow" />
