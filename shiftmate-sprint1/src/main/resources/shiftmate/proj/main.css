@@ -13,7 +13,7 @@
     -fx-alignment:CENTER;
 }
 .table-view .column-header-background{
-    -fx-background-color:linear-gradient(to bottom right, #00FFEF,  #00FFEF);
+    -fx-background-color:linear-gradient(to bottom right, #54dad1,  #00FFEF);
     -fx-background-insets: 0 0 0 0;
     -f-background-radius:8px 8px 0px 0px;
 }
@@ -43,7 +43,7 @@
     -fx-cursor:hand;
 }
 .btn:hover{
-    -fx-background-color:#088b94;
+    -fx-background-color:#16e9e9;
 }
 
 .label-info{
@@ -60,5 +60,23 @@
 .table-view .virtual-flow .scroll-bar:horizontal .track,
 .table-view .virtual-flow .scroll-bar:horizontal .track-background {
     -fx-background-color: transparent;
+}
+
+.nav-form{
+    -fx-background-color:linear-gradient(to bottom right,  #00FFEF,  #00FFEF);
+}
+
+.nav-form1{
+    -fx-background-color:linear-gradient(to bottom right,  #54dad1,  #00FFEF);
+}
+
+
+.nav-btn{
+    -fx-background-color:transparent;
+    -fx-cursor:hand;
+    -fx-font-family:"Arial";
+    -fx-font-size:14px;
+    -fx-text-fill:#fff;
+    -fx-alignment:CENTER-LEFT;
 }
 

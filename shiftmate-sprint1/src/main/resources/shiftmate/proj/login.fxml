@@ -14,7 +14,7 @@
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="520.0" stylesheets="@../../../java/shiftmate/proj/login.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="shiftmate.proj.LoginController">
     <left>
-        <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #00FFEF;" styleClass="left-form" stylesheets="@login.css" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="407.0" prefWidth="228.0" style="-fx-background-color: #00FFEF;" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="CENTER" layoutX="3.0" layoutY="75.0" prefHeight="17.0" prefWidth="229.0" text="ShiftMate">
                     <font>
@@ -41,7 +41,7 @@
         </AnchorPane>
     </left>
     <center>
-        <AnchorPane prefHeight="400.0" prefWidth="332.0" style="-fx-background-color: #E6FFFD;" styleClass="right-form" stylesheets="@login.css" BorderPane.alignment="CENTER">
+        <AnchorPane prefHeight="400.0" prefWidth="332.0" style="-fx-background-color: #E6FFFD;" BorderPane.alignment="CENTER">
             <children>
                 <Label alignment="TOP_CENTER" layoutX="107.0" layoutY="52.0" text="User Info" textFill="#01e4d5">
                     <font>
