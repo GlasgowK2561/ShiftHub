@@ -17,8 +17,10 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.LinkedList;
@@ -200,14 +202,16 @@ public class MainController implements Initializable
     private void setColumnHeaders() 
     {
         LocalDate currentDate = LocalDate.now();
-        String mondayHeader = "Monday " + currentDate.format(DateTimeFormatter.ofPattern("M/d"));
-        String tuesdayHeader = "Tuesday " + currentDate.plusDays(1).format(DateTimeFormatter.ofPattern("M/d"));
-        String wednesdayHeader = "Wednesday " + currentDate.plusDays(2).format(DateTimeFormatter.ofPattern("M/d"));
-        String thursdayHeader = "Thursday " + currentDate.plusDays(3).format(DateTimeFormatter.ofPattern("M/d"));
-        String fridayHeader = "Friday " + currentDate.plusDays(4).format(DateTimeFormatter.ofPattern("M/d"));
-        String saturdayHeader = "Saturday " + currentDate.plusDays(5).format(DateTimeFormatter.ofPattern("M/d"));
-        String sundayHeader = "Sunday " + currentDate.plusDays(6).format(DateTimeFormatter.ofPattern("M/d"));
-        
+        LocalDate mondayDate = currentDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY));
+
+        String mondayHeader = "Monday " + mondayDate.format(DateTimeFormatter.ofPattern("M/d"));
+        String tuesdayHeader = "Tuesday " + mondayDate.plusDays(1).format(DateTimeFormatter.ofPattern("M/d"));
+        String wednesdayHeader = "Wednesday " + mondayDate.plusDays(2).format(DateTimeFormatter.ofPattern("M/d"));
+        String thursdayHeader = "Thursday " + mondayDate.plusDays(3).format(DateTimeFormatter.ofPattern("M/d"));
+        String fridayHeader = "Friday " + mondayDate.plusDays(4).format(DateTimeFormatter.ofPattern("M/d"));
+        String saturdayHeader = "Saturday " + mondayDate.plusDays(5).format(DateTimeFormatter.ofPattern("M/d"));
+        String sundayHeader = "Sunday " + mondayDate.plusDays(6).format(DateTimeFormatter.ofPattern("M/d"));
+
         mondayColumn.setText(mondayHeader);
         tuesdayColumn.setText(tuesdayHeader);
         wednesdayColumn.setText(wednesdayHeader);
@@ -250,35 +254,37 @@ public class MainController implements Initializable
         {
             departmentComboBox.getSelectionModel().selectFirst();
         }
+        
+    }
+
+    private void DepartmentSelection() 
+    {
+        Departments selectedDepartment = departmentComboBox.getSelectionModel().getSelectedItem();
+    
+        if (selectedDepartment != null) 
+        {
+            String depName = selectedDepartment.getDepName();
+    
+            LocalDate currentDate = LocalDate.now();
+            LocalDate startDate = currentDate.with(java.time.DayOfWeek.MONDAY);
+            LocalDate endDate = startDate.plusDays(6);
+            String dateRangeText = startDate.format(DateTimeFormatter.ofPattern("MMMM/d")) + "   -   " +
+            endDate.format(DateTimeFormatter.ofPattern("MMMM/d"));
+            dateRangeLabel.setText(dateRangeText);
+    
+            populateWeeklyScheduleTable(depName);
+        }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle rb) 
     {
+        
         departmentsComboBox();
-        departmentComboBox.setOnAction(event -> 
-        {
-            Departments selectedDepartment = departmentComboBox.getSelectionModel().getSelectedItem();
-
-            if (selectedDepartment != null) 
-            {
-                String depName = selectedDepartment.getDepName();
-
-                LocalDate currentDate = LocalDate.now();
-                LocalDate startDate = currentDate.with(java.time.DayOfWeek.MONDAY);
-                LocalDate endDate = startDate.plusDays(6);
-                String dateRangeText = startDate.format(DateTimeFormatter.ofPattern("MMMM/d")) + "   -   " +
-                endDate.format(DateTimeFormatter.ofPattern("MMMM/d"));
-                dateRangeLabel.setText(dateRangeText);
-
-                setColumnHeaders();
-                populateWeeklyScheduleTable(depName);
-            }
-
-        });
-
-      
-    }
+        setColumnHeaders();
+        departmentComboBox.setOnAction(event -> DepartmentSelection());
+        DepartmentSelection();
+    } 
     
     @FXML
     void homeButtonOnAction(ActionEvent event) throws IOException
@@ -333,3 +339,7 @@ public class MainController implements Initializable
         stage.close();
     }
 }
+
+
+
+
