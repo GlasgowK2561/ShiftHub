@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
 
+//REDO THIS TO TAKE A START DATE AND QUERY SPECIFICALLY FOR SHIFTS WITH THAT START DATE
+
+
 public class Notify{
 
-  //sends schedule notification email to entire department staff -- Written by: Elizabeth
-  public static void sendDepEmail(int depID) throws IOException{
+  //sends schedule notification email to entire department staff for given start date-- Written by: Elizabeth
+  public static void sendDepEmail(int depID, String startDate) throws IOException{
     LinkedList<Hashtable<String,String>> employeeList = DBController.getDepartmentEmployeesWithEmail(depID);
     String depName = DBController.getDepartmentInformation(depID).getFirst().get("depName");
     System.out.println("Sending schedule emails for: " + depName);
-    String startDate = "N/A";
     String monHours, tuesHours, wedHours, thursHours, friHours, satHours, sunHours = "N/A";
     
     for(Hashtable<String,String> employeeInfo: employeeList){ //get each employees info
@@ -22,9 +24,8 @@ public class Notify{
       System.out.println("Working on: " + eName);
 
       //get and format weekly schedule
-      LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeWeeklySchedule(depName, employeeID);
+      LinkedList<Hashtable<String,String>> schedule = DBController.getEmployeeScheduleWeekOf(depName, employeeID, startDate);
       if(schedule.peekFirst() != null){ //check that department schedule exists
-        startDate = schedule.peekFirst().get("WeekStartDate");
         System.out.println("Found schedule. Retrieving data...");
         
         for(Hashtable<String,String> shift: schedule){ //format each day

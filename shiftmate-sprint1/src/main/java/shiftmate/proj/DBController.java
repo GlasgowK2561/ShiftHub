@@ -575,11 +575,18 @@ public class DBController {
         String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid)";
         return getParameterizedQuery(query, 0, null);
     }
-    // Get the department name and the employee id and return the employees scheudle --Written By: Elizabeth
+    // Get the department name and the employee id and return the employees schedule --Written By: Elizabeth
     public static LinkedList<Hashtable<String,String>> getEmployeeWeeklySchedule(String depName, int employeeID){
         String params[] = {Integer.toString(employeeID)};
         String table = depName.concat("weeklyschedule");
         String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ?";
+        return getParameterizedQuery(query, 1, params);
+    }
+    // Get the department name, employee id, and week start date and return the employees scheudle --Written By: Elizabeth
+    public static LinkedList<Hashtable<String,String>> getEmployeeScheduleWeekOf(String depName, int employeeID, String startDate){
+        String params[] = {Integer.toString(employeeID), startDate};
+        String table = depName.concat("weeklyschedule");
+        String query = "SELECT s.*, e.fname, e.lname FROM " + table +" AS s INNER JOIN employeeinfo as e on (s.employeeid = e.employeeid) WHERE e.employeeid = ? AND s.WeekStartDate = ?";
         return getParameterizedQuery(query, 1, params);
     }
     // Get the shift details and add shif to the weekly schedule -- Written By: Kellie
