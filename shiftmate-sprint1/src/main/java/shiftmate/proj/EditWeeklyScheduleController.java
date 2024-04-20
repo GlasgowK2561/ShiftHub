@@ -430,7 +430,6 @@ public class EditWeeklyScheduleController implements Initializable {
     private void addShiftSunday() {
         showAddShiftDialog("Sunday");
     }
-
     @FXML
     private void saveSchedule(ActionEvent event) throws IOException {
         Alert alert = new Alert(AlertType.INFORMATION);
@@ -440,7 +439,6 @@ public class EditWeeklyScheduleController implements Initializable {
         alert.showAndWait();
         loadFXML("main.fxml", event);
     }
-
     @FXML
     private void createWeeklyScheduleOnAction(ActionEvent event) {
         // Get the selected department information
@@ -655,8 +653,6 @@ public class EditWeeklyScheduleController implements Initializable {
     
         }
     public void initController() {
-
-        
         if (depName != null && !depName.isEmpty()) {
             populateWeeklyScheduleTable();
             // Set cell value factories, etc.
