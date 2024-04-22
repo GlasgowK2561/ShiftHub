@@ -1,4 +1,5 @@
 package shiftmate.proj;
+import java.io.File;
 //Imports
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -25,8 +26,9 @@ public class Notify{
     System.out.println("Sending schedule emails for: " + depName);
     String monHours, tuesHours, wedHours, thursHours, friHours, satHours, sunHours = "N/A";
     int totalHours, expectedPay, shiftHours;
-    totalHours = 0;
+
     for(Hashtable<String,String> employeeInfo: employeeList){ //get each employees info
+      totalHours = expectedPay = shiftHours = 0;
       String eName = employeeInfo.get("eName");
       String eEmail = employeeInfo.get("email");
       int employeeID = Integer.parseInt(employeeInfo.get("employeeID"));
@@ -106,12 +108,12 @@ public class Notify{
   private static void sendEmail(String emailTo, String subjectDate, String bodyText) throws IOException 
   { 
     System.out.println("SENDING EMAIL FUNCTION");
-    String pythonScriptPath = "src/main/java/shiftmate/proj/notification_email.py"; // Relative path to Python script
-    Path scriptPath = Paths.get(pythonScriptPath);
-    String path = scriptPath.toString();
+    String filePath = new File("").getAbsolutePath();
+    filePath = filePath + "\\shiftmate-sprint1\\src\\main\\java\\shiftmate\\proj\\notification_email.py";
+    System.out.println(filePath);
     String[] cmd = { //sends to python with command like args
       "python",
-      path, //make sure relative path stays correct
+      filePath, //make sure relative path stays correct
       emailTo,
       subjectDate,
       bodyText
